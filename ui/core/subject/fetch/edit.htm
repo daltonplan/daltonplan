@@ -1,0 +1,96 @@
+<div class="mx-2 mb-2">
+    <div class="modal-header">
+        <h4 class="modal-title text-blue" id="modal_label">
+            {{ @DICT.edit_subject }}
+        </h4>
+        <include href="fetch/close.htm" />
+    </div>
+    <form id="subject_edit" action="s/{{ @PARAMS.handle }}/update" method="post">
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="name">{{ @DICT.name }}</label>
+                <input id="name" type="text" class="form-control" maxlength="{{ @max_name_length }}" name="name"
+                    value="{{ @subject.name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="description">{{ @DICT.description }}</label>
+                <textarea id="description" class="form-control" rows="2" maxlength="{{ @max_description_length }}"
+                    name="description">{{ @subject.description }}</textarea>
+            </div>
+            <check if="{{ @subject.children === 0 }}">
+                <hr class="style" />
+                <div class="form-group">
+                    <select class="form-control selectpicker" name="parent" id="parent"
+                        data-none-selected-text="{{ @DICT.top_subject }}" data-icon-base="{{ @icon_style }} mr-1">
+                        <option value="0" style="background: #E8E8E8;">{{ @DICT.top_subject }}</option>
+                        <repeat group="{{ @subject_list }}" value="{{ @s_value }}">
+                            <option value="{{ @s_value.handle }}"
+                                data-icon="fa-{{ @s_value.icon ? @s_value.icon : 'folder-open' }} text-{{ @s_value.active ? 'green' : 'purple' }}"
+                                {{ @s_value.selected ? ' selected' : '' }}>
+                                {{ @s_value.name }}
+                            </option>
+                        </repeat>
+                    </select>
+                </div>
+            </check>
+            <hr class="style" />
+            <div class="form-group">
+                <label for="periods">{{ @DICT.number_of_periods }}</label>
+                <input id="periods" type="number" class="form-control" min="0" max="{{ @max_periods }}" name="periods"
+                    value="{{ @subject.periods }}">
+            </div>
+            <hr class="style" />
+            <div class="form-group">
+                <label for="icon"><i
+                        class="{{ @subject.icon ? @icon_style.' fa-'.@subject.icon : 'fab fa-font-awesome mr-1' }} {{ @icon_spacing }}"></i>
+                    <a href="{{ @icon_link }}" target="icons">{{ @DICT.icon }}</a></label>
+                <input id="icon" type="text" class="form-control" maxlength="{{ @max_icon_length }}" name="icon"
+                    value="{{ @subject.icon }}">
+            </div>
+            <div class="form-group">
+                <label for="link">{{ @subject.link ? '<a href="' . @subject.link . '" target="_blank">' : '' }}<i
+                            class="{{ @icon_style }} {{ @icon_spacing }} fa-link"></i>{{
+                        @subject.link ?
+                        '</a>' : '' }}
+                    {{ @DICT.link }}</label>
+                <input id="link" type="text" class="form-control" maxlength="{{ @max_link_length }}" name="link"
+                    value="{{ @subject.link }}" placeholder="{{ @DICT.link_hint }}">
+            </div>
+            <hr class="style" />
+            <div class="form-group text-center mt-4">
+                <div class="row">
+                    <div class="col text-center">
+                        <div class="custom-control custom-checkbox custom-control-inline text-green">
+                            <input id="exclusive" class="custom-control-input custom-control-input-green"
+                                type="checkbox" name="exclusive" value="1" {{ @subject.exclusive ? ' checked' : '' }}>
+                            <label for="exclusive" class="custom-control-label"><i
+                                    class="{{ @icon_style }} {{ @icon_spacing }} fa-asterisk"></i>
+                                {{ @DICT.exclusive }}</label>
+                        </div>
+                        <div class="custom-control custom-checkbox custom-control-inline text-red">
+                            <input id="managed" class="custom-control-input custom-control-input-red" type="checkbox"
+                                name="managed" value="1" {{ @subject.managed ? ' checked' : '' }}>
+                            <label for="managed" class="custom-control-label"><i
+                                    class="{{ @icon_style }} {{ @icon_spacing }} fa-chalkboard"></i>
+                                {{ @DICT.managed }}</label>
+                        </div>
+                        <div class="custom-control custom-checkbox custom-control-inline text-cyan">
+                            <input id="locked" class="custom-control-input custom-control-input-cyan" type="checkbox"
+                                name="locked" value="1" {{ @subject.locked ? ' checked' : '' }}>
+                            <label for="locked" class="custom-control-label"><i
+                                    class="{{ @icon_style_s }} {{ @icon_spacing }} fa-lock"></i>
+                                {{ @DICT.locked }}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="hidden" name="token" value="{{ @SESSION.csrf }}" />
+            <button type="submit" class="btn btn-primary"><i class="{{ @icon_style }} fa-check mr-2"></i>
+                {{ @DICT.ok }}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{ @DICT.close }}</button>
+        </div>
+    </form>
+</div>
+<include href="fetch/submit_script.htm" />

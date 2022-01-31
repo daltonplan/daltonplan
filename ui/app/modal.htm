@@ -1,0 +1,9 @@
+<check if="{{ (@ui_view !== 'login') && (@ui_view !== 'join') && (@ui_view !== 'verify') }}">
+    <include href="fetch/modal.htm" />
+    <include href="fetch/qr_code.htm" />
+
+    <check if="{{ @SESSION.user_role !== @role_student }}">
+        <include href="fetch/change.htm" />
+        <include href="fetch/remove.htm" />
+    </check>
+</check>

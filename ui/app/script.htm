@@ -1,0 +1,31 @@
+<script src="js/jquery-3.6.0.min.js?v={{ @version_nr }}"></script>
+<script src="js/bootstrap.bundle.min.js?v={{ @version_nr }}"></script>
+<script src="js/adminlte.min.js?v={{ @version_nr }}"></script>
+<script src="js/moment-with-locales.min.js?v={{ @version_nr }}"></script>
+<script src="js/bootstrap-datetimepicker.min.js?v={{ @version_nr }}"></script>
+<script src="js/bootstrap-select.min.js?v={{ @version_nr }}"></script>
+<script src="js/qrcode.min.js?v={{ @version_nr }}"></script>
+
+<check if="{{ isset(@SESSION) && !empty(@SESSION) }}">
+    <script src="js/cookiebanner.min.js?v={{ @version_nr }}" id="cookiebanner" data-bg="#CF1020"
+        data-message="{{ @DICT.cookie_banner_message }}" data-linkmsg=""></script>
+</check>
+
+<check if="{{ (@ui_view !== 'login') && (@ui_view !== 'join') && (@ui_view !== 'verify') }}">
+    <include href="fetch/qr_script.htm" />
+    <include href="fetch/script.htm" />
+
+    <check if="{{ @SESSION.user_role !== @role_student }}">
+        <include href="fetch/submit_script.htm" />
+        <include href="fetch/change_script.htm" />
+        <include href="fetch/remove_script.htm" />
+    </check>
+
+    <check if="{{ isset(@show_current) }}">
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#{{ @show_current }}').click();
+            });
+        </script>
+    </check>
+</check>

@@ -1,0 +1,340 @@
+<div class="mx-2 mb-2">
+    <div class="modal-header">
+        <h4 class="modal-title text-blue" id="modal_label">
+            <include href="plan/unit/week_day.htm" />
+            <span class="mx-1">/</span> {{ @period.name }}
+            <div class="pl-1">
+                <check if="{{ @period.link !== '' }}">
+                    <span class="px-1">
+                        <a href="{{ @period.link }}" target="_blank">
+                            <i class="{{ @icon_style }} fa-link text-red"></i>
+                        </a>
+                    </span>
+                </check>
+                <strong class="text-dark text-sm">
+                    {{ @period.start_date }} {{ @period.start_date !== @period.end_date ? '- ' .
+                    @period.end_date : '' }}
+                    <span class="px-3"><i class="{{ @icon_style }} {{ @icon_spacing }} fa-clock text-secondary"></i> {{
+                        @period.start_time }} - {{
+                        @period.end_time }}</span>
+                </strong>
+            </div>
+
+        </h4>
+        <include href="fetch/close.htm" />
+    </div>
+
+    <check if="{{ !empty(@book) && (@book.present === @book_present_on) && !isset(@next) }}">
+        <form class="form"
+            action="dp/{{ @PARAMS.handle }}/p/{{ @period.handle }}/update_book{{ isset(@PARAMS.user) ? '/u/' . @PARAMS.user : '' }}"
+            method="post">
+    </check>
+
+    <div class="modal-body">
+
+        <check if="{{ @period.description !== '' }}">
+            <div class="mt-2 mx-2">
+                {{ @period.description }}
+            </div>
+            <hr class="style" />
+        </check>
+
+        <check if="{{ @SESSION.user_role !== @role_student }}">
+            <div class="row">
+                <div class="col-6 text-secondary px-4">
+                    <i class="{{ @icon_style }} {{ @icon_spacing }} fa-arrow-down text-secondary"></i>
+                    {{ @DICT.preview }}
+                </div>
+                <div class="col-6 text-right text-secondary px-4">
+                    <a href="dp/{{ @PARAMS.handle }}/p/{{ @period.handle }}"><i
+                            class="{{ @icon_style }} {{ @icon_spacing }} fa-arrow-right"></i> {{ @DICT.all_bookings
+                        }}</a>
+                </div>
+            </div>
+            <hr class="style" />
+
+            <include href="account/unit/name_role_p.htm" />
+            <check
+                if="{{ (!empty(@book) && (@book.blocked === @book_blocked_on)) || (@period.blocked === @period_blocked_on) }}">
+                <div class="text-center text-red small">
+                    <i class="{{ @icon_style_s }} {{ @icon_spacing }} fa-times-circle"></i>
+                    {{ @DICT.user_blocked }}
+                </div>
+            </check>
+            <hr class="style" />
+        </check>
+
+        <check if="{{ !empty(@book) }}">
+            <div class="row px-3">
+                <div class="col-6">
+                    <check if="{{ !empty(@book.subject) }}">
+                        <true>
+                            <table>
+                                <tr>
+                                    <td class="align-top">
+                                        <i
+                                            class="{{ @icon_style }} {{ @icon_spacing }} fa-{{ @book.subject.icon ? @book.subject.icon : 'file' }} text-{{ @book.subject.active ? 'green' : 'purple' }} fa-lg"></i>
+                                    </td>
+                                    <td class="pl-2">
+                                        <span class="mr-2">{{
+                                            @book.subject.name }}
+                                        </span>
+                                        <check if="{{ !empty(@book.subject.parent) }}">
+                                            <span class="small text-secondary">
+                                                {{ @book.subject.parent.name }}
+                                            </span>
+                                        </check>
+                                    </td>
+                                </tr>
+                            </table>
+                        </true>
+                        <false>
+                            <div class="pt-1 text-secondary">
+                                <em>{{ @DICT.subject_deleted }}</em>
+                            </div>
+                        </false>
+                    </check>
+                </div>
+                <div class="col-6">
+                    <check if="{{ !empty(@book.lab) }}">
+                        <true>
+                            <table>
+                                <tr>
+                                    <td class="align-top">
+                                        <i
+                                            class="{{ @icon_style }} {{ @icon_spacing }} fa-{{ @book.lab.icon ? @book.lab.icon : 'flask' }} text-{{ @book.lab.active ? 'blue' : 'purple' }}"></i>
+                                    </td>
+                                    <td class="pl-2">
+                                        {{ @book.lab.name }}
+                                    </td>
+                                </tr>
+                            </table>
+                        </true>
+                        <false>
+                            <div class="pt-1 text-secondary">
+                                <em>{{ @DICT.lab_deleted }}</em>
+                            </div>
+                        </false>
+                    </check>
+                </div>
+            </div>
+            <hr class="style" />
+        </check>
+
+        <check if="{{ @book_result === @book_result_ok }}">
+            <true>
+                <check if="{{ @lab_list }}">
+                    <div class="row">
+                        <repeat group="{{ @lab_list }}" value="{{ @lab }}" counter="{{ @ctr }}">
+                            <div class="col-12 {{ @ctr !== count(@lab_list) ? 'mb-4' : '' }}">
+                                <div class="position-relative p-3 bg-light"
+                                    style="border-style: inset; border-color: #0275d8;">
+                                    <div class="ribbon-wrapper">
+                                        <div
+                                            class="ribbon bg-{{ (@lab.capacity !== 0) && (@lab.amount > @lab.capacity) ? 'danger' : 'primary' }}">
+                                            <check if="{{ @lab.amount }}">
+                                                <span><strong>{{ @lab.amount }}</strong> <i
+                                                        class="{{ @icon_style_s }} fa-user"></i></span>
+                                            </check>
+                                        </div>
+                                    </div>
+                                    <h4 class="px-1">
+                                        <table>
+                                            <tr>
+                                                <td class="align-top">
+                                                    <i
+                                                        class="{{ @icon_style }} {{ @icon_spacing }} fa-{{ @lab.icon ? @lab.icon : 'flask' }} text-blue"></i>
+                                                </td>
+                                                <td class="pl-2">
+                                                    {{ @lab.name }}
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </h4>
+                                    <hr class="style" />
+                                    <div class="row px-3">
+                                        <repeat group="{{ @lab.subject_list }}" value="{{ @subject }}">
+                                            <div class="col-12 mb-2">
+                                                <table>
+                                                    <tr>
+                                                        <td class="align-top">
+                                                            <i
+                                                                class="{{ @icon_style }} {{ @icon_spacing }} fa-{{ @subject.icon ? @subject.icon : 'file' }} text-success fa-lg"></i>
+                                                        </td>
+                                                        <td class="pl-2">
+                                                            <a href="{{ @BASE_URL }}dp/{{ @PARAMS.handle }}/book/{{ @PARAMS.period }}/{{ @lab.handle }}/{{ @subject.handle }}{{ isset(@PARAMS.user) ? '/'.@PARAMS.user : '' }}"
+                                                                role="button"
+                                                                class="{{ !empty(@book) && !empty(@book.lab) && !empty(@book.subject) && (@lab.id === @book.lab.id) && (@subject.id === @book.subject.id) ? 'text-red' : '' }} mr-2">
+                                                                {{ @subject.name }}
+                                                            </a>
+                                                            <span class="small text-secondary">
+                                                                {{ @subject.parent.name }}
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </repeat>
+                                    </div>
+                                </div>
+                            </div>
+                        </repeat>
+                    </div>
+                </check>
+            </true>
+            <false>
+                <check if="{{ !empty(@book) && (@book.present === @book_present_on) }}">
+                    <true>
+                        <check if=" {{ isset(@next) }}">
+                            <true>
+                                <div class="text-center text-blue">
+                                    {{ @DICT.try_again_later }}...
+                                </div>
+                            </true>
+                            <false>
+                                <div class="form-group">
+                                    <label for="description">{{ @DICT.description }}</label>
+                                    <textarea id="description" class="form-control" rows="2"
+                                        maxlength="{{ @max_description_length }}" name="description"
+                                        placeholder="{{ @DICT.room_for_notes }}">{{ @book.description }}</textarea>
+                                </div>
+                                <check if="{{ isset(@previous) }}">
+                                    <div class="form-group">
+                                        <label for="review">{{ @DICT.review }}</label>
+                                        <textarea id="review" class="form-control" rows="2" maxlength="512"
+                                            name="review"
+                                            placeholder="{{ @DICT.how_did_it_go }}">{{ @book.review }}</textarea>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-5">
+                                            <div class="form-group">
+                                                <select class="form-control selectpicker" name="rating" id="rating"
+                                                    data-icon-base="{{ @icon_style_s }} mr-1">
+                                                    <option value="{{ @book_rating_none }}"
+                                                        style="background: #E8E8E8;">
+                                                        {{ @DICT.no_rating }}</option>
+                                                    <option value="{{ @book_rating_better_than_expected }}"
+                                                        data-icon="fa-thumbs-up text-success" {{
+                                                        @book.rating===@book_rating_better_than_expected ? ' selected'
+                                                        : '' }}>
+                                                        {{ @DICT.better_than_expected }}</option>
+                                                    <option value="{{ @book_rating_made_good_progress }}"
+                                                        data-icon="fa-star text-primary" {{
+                                                        @book.rating===@book_rating_made_good_progress ? ' selected'
+                                                        : '' }}>
+                                                        {{ @DICT.made_good_progress }}</option>
+                                                    <option value="{{ @book_rating_could_go_better }}"
+                                                        data-icon="fa-thumbs-down text-danger" {{
+                                                        @book.rating===@book_rating_could_go_better ? ' selected' : ''
+                                                        }}>
+                                                        {{ @DICT.could_go_better }}</option>
+                                                    </repeat>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <check if="{{ @book.rating === @book_rating_none }}">
+                                            <div class="col-7 pt-2 pl-4 text-secondary">
+                                                <i class="{{ @icon_style }} {{ @icon_spacing }} fa-arrow-left"></i> {{
+                                                @DICT.rate_the_lesson }}
+                                            </div>
+                                        </check>
+                                    </div>
+                                </check>
+                            </false>
+                        </check>
+                    </true>
+                    <false>
+                        <div class="text-center text-danger">
+                            <check if="{{ @book_result === @book_result_no_team }}">
+                                <i class="{{ @icon_style }} {{ @icon_spacing }} fa-tag"></i> {{
+                                @DICT.no_team_assigned }}
+                                <check if="{{ @SESSION.user_role !== @role_student }}">
+                                    <hr class="style" />
+                                    <div class="mt-2 text-cyan">
+                                        {{ @DICT.check_teams_in_plan }}
+                                    </div>
+                                </check>
+                            </check>
+                            <check if="{{ @book_result === @book_result_no_subject }}">
+                                <i class="{{ @icon_style }} {{ @icon_spacing }} fa-file"></i> {{
+                                @DICT.no_subject_assigned }}
+                                <check if="{{ @SESSION.user_role !== @role_student }}">
+                                    <hr class="style" />
+                                    <div class="mt-2 text-cyan">
+                                        {{ @DICT.check_teams_in_plan }}
+                                    </div>
+                                </check>
+                            </check>
+                            <check if="{{ @book_result === @book_result_no_lab }}">
+                                <i class="{{ @icon_style }} {{ @icon_spacing }} fa-flask"></i> {{
+                                @DICT.no_lab_assigned }}
+                            </check>
+                            <check if="{{ @book_result === @book_result_already_expired }}">
+                                <i class="{{ @icon_style }} {{ @icon_spacing }} fa-calendar-day"></i> {{
+                                @DICT.lesson_already_expired }}
+                            </check>
+                            <check if="{{ @book_result === @book_result_too_late }}">
+                                <i class="{{ @icon_style }} {{ @icon_spacing }} fa-qrcode"></i> {{
+                                @DICT.too_late }}
+                            </check>
+                            <check if="{{ !empty(@book) }}">
+                                <true>
+                                    <check
+                                        if="{{ (@book.present === @book_present_excused) || (@book.present === @book_present_free) }}">
+                                        <true>
+                                            <check if="{{ @book.present === @book_present_excused }}">
+                                                <i class="{{ @icon_style }} {{ @icon_spacing }} fa-paperclip"></i> {{
+                                                @DICT.you_are_exclused }}
+                                            </check>
+                                            <check if="{{ @book.present === @book_present_free }}">
+                                                <span class="text-lightblue">
+                                                    <i class="{{ @icon_style }} {{ @icon_spacing }} fa-feather"></i> {{
+                                                    @DICT.you_have_free }}
+                                                </span>
+                                            </check>
+                                        </true>
+                                        <false>
+                                            <check if="{{ @SESSION.user_role === @role_student }}">
+                                                <check
+                                                    if="{{ (@book.blocked === @book_blocked_on) || (@book_result === @book_result_blocked) }}">
+                                                    <i
+                                                        class="{{ @icon_style_s }} {{ @icon_spacing }} fa-times-circle"></i>
+                                                    {{
+                                                    @DICT.you_are_blocked }}
+                                                </check>
+                                            </check>
+                                        </false>
+                                    </check>
+                                </true>
+                                <false>
+                                    <check if="{{ @book_result === @book_result_blocked }}">
+                                        <i class="{{ @icon_style_s }} {{ @icon_spacing }} fa-times-circle"></i> {{
+                                        @DICT.you_are_blocked }}
+                                    </check>
+                                </false>
+                            </check>
+                        </div>
+                    </false>
+                </check>
+            </false>
+        </check>
+    </div>
+    <div class="modal-footer">
+
+        <check if="{{ !empty(@book) && (@book.present === @book_present_on) && !isset(@next) }}">
+            <input type="hidden" name="token" value="{{ @SESSION.csrf }}" />
+            <button type="submit" class="btn btn-primary"><i class="{{ @icon_style }} fa-check mr-2"></i>
+                {{ @DICT.ok }}</button>
+        </check>
+
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{ @DICT.close }}</button>
+    </div>
+
+    <check if="{{ !empty(@book) && (@book.present === @book_present_on) && !isset(@next) }}">
+        </form>
+    </check>
+
+</div>
+<check if="{{ !empty(@book) && (@book.present === @book_present_on) && !isset(@next) }}">
+    <include href="fetch/submit_script.htm" />
+</check>

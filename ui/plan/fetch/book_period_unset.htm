@@ -1,0 +1,130 @@
+<div class="mx-2 mb-2">
+    <div class="modal-header">
+        <h4 class="modal-title text-blue" id="modal_label">
+            <include href="plan/unit/week_day.htm" />
+            <span class="mx-1">/</span> {{ @period.name }}
+        </h4>
+        <include href="fetch/close.htm" />
+    </div>
+    <form id="book_period_users" action="dp/{{ @PARAMS.handle }}/book_period_users" method="post">
+        <div class="modal-body">
+            <input type="hidden" name="period" value="{{ @PARAMS.period }}">
+            <div class="form-group">
+                <select class="form-control selectpicker" name="students[]" id="students"
+                    data-none-selected-text="{{ count(@student_list) ? @DICT.pick_students : @DICT.no_students }}"
+                    data-icon-base="{{ @icon_style_s }} mr-1" data-live-search="true" multiple data-actions-box="true"
+                    data-select-all-text="{{ @DICT.select_all }}" data-deselect-all-text="{{ @DICT.deselect_all }}"
+                    data-none-results-text="{{ @DICT.no_results_matched }} {0}">
+                    <repeat group="{{ @student_list }}" value="{{ @student }}">
+                        <option value="{{ @student.handle }}" data-icon="fa-user text-secondary">
+                            {{ @student.first_name
+                            }} {{
+                            @student.last_name }}
+                            ({{ @student.handle }})
+                        </option>
+                    </repeat>
+                </select>
+            </div>
+            <hr class="style" />
+            <div class="form-group">
+                <select class="form-control selectpicker" name="coaches[]" id="coaches"
+                    data-none-selected-text="{{ count(@coach_list) ? @DICT.pick_coaches : @DICT.no_coaches }}"
+                    data-icon-base="{{ @icon_style_s }} mr-1" data-live-search="true" multiple data-actions-box="true"
+                    data-select-all-text="{{ @DICT.select_all }}" data-deselect-all-text="{{ @DICT.deselect_all }}"
+                    data-none-results-text="{{ @DICT.no_results_matched }} {0}">
+                    <repeat group="{{ @coach_list }}" value="{{ @coach }}">
+                        <check if="{{ @coach.role === @role_owner }}">
+                            <option value="{{ @coach.handle }}" data-icon="fa-chalkboard-teacher text-red">
+                                {{ @coach.first_name
+                                }} {{
+                                @coach.last_name }}
+                                ({{ @coach.handle }})
+                            </option>
+                        </check>
+                        <check if="{{ @coach.role === @role_admin }}">
+                            <option value="{{ @coach.handle }}" data-icon="fa-chalkboard-teacher text-blue">
+                                {{ @coach.first_name
+                                }} {{
+                                @coach.last_name }}
+                                ({{ @coach.handle }})
+                            </option>
+                        </check>
+                        <check if="{{ @coach.role === @role_moderator }}">
+                            <option value="{{ @coach.handle }}" data-icon="fa-chalkboard-teacher text-green">
+                                {{ @coach.first_name
+                                }} {{
+                                @coach.last_name }}
+                                ({{ @coach.handle }})
+                            </option>
+                        </check>
+                        <check if="{{ @coach.role === @role_coach }}">
+                            <option value="{{ @coach.handle }}" data-icon="fa-chalkboard-teacher text-yellow">
+                                {{ @coach.first_name
+                                }} {{
+                                @coach.last_name }}
+                                ({{ @coach.handle }})
+                            </option>
+                        </check>
+                    </repeat>
+                </select>
+            </div>
+            <hr class="style" />
+            <div class="form-group">
+                <select class="form-control selectpicker" name="lab" id="lab"
+                    data-none-selected-text="{{ @DICT.no_labs }}" data-icon-base="{{ @icon_style }} mr-1" required>
+                    <repeat group="{{ @lab_list }}" value="{{ @lab }}">
+                        <option value="{{ @lab.handle }}"
+                            data-icon="fa-{{ @lab.icon ? @lab.icon : 'flask' }} text-blue">
+                            {{ @lab.name }}
+                        </option>
+                    </repeat>
+                </select>
+            </div>
+            <hr class="style" />
+            <div class="form-group">
+                <select class="form-control selectpicker" name="subject" id="subject"
+                    data-none-selected-text="{{ @DICT.no_subjects }}" data-icon-base="{{ @icon_style }} mr-1" required>
+                    <repeat group="{{ @subject_list }}" value="{{ @subject }}">
+                        <optgroup
+                            label="{{ @subject.name }}{{ @subject.active === 0 ? ' (' . @DICT.archive . ')' : '' }}">
+                            <repeat group="{{ @subject.children }}" value="{{ @child }}">
+                                <option value="{{ @child.handle }}"
+                                    data-icon="fa-{{ @child.icon ? @child.icon : 'file' }} text-green">
+                                    {{ @child.name }}{{ @child.active === 0 ? ' (' . @DICT.archive . ')' : '' }}
+                                </option>
+                            </repeat>
+                        </optgroup>
+                    </repeat>
+                </select>
+            </div>
+            <hr class="style" />
+            <div class="form-group text-center">
+                <div class="row">
+                    <div class="col text-center">
+                        <div class="custom-control custom-checkbox custom-control-inline text-red">
+                            <input id="blocked" class="custom-control-input custom-control-input-red" type="checkbox"
+                                name="blocked" value="1">
+                            <label for="blocked" class="custom-control-label"><i
+                                    class="{{ @icon_style_s }} {{ @icon_spacing }} fa-times-circle"></i>
+                                {{ @DICT.blocked }}</label>
+                        </div>
+                        <div class="custom-control custom-checkbox custom-control-inline text-green">
+                            <input id="present" class="custom-control-input  custom-control-input-green" type="checkbox"
+                                name="present" value="1">
+                            <label for="present" class="custom-control-label"><i
+                                    class="{{ @icon_style }} {{ @icon_spacing }} fa-check"></i>
+                                {{ @DICT.present }}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="hidden" name="token" value="{{ @SESSION.csrf }}" />
+            <button type="submit" class="btn btn-primary"><i class="{{ @icon_style_s }} fa-thumbtack mr-2"></i>
+                {{ @DICT.book }}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{ @DICT.close }}</button>
+        </div>
+    </form>
+</div>
+<include href="fetch/submit_script.htm" />

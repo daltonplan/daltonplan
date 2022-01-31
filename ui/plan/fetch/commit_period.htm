@@ -1,0 +1,67 @@
+<div class="mx-2 mb-2">
+    <div class="modal-header">
+        <h4 class="modal-title text-cyan" id="modal_label">
+            <include href="plan/unit/week_day.htm" />
+            <span class="mx-1">/</span> {{ @period.name }}
+        </h4>
+        <include href="fetch/close.htm" />
+    </div>
+    <form id="commit_period" action="dp/{{ @PARAMS.handle }}/commit_period" method="post">
+        <div class="modal-body">
+            <input type="hidden" name="period" value="{{ @PARAMS.period }}">
+            <div class="form-group">
+                <select class="form-control selectpicker" name="teams[]" id="teams"
+                    data-none-selected-text="{{ @DICT.pick_teams }}" data-icon-base="{{ @icon_style }} mr-1"
+                    data-live-search="true" multiple required
+                    data-none-results-text="{{ @DICT.no_results_matched }} {0}">
+                    <repeat group="{{ @team_list }}" value="{{ @team }}">
+                        <option value="{{ @team.handle }}"
+                            data-icon="fa-{{ @team.icon ? @team.icon : 'tag' }} text-cyan">
+                            {{ @team.name }}{{ @team.active === 0 ? ' (' . @DICT.archive . ')' : '' }}
+                        </option>
+                    </repeat>
+                </select>
+            </div>
+            <hr class="style" />
+            <div class="form-group">
+                <select class="form-control selectpicker" name="subjects[]" id="subjects"
+                    data-none-selected-text="{{ @DICT.pick_subjects }}" data-icon-base="{{ @icon_style }} mr-1"
+                    data-live-search="true" multiple required
+                    data-none-results-text="{{ @DICT.no_results_matched }} {0}">
+                    <repeat group="{{ @subject_list }}" value="{{ @subject }}">
+                        <optgroup
+                            label="{{ @subject.name }}{{ @subject.active === 0 ? ' (' . @DICT.archive . ')' : '' }}">
+                            <repeat group="{{ @subject.children }}" value="{{ @child }}">
+                                <option value="{{ @child.handle }}"
+                                    data-icon="fa-{{ @child.icon ? @child.icon : 'file' }} text-green">
+                                    {{ @child.name }}{{ @child.active === 0 ? ' (' . @DICT.archive . ')' : '' }}
+                                </option>
+                            </repeat>
+                        </optgroup>
+                    </repeat>
+                </select>
+            </div>
+            <hr class="style" />
+            <div class="form-group">
+                <select class="form-control selectpicker" name="labs[]" id="labs"
+                    data-none-selected-text="{{ @DICT.pick_labs }}" data-icon-base="{{ @icon_style }} mr-1"
+                    data-live-search="true" multiple required
+                    data-none-results-text="{{ @DICT.no_results_matched }} {0}">
+                    <repeat group="{{ @lab_list }}" value="{{ @lab }}">
+                        <option value="{{ @lab.handle }}"
+                            data-icon="fa-{{ @lab.icon ? @lab.icon : 'flask' }} text-blue">
+                            {{ @lab.name }}
+                        </option>
+                    </repeat>
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="hidden" name="token" value="{{ @SESSION.csrf }}" />
+            <button type="submit" class="btn btn-info"><i class="{{ @icon_style_s }} fa-gavel mr-2"></i>
+                {{ @DICT.commit }}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{ @DICT.close }}</button>
+        </div>
+    </form>
+</div>
+<include href="fetch/submit_script.htm" />

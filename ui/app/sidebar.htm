@@ -1,0 +1,195 @@
+<aside class="main-sidebar sidebar-dark-primary elevation-1" style="background-color:#212121;">
+    <a href="" class="brand-link elevation-2" style="background-color:#212121;">
+        <img src="img/logo/logo-100x100.png" alt="{{ @DICT.dp_name }}" class="brand-image">
+        <span class="brand-text pl-2">{{ @DICT.dp_name }}</span>
+    </a>
+    <div class="sidebar scrollbar-thin">
+
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                <a href="plan">
+                    <check if="{{ @user.role === @role_student }}">
+                        <set ui_user_icon="student.png" />
+                    </check>
+                    <check if="{{ @user.role === @role_coach }}">
+                        <set ui_user_icon="coach.png" />
+                    </check>
+                    <check if="{{ @user.role === @role_moderator }}">
+                        <set ui_user_icon="moderator.png" />
+                    </check>
+                    <check if="{{ @user.role === @role_admin }}">
+                        <set ui_user_icon="admin.png" />
+                    </check>
+                    <check if="{{ @user.role === @role_owner }}">
+                        <set ui_user_icon="owner.png" />
+                    </check>
+                    <img src="img/{{ @ui_user_icon }}" class="img-rounded elevation-2">
+                </a>
+            </div>
+            <div class="info ml-2">
+                <check if="{{ count(@plan_list) > 0 }}">
+                    <true>
+                        <a href="plan" class="d-block">{{ count(@plan_list) === 1 ? @DICT.my_plan : @DICT.my_plans
+                            }}</a>
+                    </true>
+                    <false>
+                        <em class="text-secondary">{{ @DICT.no_plan }}</em>
+                    </false>
+                </check>
+            </div>
+        </div>
+
+        <nav>
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item">
+                    <a href="reports" class="nav-link {{ @ui_view === 'reports' ? 'active bg-yellow' : '' }}">
+                        <i
+                            class="nav-icon {{ @icon_style_s }} fa-pen {{ @ui_view == 'reports' ? '' : 'text-yellow' }}"></i>
+                        <p class="ml-3">
+                            {{ @DICT.reports }}
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item"> </li>
+
+                <check if="{{ isset(@PARAMS.handle) || isset(@PARAMS.period) }}">
+                    <li class="nav-item has-treeview menu-open">
+                        <a href="#" class="nav-link active bg-red">
+                            <i class="nav-icon {{ @icon_style }} fa-calendar-alt"></i>
+                            <p>
+                                <span class="ml-3">{{ @plan.name }}</span>
+                                <i class="{{ @icon_style }} fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <check if="{{ isset(@week) }}">
+                                    <true>
+                                        <a href="dp/{{ @PARAMS.handle }}/w/{{ @week.handle }}#week"
+                                            class="nav-link {{ (isset(@PARAMS.week) || (isset(@week_archive) && @week_archive)) ? 'bg-purple' : 'bg-light' }}">
+                                    </true>
+                                    <false>
+                                        <a href="dp/{{ @PARAMS.handle }}#week" class="nav-link">
+                                    </false>
+                                </check>
+                                <i class="nav-icon {{ @icon_style }} fa-calendar-week"></i>
+                                <p>
+                                    <span class="ml-3">
+                                        <check if="{{ isset(@week) }}">
+                                            <true>
+                                                {{ @week.name }}
+                                            </true>
+                                            <false>
+                                                {{ @DICT.free_week }}
+                                            </false>
+                                        </check>
+                                    </span>
+                                </p>
+                                </a>
+                            </li>
+                            <check if="{{ isset(@previous) }}">
+                                <li class="nav-item">
+                                    <a href="dp/{{ @PARAMS.handle }}/p/{{ @previous.handle }}" class="nav-link">
+                                        <i class="nav-icon {{ @icon_style }} fa-arrow-up"></i>
+                                        <p>
+                                            <span class="ml-3">
+                                                <set week_day="{{ @previous.week_day }}" />
+                                                <include href="plan/unit/week_day.htm" /> <span class="mx-1">/</span> {{
+                                                @previous.name }}
+                                            </span>
+                                        </p>
+                                    </a>
+                                </li>
+                            </check>
+                            <check if="{{ isset(@next) }}">
+                                <li class="nav-item">
+                                    <a href="dp/{{ @PARAMS.handle }}/p/{{ @next.handle }}" class="nav-link">
+                                        <i class="nav-icon {{ @icon_style }} fa-arrow-down"></i>
+                                        <p>
+                                            <span class="ml-3">
+                                                <set week_day="{{ @next.week_day }}" />
+                                                <include href="plan/unit/week_day.htm" /> <span class="mx-1">/</span>
+                                                {{ @next.name }}
+                                            </span>
+                                        </p>
+                                    </a>
+                                </li>
+                            </check>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item"> </li>
+                </check>
+
+                <li class="nav-item">
+                    <check if="{{ isset(@ui_archive) && (@ui_archive === 'subjects') }}">
+                        <true>
+                            <a href="subjects" class="nav-link active bg-purple">
+                                <i class="nav-icon {{ @icon_style }} fa-folder-open }}"></i>
+                                <p class="ml-3">
+                                    {{ @DICT.subjects }}
+                                </p>
+                            </a>
+                        </true>
+                        <false>
+                            <a href="subjects"
+                                class="nav-link {{ (@ui_view === 'subjects') || (@ui_view === 'subject') ? 'active bg-green' : '' }}">
+                                <i
+                                    class="nav-icon {{ @icon_style }} fa-folder-open {{ (@ui_view === 'subjects') || (@ui_view === 'subject') ? '' : 'text-green' }}"></i>
+                                <p class="ml-3">
+                                    {{ @DICT.subjects }}
+                                </p>
+                            </a>
+                        </false>
+                    </check>
+                </li>
+                <li class="nav-item">
+                    <check if="{{ isset(@ui_archive) && (@ui_archive === 'labs') }}">
+                        <true>
+                            <a href="labs" class="nav-link active bg-purple">
+                                <i class="nav-icon {{ @icon_style }} fa-flask }}"></i>
+                                <p class="ml-3">
+                                    {{ @DICT.labs }}
+                                </p>
+                            </a>
+                        </true>
+                        <false>
+                            <a href="labs"
+                                class="nav-link {{ (@ui_view === 'labs') || (@ui_view === 'lab') ? 'active bg-blue' : '' }}">
+                                <i
+                                    class="nav-icon {{ @icon_style }} fa-flask {{ (@ui_view === 'labs') || (@ui_view === 'lab') ? '' : 'text-blue' }}"></i>
+                                <p class="ml-3">
+                                    {{ @DICT.labs }}
+                                </p>
+                            </a>
+                        </false>
+                    </check>
+                </li>
+                <li class="nav-item"> </li>
+                <check if="{{ @SESSION.user_role !== @role_student }}">
+                    <li class="nav-item">
+                        <a href="teams"
+                            class="nav-link {{ (@ui_view === 'teams') || (@ui_view === 'team') ? 'active bg-cyan' : '' }}">
+                            <i
+                                class="nav-icon {{ @icon_style }} fa-tags {{ (@ui_view === 'teams') || (@ui_view === 'team') ? '' : 'text-cyan' }}"></i>
+                            <p class="ml-3">
+                                {{ @DICT.teams }}
+                            </p>
+                        </a>
+                    </li>
+                </check>
+                <check if="{{ @SESSION.user_role !== @role_student }}">
+                    <li class="nav-item">
+                        <a href="users" class="nav-link {{ @ui_view === 'users' ? 'active bg-secondary' : '' }}">
+                            <i class="nav-icon {{ @icon_style_s }} fa-users"></i>
+                            <p class="ml-3">
+                                {{ @DICT.users }}
+                            </p>
+                        </a>
+                    </li>
+                </check>
+            </ul>
+        </nav>
+
+    </div>
+</aside>

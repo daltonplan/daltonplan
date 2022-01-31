@@ -1,0 +1,36 @@
+<div class="mx-2 mb-2">
+    <div class="modal-header">
+        <h4 class="modal-title text-cyan" id="modal_label">
+            {{ @DICT.assign_team }}
+        </h4>
+        <include href="fetch/close.htm" />
+    </div>
+    <form id="assign" action="u/{{ @PARAMS.handle }}/assign_team" method="post">
+        <div class="modal-body">
+            <include href="account/unit/name_role_p.htm" />
+
+            <hr class="style" />
+
+            <div class="form-group">
+                <select class="form-control selectpicker" name="teams[]" id="teams"
+                    data-none-selected-text="{{ @DICT.no_teams }}" data-icon-base="{{ @icon_style }} mr-1"
+                    data-live-search="true" multiple data-none-results-text="{{ @DICT.no_results_matched }} {0}">
+                    <repeat group="{{ @team_list }}" value="{{ @team }}">
+                        <option value="{{ @team.handle }}"
+                            data-icon="fa-{{ @team.icon ? @team.icon : 'tag' }} text-cyan" {{ @team.selected
+                            ? ' selected' : '' }}>
+                            {{ @team.name }}{{ @team.active === 0 ? ' (' . @DICT.archive . ')' : '' }}
+                        </option>
+                    </repeat>
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="hidden" name="token" value="{{ @SESSION.csrf }}" />
+            <button type="submit" class="btn btn-info"><i class="{{ @icon_style }} fa-check mr-2"></i>
+                {{ @DICT.assign }}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{ @DICT.close }}</button>
+        </div>
+    </form>
+</div>
+<include href="fetch/submit_script.htm" />

@@ -1,0 +1,229 @@
+<section class="next_last">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-12">
+                <div class="small-box bg-white py-2 px-2">
+                    <div class="inner">
+                        <p class="text-lg text-secondary pb-1"><strong>{{ @DICT.next_session }}</strong></p>
+                        <check if="{{ !empty(@book_list) }}">
+                            <true>
+                                <repeat group="{{ @book_list }}" value="{{ @report }}" counter="{{ @ctr }}">
+                                    <check if="{{ @ctr !== 1 }}">
+                                        <hr class="style" />
+                                    </check>
+                                    <div class="my-3 pl-2">
+                                        <div class="pl-1">
+                                            <a href="#" role="button" data-toggle="modal" data-target="#fetch"
+                                                data-url="{{ $BASE_URL }}dp/{{ @report.plan.handle }}/fetch/book/{{ @report.period.handle }}"
+                                                data-style="modal-lg">
+                                                <check if="{{ !empty(@report.book) }}">
+                                                    <true>
+                                                        <check if="{{ !empty(@report.book.subject) }}">
+                                                            <true>
+                                                                <table>
+                                                                    <tr>
+                                                                        <td class="align-top">
+                                                                            <i
+                                                                                class="{{ @icon_style }} {{ @icon_spacing }} fa-{{ @report.book.subject.icon ? @report.book.subject.icon : 'file' }} text-{{ @report.book.subject.active ? 'green' : 'purple' }} fa-lg"></i>
+                                                                        </td>
+                                                                        <td class="pl-2">
+                                                                            <span class="mr-2">
+                                                                                {{ @report.book.subject.name }}
+                                                                            </span>
+                                                                            <check
+                                                                                if="{{ !empty(@report.book.subject.parent) }}">
+                                                                                <span class="small text-secondary">
+                                                                                    {{ @report.book.subject.parent.name
+                                                                                    }}
+                                                                                </span>
+                                                                            </check>
+                                                                        </td>
+                                                                    </tr>
+                                                                </table>
+                                                            </true>
+                                                            <false>
+                                                                <div class="pt-1 text-secondary">
+                                                                    <em>{{ @DICT.subject_deleted }}</em>
+                                                                </div>
+                                                            </false>
+                                                        </check>
+                                                    </true>
+                                                    <false>
+                                                        <i
+                                                            class="{{ @icon_style }} {{ @icon_spacing }} fa-calendar-day text-red fa-lg mr-2"></i>
+                                                        {{ @DICT.project }}
+                                                    </false>
+                                                </check>
+                                            </a>
+                                        </div>
+                                        <div class="pt-1">
+                                            <span class="small text-secondary">
+                                                <span class="text-dark">
+                                                    <set week_day="{{ @report.day }}" />
+                                                    <include href="plan/unit/week_day.htm" />
+                                                    <span class="mx-1">/</span>
+                                                    {{ @report.period.name }}
+                                                </span>
+                                                <span class="mx-2">
+                                                    <i
+                                                        class="{{ @icon_style }} {{ @icon_spacing }} fa-clock text-secondary"></i>
+                                                    {{
+                                                    @report.period.start_time }} - {{
+                                                    @report.period.end_time }}
+                                                </span>
+                                                <check if="{{ !empty(@report.book) }}">
+                                                    <span class="text-dark">
+                                                        <check if="{{ !empty(@report.book.lab) }}">
+                                                            <true>
+                                                                <i
+                                                                    class="{{ @icon_style }} {{ @icon_spacing }} fa-{{ @report.book.lab.icon ? @report.book.lab.icon : 'flask' }} text-{{ @report.book.lab.active ? 'blue' : 'purple' }}"></i>
+
+                                                                {{ @report.book.lab.name }}
+                                                            </true>
+                                                            <false>
+                                                                <em>{{ @DICT.lab_deleted }}</em>
+                                                            </false>
+                                                        </check>
+                                                    </span>
+                                                </check>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </repeat>
+                            </true>
+                            <false>
+                                <em class="pl-1">{{ @DICT.none }}</em>
+                                <div class="text-center text-secondary my-3">
+                                    <p>
+                                        <a href=""><img src="img/logo/logo-100x100.png" alt="{{ @DICT.dp_name }}"></a>
+                                    </p>
+                                </div>
+                            </false>
+                        </check>
+                    </div>
+                    <check if="{{ isset(@current) }}">
+                        <true>
+                            <a href="#" role="button" data-toggle="modal" data-target="#fetch"
+                                data-url="{{ $BASE_URL }}dp/{{ @current.plan.handle }}/fetch/book/{{ @current.handle }}"
+                                data-style="modal-lg">
+                                <div class="icon">
+                                    <i class="{{ @icon_style_s }} fa-bell text-red"></i>
+                                </div>
+                            </a>
+                        </true>
+                        <false>
+                            <div class="icon">
+                                <i class="{{ @icon_style }} fa-bell"></i>
+                            </div>
+                        </false>
+                    </check>
+                </div>
+            </div>
+            <div class="col-lg-6 col-12">
+                <div class="small-box bg-white py-2 px-2">
+                    <div class="inner">
+                        <p class="text-lg text-secondary pb-1"><strong>{{ @DICT.latest_reports }}</strong></p>
+                        <check if="{{ !empty(@latest_report_list) }}">
+                            <true>
+                                <repeat group="{{ @latest_report_list }}" value="{{ @report }}" counter="{{ @ctr }}">
+                                    <check if="{{ @ctr !== 1 }}">
+                                        <hr class="style" />
+                                    </check>
+                                    <div class="my-3 pl-2">
+                                        <div class="pl-1">
+                                            <a href="#" role="button" data-toggle="modal" data-target="#fetch"
+                                                data-url="{{ $BASE_URL }}dp/{{ @report.plan.handle }}/fetch/book/{{ @report.period.handle }}"
+                                                data-style="modal-lg">
+                                                <check if="{{ !empty(@report.book.subject) }}">
+                                                    <true>
+                                                        <table>
+                                                            <tr>
+                                                                <td class="align-top">
+                                                                    <i
+                                                                        class="{{ @icon_style }} {{ @icon_spacing }} fa-{{ @report.book.subject.icon ? @report.book.subject.icon : 'file' }} text-{{ @report.book.subject.active ? 'green' : 'purple' }} fa-lg"></i>
+                                                                </td>
+                                                                <td class="pl-2">
+                                                                    <span class="mr-2">
+                                                                        {{ @report.book.subject.name }}
+                                                                    </span>
+                                                                    <span class="small text-secondary">
+                                                                        {{ @report.book.subject.parent.name }}
+                                                                    </span>
+                                                                    <check
+                                                                        if="{{ @report.book.rating === @book_rating_better_than_expected }}">
+                                                                        <i
+                                                                            class="{{ @icon_style_s }} {{ @icon_spacing }} fa-thumbs-up text-success ml-2"></i>
+                                                                    </check>
+                                                                    <check
+                                                                        if="{{ @report.book.rating === @book_rating_made_good_progress }}">
+                                                                        <i
+                                                                            class="{{ @icon_style_s }} {{ @icon_spacing }} fa-star text-primary ml-2"></i>
+                                                                    </check>
+                                                                    <check
+                                                                        if="{{ @report.book.rating === @book_rating_could_go_better }}">
+                                                                        <i
+                                                                            class="{{ @icon_style_s }} {{ @icon_spacing }} fa-thumbs-down text-danger ml-2"></i>
+                                                                    </check>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </true>
+                                                    <false>
+                                                        <div class="pt-1 text-secondary">
+                                                            <em>{{ @DICT.subject_deleted }}</em>
+                                                        </div>
+                                                    </false>
+                                                </check>
+                                            </a>
+                                        </div>
+                                        <div class="pt-1">
+                                            <span class="small text-secondary">
+                                                <span class="text-dark">
+                                                    <set week_day="{{ @report.day }}" />
+                                                    <include href="plan/unit/week_day.htm" />
+                                                    <span class="mx-1">/</span>
+                                                    {{ @report.period.name }}
+                                                </span>
+                                                <span class="mx-2">
+                                                    <i
+                                                        class="{{ @icon_style }} {{ @icon_spacing }} fa-clock text-secondary"></i>
+                                                    {{
+                                                    @report.period.start_time }} - {{
+                                                    @report.period.end_time }}
+                                                </span>
+                                                <span class="text-dark">
+                                                    <check if="{{ !empty(@report.book.lab) }}">
+                                                        <true>
+                                                            <i
+                                                                class="{{ @icon_style }} {{ @icon_spacing }} fa-{{ @report.book.lab.icon ? @report.book.lab.icon : 'flask' }} text-{{ @report.book.lab.active ? 'blue' : 'purple' }}"></i>
+
+                                                            {{ @report.book.lab.name }}
+                                                        </true>
+                                                        <false>
+                                                            <em>{{ @DICT.lab_deleted }}</em>
+                                                        </false>
+                                                    </check>
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </repeat>
+                            </true>
+                            <false>
+                                <em class="pl-1">{{ @DICT.none }}</em>
+                                <div class="text-center text-secondary my-3">
+                                    <p>
+                                        <a href=""><img src="img/logo/logo-100x100.png" alt="{{ @DICT.dp_name }}"></a>
+                                    </p>
+                                </div>
+                            </false>
+                        </check>
+                    </div>
+                    <div class="icon">
+                        <i class="{{ @icon_style }} fa-poll-h"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

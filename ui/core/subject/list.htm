@@ -1,0 +1,127 @@
+<section class="subject_list pb-2" id="subjects">
+    <div class="container">
+        <div class="row px-2">
+            <div class="col-sm-12 col-md-6 col-lg-6 col-6">
+                <h3 class="px-1 py-2 text-secondary">
+                    <check if="{{ isset(@ui_archive) }}">
+                        <true>
+                            {{ @DICT.archived_subjects }}
+                        </true>
+                        <false>
+                            {{ @SESSION.user_role === @role_student || isset(@PARAMS.my) ? @DICT.my_subjects :
+                            @DICT.all_subjects }}
+                        </false>
+                    </check>
+                </h3>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6 col-6 text-right pt-2">
+                <check if="{{ @SESSION.user_role !== @role_student }}">
+                    <check if="{{ isset(@PARAMS.my) }}">
+                        <true>
+                            <a href="subjects"><button type="button" class="btn btn-sm btn-dark mx-1 my-1"><i
+                                        class="{{ @icon_style_s }} fa-folder-open mr-2"></i>{{
+                                    @DICT.all_subjects }}</button></a>
+                        </true>
+                        <false>
+                            <check if="{{ @SESSION.user_role !== @role_student }}">
+                                <a href="subjects/my"><button type="button" class="btn btn-sm btn-dark mx-1 my-1"><i
+                                            class="{{ @icon_style_s }} fa-user mr-2"></i>{{
+                                        @DICT.my_subjects }}</button></a>
+                            </check>
+                        </false>
+                    </check>
+                    <check if="{{ isset(@ui_archive) }}">
+                        <true>
+                            <a href="subjects"><button type="button" class="btn btn-sm btn-dark mx-1 my-1"><i
+                                        class="{{ @icon_style_s }} fa-folder-open mr-2"></i>{{
+                                    @DICT.all_subjects }}</button></a>
+                        </true>
+                        <false>
+                            <a href="subjects/archive"><button type="button" class="btn btn-sm btn-dark mx-1 my-1"><i
+                                        class="{{ @icon_style }} fa-archive mr-2"></i>{{
+                                    @DICT.archive }}</button></a>
+                        </false>
+                    </check>
+                </check>
+            </div>
+        </div>
+        <check if="{{ !empty(@subject_list) }}">
+            <true>
+                <repeat group="{{ @subject_list }}" value="{{ @subject }}" counter="{{ @ctr }}">
+                    <check if="{{ @ctr !== 1 }}">
+                        <hr class="style" />
+                    </check>
+                    <div class="card card-outline">
+                        <div class="card-header">
+                            <div id="{{ @subject.handle }}" class="card-title text-lg" style="scroll-margin-top: 4em;">
+                                <i
+                                    class="{{ @icon_style }} fa-{{ @subject.icon ? @subject.icon : 'folder-open' }} text-{{ @subject.active ? 'green' : 'purple' }} fa-lg mr-2"></i>
+                                {*<a href="s/{{ @subject.handle }}">*}{{ @subject.name
+                                    }}{*</a>*}
+                            </div>
+                            <div class="card-tools text-right pr-2">
+                                <set parent="{{ array() }}" />
+                                <include href="core/subject/unit/menu.htm" />
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <check if="{{ @subject.description }}">
+                                    <div class="col-12 text-wrap mb-4">
+                                        {{ @subject.description }}</div>
+                                </check>
+
+                                <check if="{{ !empty(@subject.children) }}">
+                                    <true>
+                                        <repeat group="{{ @subject.children }}" value="{{ @child }}">
+                                            <div class="col-12 text-wrap">
+                                                <set parent="{{ @subject }}" />
+                                                <set subject="{{ @child }}" />
+                                                <div
+                                                    class="card card-outline card-{{ @child.active ? 'green' : 'purple' }}">
+                                                    <div class="card-header">
+                                                        <div id="{{ @child.handle }}" class="card-title text-lg"
+                                                            style="scroll-margin-top: 4em;"><i
+                                                                class="{{ @icon_style }} fa-{{ @child.icon ? @child.icon : 'file' }} text-{{ @child.active ? 'green' : 'purple' }} fa-lg mr-2"></i>
+                                                            {*<a href="s/{{ @child.handle }}">*}
+                                                                {{ @child.name }}{*</a>*}
+                                                        </div>
+                                                        <div class="card-tools text-right pr-2">
+                                                            <include href="core/subject/unit/menu.htm" />
+                                                        </div>
+                                                    </div>
+                                                    <check if="{{ @child.description }}">
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-12 text-wrap">
+                                                                    {{ @child.description }}</div>
+                                                            </div>
+                                                        </div>
+                                                    </check>
+                                                </div>
+                                            </div>
+                                        </repeat>
+                                    </true>
+                                    <false>
+                                        <div class="col-12 text-wrap text-secondary">
+                                            <em>{{ @DICT.no_subjects }}</em>
+                                        </div>
+                                    </false>
+                                </check>
+
+                            </div>
+                        </div>
+                    </div>
+                </repeat>
+            </true>
+            <false>
+                <div class="text-center text-secondary my-1">
+                    <p>
+                        <a href="subjects"><img src="img/logo/logo-180x180.png" alt="{{ @DICT.dp_name }}"></a>
+                    </p>
+                    <strong>{{ @DICT.no_subjects }}</strong>
+                </div>
+            </false>
+        </check>
+    </div>
+</section>

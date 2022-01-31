@@ -1,0 +1,13 @@
+<body
+    class="hold-transition {{ isset(@ui_content) ? 'sidebar-mini layout-navbar-fixed layout-fixed sidebar-collapse' : 'register-page' }}">
+    <check if="{{ isset(@ui_content) }}">
+        <include href="app/content.htm" />
+    </check>
+
+    <check if="{{ isset(@ui_box) }}">
+        <include href="app/box.htm" />
+    </check>
+
+    <include href="app/modal.htm" />
+    <include href="app/script.htm" />
+</body>

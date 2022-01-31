@@ -1,0 +1,40 @@
+<div class="mx-2 mb-2">
+    <div class="modal-header">
+        <h4 class="modal-title text-green" id="modal_label">
+            {{ @DICT.assign_subject }}
+        </h4>
+        <include href="fetch/close.htm" />
+    </div>
+    <form id="assign_user" action="t/{{ @PARAMS.handle }}/assign_subject" method="post">
+        <div class="modal-body">
+            <div class="form-group">
+                <select class="form-control selectpicker" name="subjects[]" id="subjects"
+                    data-none-selected-text="{{ @DICT.no_subjects }}" data-icon-base="{{ @icon_style }} mr-1"
+                    data-live-search="true" multiple data-none-results-text="{{ @DICT.no_results_matched }} {0}">
+                    <repeat group="{{ @subject_list }}" value="{{ @subject }}">
+                        <optgroup>
+                            <option value="{{ @subject.handle }}"
+                                data-icon="fa-{{ @subject.icon ? @subject.icon : 'folder-open' }} text-green"
+                                style="background: #E8E8E8;" {{ @subject.selected ? ' selected' : '' }}>
+                                {{ @subject.name }}{{ @subject.active === 0 ? ' ('.@DICT.archive.')' : '' }}</option>
+                            <repeat group="{{ @subject.children }}" value="{{ @child }}">
+                                <option value="{{ @child.handle }}"
+                                    data-icon="fa-{{ @child.icon ? @child.icon : 'file' }} text-green" {{
+                                    @child.selected ? ' selected' : '' }}>
+                                    {{ @child.name }}{{ @child.active === 0 ? ' ('.@DICT.archive.')' : '' }}
+                                </option>
+                            </repeat>
+                        </optgroup>
+                    </repeat>
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="hidden" name="token" value="{{ @SESSION.csrf }}" />
+            <button type="submit" class="btn btn-success"><i class="{{ @icon_style }} fa-folder-plus mr-2"></i>
+                {{ @DICT.assign }}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{ @DICT.close }}</button>
+        </div>
+    </form>
+</div>
+<include href="fetch/submit_script.htm" />

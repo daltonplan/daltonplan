@@ -1,0 +1,46 @@
+<div class="mx-2 mb-2">
+    <div class="modal-header">
+        <h4 class="modal-title text-blue" id="modal_label">
+            {{ @DICT.import_periods }}</h4>
+        <include href="fetch/close.htm" />
+    </div>
+    <form id="import_periods" action="dp/{{ @PARAMS.handle }}/import_periods" method="post">
+        <div class="modal-body">
+
+            <div class="form-group mt-3">
+                <select class="form-control selectpicker" name="week" id="week"
+                    data-none-selected-text="{{ @DICT.no_week }}" data-icon-base="{{ @icon_style }}" {{
+                    count(@week_list)>
+                    10 ? 'data-live-search="true" data-none-results-text="'. @DICT.no_results_matched . ' {0}"' : '' }}
+                    required>
+                    <check if="{{ count(@week_list) > 0 }}">
+                        <optgroup label="{{ @DICT.last_week }}">
+                            <option value="{{ @week_list[0].handle }}"
+                                data-icon="fa-{{ @week_list[0].icon ? @week_list[0].icon : 'calendar-week' }} text-purple">
+                                {{ @week_list[0].name }} ({{ @week_list[0].start }} - {{ @week_list[0].end }})
+                            </option>
+                        </optgroup>
+                    </check>
+                    <check if="{{ count(@week_list) > 1 }}">
+                        <repeat group="{{ @week_list }}" value="{{ @week }}" counter="{{ @ctr }}">
+                            <check if="{{ @ctr !== 1 }}">
+                                <option value="{{ @week.handle }}"
+                                    data-icon="fa-{{ @week.icon ? @week.icon : 'calendar-week' }} text-purple">
+                                    {{ @week.name }} ({{ @week.start }} - {{ @week.end }})
+                                </option>
+                            </check>
+                        </repeat>
+                    </check>
+                </select>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <input type="hidden" name="token" value="{{ @SESSION.csrf }}" />
+            <button type="submit" class="btn btn-primary"><i class="{{ @icon_style }} fa-magic mr-2"></i>
+                {{ @DICT.import }}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{ @DICT.close }}</button>
+        </div>
+    </form>
+</div>
+<include href="fetch/submit_script.htm" />

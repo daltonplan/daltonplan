@@ -1,0 +1,6 @@
+<p>{{ @email.description }}</p>
+
+<check if="{{ isset(@email.device_info) }}">
+    {{ @DICT.device }}: {{ @email.device_info }}<br />
+</check>
+{{ @DICT.user }}: {{ @email.handle }}

@@ -1,0 +1,23 @@
+<div class="mx-2 mb-2">
+    <div class="modal-header">
+        <h4 class="modal-title text-primary" id="modal_label">
+            {{ @DICT.feedback }} <span class="mx-1">/</span> {{ @DICT.bug_report }}
+        </h4>
+        <include href="fetch/close.htm" />
+    </div>
+    <form id="feedback" action="feedback" method="post">
+        <div class="modal-body">
+            <div class="form-group">
+                <textarea class="form-control" rows="2" maxlength="{{ @max_description_length }}" name="description"
+                    placeholder="{{ @DICT.description }}"></textarea>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="hidden" name="token" value="{{ @SESSION.csrf }}" />
+            <button type="submit" class="btn btn-primary"><i class="{{ @icon_style }} fa-bug mr-2"></i>
+                {{ @DICT.send }}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{ @DICT.close }}</button>
+        </div>
+    </form>
+</div>
+<include href="fetch/submit_script.htm" />

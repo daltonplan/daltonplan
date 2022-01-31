@@ -1,0 +1,39 @@
+<section class="plan_list pb-2" id="plans">
+    <div class="container">
+        <check if="{{ isset(@plan_list) && (count(@plan_list) !== 0) }}">
+            <true>
+                <h3 class="px-1 pb-2 text-secondary">{{ @SESSION.user_role === @role_student ? (count(@plan_list) ===
+                    1 ? @DICT.my_plan : @DICT.my_plans) :
+                    @DICT.all_plans }}</h3>
+                <repeat group="{{ @plan_list }}" value="{{ @iter_plan }}" counter="{{ @ctr }}">
+                    <check if="{{ @ctr !== 1 }}">
+                        <hr class="style" />
+                    </check>
+                    <div class="card card-outline card-red">
+                        <div class="card-header">
+                            <div class="card-title text-lg"><a href="dp/{{ @iter_plan.handle }}"><i
+                                        class="{{ @icon_style }} fa-{{ @iter_plan.icon ? @iter_plan.icon : 'calendar-alt' }} text-red fa-lg mr-2"></i>
+                                    {{ @iter_plan.name }}</a>
+                            </div>
+                            <div class="card-tools text-right pr-2">
+                                <set plan="{{ @iter_plan }}" />
+                                <include href="plan/unit/plan_menu.htm" />
+                            </div>
+                        </div>
+                        <check if="{{ @iter_plan.description }}">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-12 text-wrap">
+                                        {{ @iter_plan.description }}</div>
+                                </div>
+                            </div>
+                        </check>
+                    </div>
+                </repeat>
+            </true>
+            <false>
+                <include href="plan/unit/no_plan.htm" />
+            </false>
+        </check>
+    </div>
+</section>

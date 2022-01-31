@@ -1,0 +1,72 @@
+<div class="mx-2 mb-2">
+    <div class="modal-header">
+        <h4 class="modal-title text-blue" id="modal_label">
+            {{ @DICT.edit_period }}
+        </h4>
+        <include href="fetch/close.htm" />
+    </div>
+    <form id="period_edit" action="dp/{{ @PARAMS.handle }}/p/{{ @period.handle }}/update" method="post">
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="name">{{ @DICT.name }}</label>
+                <input id="name" type="text" class="form-control" maxlength="{{ @max_name_length }}" name="name"
+                    value="{{ @period.name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="description">{{ @DICT.description }}</label>
+                <textarea id="description" class="form-control" rows="2" maxlength="{{ @max_description_length }}"
+                    name="description">{{ @period.description }}</textarea>
+            </div>
+            <hr class="style" />
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input id="blocked" class="custom-control-input custom-control-input-red" type="checkbox"
+                                name="blocked" value="1" {{ @period.blocked ? ' checked' : '' }}>
+                            <label for="blocked" class="custom-control-label"><i
+                                    class="{{ @icon_style_s }} {{ @icon_spacing }} fa-times-circle text-red"></i>
+                                {{ @DICT.blocked }}</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox">
+                            <input id="register" class="custom-control-input custom-control-input-teal" type="checkbox"
+                                name="register" value="1" {{ @period.register ? ' checked' : '' }}>
+                            <label for="register" class="custom-control-label"><i
+                                    class="{{ @icon_style_s }} {{ @icon_spacing }} fa-thumbtack text-teal"></i>
+                                {{ @DICT.registration }}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="exchange"><i
+                                class="{{ @icon_style }} {{ @icon_spacing }} fa-exchange-alt text-teal"></i> {{
+                            @DICT.exchange }}
+                            ({{ @DICT.minutes }})</label>
+                        <input id="exchange" type="number" class="form-control" min="0" max="59" name="exchange"
+                            value="{{ @period.exchange }}">
+                    </div>
+                </div>
+            </div>
+            <hr class="style" />
+            <div class="form-group">
+                <label for="link">{{ @period.link ? '<a href="' . @period.link . '" target="_blank">' : '' }}<i
+                            class="{{ @icon_style }} {{ @icon_spacing }} fa-link"></i>{{
+                        @period.link ?
+                        '</a>' : '' }}
+                    {{ @DICT.link }}</label>
+                <input id="link" type="text" class="form-control" maxlength="{{ @max_link_length }}" name="link"
+                    value="{{ @period.link }}" placeholder="{{ @DICT.link_hint }}">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="hidden" name="token" value="{{ @SESSION.csrf }}" />
+            <button type="submit" class="btn btn-primary"><i class="{{ @icon_style }} fa-check mr-2"></i>
+                {{ @DICT.ok }}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{ @DICT.close }}</button>
+        </div>
+    </form>
+</div>
+<include href="fetch/submit_script.htm" />

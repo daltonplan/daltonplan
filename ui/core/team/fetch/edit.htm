@@ -1,0 +1,67 @@
+<div class="mx-2 mb-2">
+    <div class="modal-header">
+        <h4 class="modal-title text-blue" id="modal_label">
+            {{ @DICT.edit_team }}
+        </h4>
+        <include href="fetch/close.htm" />
+    </div>
+    <form id="team_edit" action="t/{{ @PARAMS.handle }}/update" method="post">
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="name">{{ @DICT.name }}</label>
+                <input id="name" type="text" class="form-control" maxlength="{{ @max_name_length }}" name="name"
+                    value="{{ @team.name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="description">{{ @DICT.description }}</label>
+                <textarea id="description" class="form-control" rows="2" maxlength="{{ @max_description_length }}"
+                    name="description">{{ @team.description }}</textarea>
+            </div>
+            <hr class="style" />
+            <div class="form-group">
+                <select class="form-control selectpicker" name="subjects[]" id="subjects"
+                    data-none-selected-text="{{ @DICT.no_subjects }}" data-icon-base="{{ @icon_style }} mr-1"
+                    data-live-search="true" multiple data-none-results-text="{{ @DICT.no_results_matched }} {0}">
+                    <repeat group="{{ @subject_list }}" value="{{ @subject }}">
+                        <optgroup>
+                            <option value="{{ @subject.handle }}"
+                                data-icon="fa-{{ @subject.icon ? @subject.icon : 'folder-open' }} text-green"
+                                style="background: #E8E8E8;" {{ @subject.selected ? ' selected' : '' }}>
+                                {{ @subject.name }}{{ @subject.active === 0 ? ' ('.@DICT.archive.')' : '' }}</option>
+                            <repeat group="{{ @subject.children }}" value="{{ @child }}">
+                                <option value="{{ @child.handle }}"
+                                    data-icon="fa-{{ @child.icon ? @child.icon : 'file' }} text-green" {{
+                                    @child.selected ? ' selected' : '' }}>
+                                    {{ @child.name }}{{ @child.active === 0 ? ' ('.@DICT.archive.')' : '' }}
+                                </option>
+                            </repeat>
+                        </optgroup>
+                    </repeat>
+                </select>
+            </div>
+            <hr class="style" />
+            <div class="form-group">
+                <label for="icon"><i
+                        class="{{ @team.icon ? @icon_style.' fa-'.@team.icon : 'fab fa-font-awesome mr-1' }} {{ @icon_spacing }}"></i>
+                    <a href="{{ @icon_link }}" target="icons">{{ @DICT.icon }}</a></label>
+                <input id="icon" type="text" class="form-control" maxlength="{{ @max_icon_length }}" name="icon"
+                    value="{{ @team.icon }}">
+            </div>
+            <div class="form-group">
+                <label for="link">{{ @team.link ? '<a href="' . @team.link . '" target="_blank">' : '' }}<i
+                            class="{{ @icon_style }} {{ @icon_spacing }} fa-link"></i>{{ @team.link ?
+                        '</a>' : '' }}
+                    {{ @DICT.link }}</label>
+                <input id="link" type="text" class="form-control" maxlength="{{ @max_link_length }}" name="link"
+                    value="{{ @team.link }}" placeholder="{{ @DICT.link_hint }}">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="hidden" name="token" value="{{ @SESSION.csrf }}" />
+            <button type="submit" class="btn btn-primary"><i class="{{ @icon_style }} fa-check mr-2"></i>
+                {{ @DICT.ok }}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{ @DICT.close }}</button>
+        </div>
+    </form>
+</div>
+<include href="fetch/submit_script.htm" />

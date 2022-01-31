@@ -1,0 +1,145 @@
+<section id="profile" class="content-header bg-white">
+    <div class="container-fluid">
+        <div class="row px-2">
+            <div class="col-sm-12 col-md-6">
+                <h2>
+                    <small>
+                        <include href="account/unit/name.htm" />
+                    </small>
+                </h2>
+                <check if="{{ @user.absent }}">
+                    <true>
+                        <div class="text-red ml-1"><i class="{{ @icon_style }} fa-paper-plane mr-1"></i>
+                            {{ @DICT.absent_reported }}
+                        </div>
+                    </true>
+                    <false>
+                        <include href="account/unit/register.htm" />
+                    </false>
+                </check>
+            </div>
+
+            <div class="col-sm-12 col-md-6 pt-2">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item active">
+                        <span class="text-gray">{{ @DICT.ID }}</span> <strong class="ml-1 mr-2">{{ @user.handle
+                            }}</strong>
+                        <check if="{{ @user.verified }}">
+                            <i class="{{ @icon_style }} {{ @icon_spacing }} fa-check text-green"></i>
+                        </check>
+                        <check if="{{ @SESSION.user_handle !== @user.handle }}">
+                            <a href="u/{{ @SESSION.user_handle }}" class="btn btn-default mx-2"><i
+                                    class="{{ @icon_style_s }} {{ @icon_spacing }} fa-mask text-red text-lg"></i></a>
+                        </check>
+                        <check if="{{ @SESSION.user_role !== @role_student }}">
+                            <button type="button" class="btn btn-dark ml-2" data-toggle="dropdown">
+                                <i class="{{ @icon_style_s }} fa-cog text-light"></i>
+                            </button>
+                            <div class="dropdown-menu">
+                                <div class="dropdown-item disabled">
+                                    <em>
+                                        <check if="{{ @user.role === @role_owner }}">
+                                            <i
+                                                class="{{ @icon_style_s }} {{ @icon_spacing }} fa-chalkboard-teacher text-red mr-2"></i>
+                                            {{ @DICT.owner }}
+                                        </check>
+                                        <check if="{{ @user.role === @role_admin }}">
+                                            <i
+                                                class="{{ @icon_style_s }} {{ @icon_spacing }} fa-chalkboard-teacher text-blue mr-2"></i>
+                                            {{ @DICT.administrator }}
+                                        </check>
+                                        <check if="{{ @user.role === @role_moderator }}">
+                                            <i
+                                                class="{{ @icon_style_s }} {{ @icon_spacing }} fa-chalkboard-teacher text-green mr-2"></i>
+                                            {{ @DICT.moderator }}
+                                        </check>
+                                        <check if="{{ @user.role === @role_coach }}">
+                                            <i
+                                                class="{{ @icon_style_s }} {{ @icon_spacing }} fa-chalkboard-teacher text-yellow mr-2"></i>
+                                            {{ @DICT.coach }}
+                                        </check>
+                                        <check if="{{ @user.role === @role_student }}">
+                                            <i
+                                                class="{{ @icon_style_s }} {{ @icon_spacing }} fa-user text-secondary mr-2"></i>
+                                            {{ @DICT.student }}
+                                        </check>
+                                    </em>
+                                </div>
+                                <div class="dropdown-divider"></div>
+                                <a href="{{ $url }}" class="dropdown-item" data-toggle="modal" data-target="#qr_show"
+                                    data-qrcode="{{ $BASE_URL }}u/{{ @user.handle }}"
+                                    data-title="{{ @user.first_name || @user.last_name ? @user.first_name . ' ' . @user.last_name : @DICT.ID . ': ' . @user.handle }}">
+                                    <i class="{{ @icon_style }} {{ @icon_spacing }} fa-qrcode mr-2 text-red"></i> {{
+                                    @DICT.qr_code }}
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="fetch/change_view" data-toggle="modal"
+                                    data-target="#fetch" data-url="{{ $BASE_URL }}fetch/change_view"><i
+                                        class="{{ @icon_style_s }} {{ @icon_spacing }} fa-mask mr-2 text-blue"></i>
+                                    {{
+                                    @DICT.change_view
+                                    }}</a>
+                                <check if="{{ @SESSION.user_handle !== @user.handle }}">
+                                    <a class="dropdown-item" href="u/{{ @SESSION.user_handle }}"><i
+                                            class="{{ @icon_style_s }} {{ @icon_spacing }} fa-mask mr-2 text-red"></i>
+                                        {{
+                                        @DICT.end_view
+                                        }}</a>
+                                </check>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item"
+                                    href="u/{{ @user.handle }}/{{ @user.absent ? 'present' : 'absent' }}"><i
+                                        class="{{ @icon_style }} {{ @icon_spacing }} fa-paper-plane mr-2 {{ @user.absent ? 'text-green' : 'text-red' }}"></i>
+                                    {{
+                                    @user.absent
+                                    ? @DICT.report_present : @DICT.report_absent }}</a>
+                                <check
+                                    if="{{ (@SESSION.user_role === @role_moderator) || (@SESSION.user_role === @role_admin) || (@SESSION.user_role === @role_owner) }}">
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item hint-mod" href="#" data-toggle="modal" data-target="#fetch"
+                                        data-url="{{ $BASE_URL }}u/{{ @user.handle }}/fetch/assign_team"><i
+                                            class="{{ @icon_style }} {{ @icon_spacing }} fa-tag text-cyan mr-2"></i>
+                                        {{ @DICT.assign_team }}</a>
+                                    <check if="{{ !@user.absent }}">
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item hint-mod" href="#" data-toggle="modal"
+                                            data-target="#fetch"
+                                            data-url="{{ $BASE_URL }}u/{{ @user.handle }}/fetch/register"><i
+                                                class="{{ @icon_style_s }} {{ @icon_spacing }} fa-thumbtack mr-2 text-teal"></i>
+                                            {{
+                                            @DICT.registration }}</a>
+                                    </check>
+                                </check>
+                                <check
+                                    if="{{ (@SESSION.user_role === @role_admin) || (@SESSION.user_role === @role_owner) }}">
+                                    <check
+                                        if="{{ (@SESSION.user_role === @role_owner) || ((@SESSION.user_role === @role_admin) && (((@user.role !== @role_admin) && (@user.role !== @role_owner)) || (@SESSION.user_id === @user.id))) }}">
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item {{ @user.pin_reset ? 'disabled' : '' }} hint-admin"
+                                            href="#" data-toggle="modal" data-target="#fetch"
+                                            data-url="{{ $BASE_URL }}u/{{ @user.handle }}/fetch/pin_reset"><i
+                                                class="{{ @icon_style_s }} {{ @icon_spacing }} fa-key mr-2 text-{{ @user.pin_reset ? 'secondary' : 'navy' }}"></i>
+                                            {{
+                                            @DICT.reset_pin }}</a>
+                                    </check>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item hint-admin" href="#" data-toggle="modal"
+                                        data-target="#fetch"
+                                        data-url="{{ $BASE_URL }}u/{{ @user.handle }}/fetch/edit"><i
+                                            class="{{ @icon_style_s }} {{ @icon_spacing }} fa-user-edit mr-2 text-blue"></i>
+                                        {{ @DICT.edit }}</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item hint-admin" href="#" data-toggle="modal"
+                                        data-target="#remove" data-link="{{ $BASE_URL }}u/{{ @user.handle }}/remove"
+                                        data-name="{{ @user.first_name || @user.last_name ? @user.first_name . ' ' . @user.last_name : @DICT.ID . ': ' . @user.handle }}"><i
+                                            class="{{ @icon_style }} {{ @icon_spacing }} fa-trash mr-2 text-red"></i>
+                                        {{ @DICT.remove }}</a>
+                                </check>
+                            </div>
+                        </check>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>

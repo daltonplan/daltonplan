@@ -1,0 +1,12 @@
+<link rel="stylesheet" href="css/dp/font.css?v={{ @version_nr }}" />
+<link rel="stylesheet" href="css/dp/base.css?v={{ @version_nr }}" />
+<link rel="stylesheet" href="{{ @icon_path }}/css/all.min.css?v={{ @version_nr }}" />
+<link rel="stylesheet" href="css/icheck-bootstrap.min.css?v={{ @version_nr }}" />
+<link rel="stylesheet" href="css/bootstrap-datetimepicker.min.css?v={{ @version_nr }}" />
+<link rel="stylesheet" href="css/bootstrap-select.min.css?v={{ @version_nr }}" />
+<link rel="stylesheet" href="css/adminlte.min.css?v={{ @version_nr }}" />
+<link rel="stylesheet" href="css/aos.css?v={{ @version_nr }}" />
+
+<check if="{{ isset(@ui_style) }}">
+    <link rel="stylesheet" href="css/dp/{{ @ui_style }}.css?v={{ @version_nr }}" />
+</check>

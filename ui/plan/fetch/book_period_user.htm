@@ -1,0 +1,73 @@
+<div class="mx-2 mb-2">
+    <div class="modal-header">
+        <h4 class="modal-title text-blue" id="modal_label">
+            <include href="plan/unit/week_day.htm" />
+            <span class="mx-1">/</span> {{ @period.name }}
+        </h4>
+        <include href="fetch/close.htm" />
+    </div>
+    <form id="book_period_user" action="dp/{{ @PARAMS.handle }}/book_period_user" method="post">
+        <div class="modal-body">
+            <input type="hidden" name="period" value="{{ @PARAMS.period }}">
+            <input type="hidden" name="user" value="{{ @PARAMS.user }}">
+            <include href="account/unit/name_role_p.htm" />
+            <hr class="style" />
+            <div class="form-group">
+                <select class="form-control selectpicker" name="lab" id="lab"
+                    data-none-selected-text="{{ @DICT.no_labs }}" data-icon-base="{{ @icon_style }} mr-1" required>
+                    <repeat group="{{ @lab_list }}" value="{{ @lab }}">
+                        <option value="{{ @lab.handle }}"
+                            data-icon="fa-{{ @lab.icon ? @lab.icon : 'flask' }} text-blue">
+                            {{ @lab.name }}
+                        </option>
+                    </repeat>
+                </select>
+            </div>
+            <hr class="style" />
+            <div class="form-group">
+                <select class="form-control selectpicker" name="subject" id="subject"
+                    data-none-selected-text="{{ @DICT.no_subjects }}" data-icon-base="{{ @icon_style }} mr-1" required>
+                    <repeat group="{{ @subject_list }}" value="{{ @subject }}">
+                        <optgroup
+                            label="{{ @subject.name }}{{ @subject.active === 0 ? ' (' . @DICT.archive . ')' : '' }}">
+                            <repeat group="{{ @subject.children }}" value="{{ @child }}">
+                                <option value="{{ @child.handle }}"
+                                    data-icon="fa-{{ @child.icon ? @child.icon : 'file' }} text-green">
+                                    {{ @child.name }}{{ @child.active === 0 ? ' (' . @DICT.archive . ')' : '' }}
+                                </option>
+                            </repeat>
+                        </optgroup>
+                    </repeat>
+                </select>
+            </div>
+            <hr class="style" />
+            <div class="form-group text-center">
+                <div class="row">
+                    <div class="col text-center">
+                        <div class="custom-control custom-checkbox custom-control-inline text-red">
+                            <input id="blocked" class="custom-control-input custom-control-input-red" type="checkbox"
+                                name="blocked" value="1">
+                            <label for="blocked" class="custom-control-label"><i
+                                    class="{{ @icon_style_s }} {{ @icon_spacing }} fa-times-circle"></i>
+                                {{ @DICT.blocked }}</label>
+                        </div>
+                        <div class="custom-control custom-checkbox custom-control-inline text-green">
+                            <input id="present" class="custom-control-input  custom-control-input-green" type="checkbox"
+                                name="present" value="1">
+                            <label for="present" class="custom-control-label"><i
+                                    class="{{ @icon_style }} {{ @icon_spacing }} fa-check"></i>
+                                {{ @DICT.present }}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="hidden" name="token" value="{{ @SESSION.csrf }}" />
+            <button type="submit" class="btn btn-primary"><i class="{{ @icon_style_s }} fa-thumbtack mr-2"></i>
+                {{ @DICT.book }}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{ @DICT.close }}</button>
+        </div>
+    </form>
+</div>
+<include href="fetch/submit_script.htm" />

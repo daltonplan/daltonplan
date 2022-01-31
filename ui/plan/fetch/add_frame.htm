@@ -1,0 +1,127 @@
+<div class="mx-2 mb-2">
+    <div class="modal-header">
+        <h4 class="modal-title text-blue" id="modal_label">
+            {{ @DICT.add_periods }}</h4>
+        <include href="fetch/close.htm" />
+    </div>
+    <form id="add_frame" action="dp/{{ @PARAMS.handle }}/add_frame" method="post">
+        <div class="modal-body">
+            <check if="{{ isset(@PARAMS.week) }}">
+                <input type="hidden" name="week" value="{{ @PARAMS.week }}">
+            </check>
+            <div class="form-group">
+                <input class="form-control" type="text" maxlength="{{ @max_name_length }}" name="name"
+                    placeholder="{{ @DICT.name }}" required>
+            </div>
+            <div class="row">
+                <div class="col-5">
+                    <div class="form-group">
+                        <div class="input-group date" id="starttimepicker">
+                            <input type="text" class="form-control" name="start" placeholder="{{ @DICT.start_time }}"
+                                required />
+                            <div class="input-group-append input-group-addon">
+                                <div class="input-group-text"><i class="{{ @icon_style }} fa-clock"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <duv class="col-2 text-center pt-2">
+                    <i class="{{ @icon_style }} {{ @icon_spacing }} fa-arrow-right text-primary"></i>
+                </duv>
+                <div class="col-5">
+                    <div class="form-group">
+                        <div class="input-group date" id="endtimepicker">
+                            <input type="text" class="form-control" name="end" placeholder="{{ @DICT.end_time }}"
+                                required />
+                            <div class="input-group-append input-group-addon">
+                                <div class="input-group-text"><i class="{{ @icon_style }} fa-clock"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="style" />
+            <div class="row">
+                <div class="col-6 mt-2 pl-3">
+                    <div>{{ @DICT.break_info1 }}</div>
+                    <div class="text-secondary small mt-2">{{ @DICT.break_info2 }}</div>
+                </div>
+                <div class="col-6 mt-2">
+                    <div class="form-check">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="mo" name="mo" value="1" checked>
+                            <label for="mo" class="custom-control-label">{{ @DICT.monday }}</label>
+                        </div>
+                    </div>
+                    <div class="form-check">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="tu" name="tu" value="1" checked>
+                            <label for="tu" class="custom-control-label">{{ @DICT.tuesday }}</label>
+                        </div>
+                    </div>
+                    <div class="form-check">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="we" name="we" value="1" checked>
+                            <label for="we" class="custom-control-label">{{ @DICT.wednesday }}</label>
+                        </div>
+                    </div>
+                    <div class="form-check">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="th" name="th" value="1" checked>
+                            <label for="th" class="custom-control-label">{{ @DICT.thursday }}</label>
+                        </div>
+                    </div>
+                    <div class="form-check">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="fr" name="fr" value="1" checked>
+                            <label for="fr" class="custom-control-label">{{ @DICT.friday }}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="hidden" name="token" value="{{ @SESSION.csrf }}" />
+            <button type="submit" class="btn btn-primary"><i class="{{ @icon_style }} fa-calendar-plus mr-2"></i>
+                {{ @DICT.add }}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{ @DICT.close }}</button>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('#starttimepicker').datetimepicker({
+            locale: '{{ @lang }}',
+            format: '{{ @DICT.timepicker_format }}',
+            icons: {
+                time: '{{ @icon_style }} fa-clock',
+                date: '{{ @icon_style }} fa-calendar',
+                up: '{{ @icon_style }} fa-arrow-up',
+                down: '{{ @icon_style }} fa-arrow-down',
+                previous: '{{ @icon_style }} fa-arrow-left',
+                next: '{{ @icon_style }} fa-arrow-right',
+                today: '{{ @icon_style }} fa-crosshairs',
+                clear: '{{ @icon_style }} fa-trash',
+                close: '{{ @icon_style }} fa-times'
+            }
+        });
+        $('#endtimepicker').datetimepicker({
+            locale: '{{ @lang }}',
+            format: '{{ @DICT.timepicker_format }}',
+            icons: {
+                time: '{{ @icon_style }} fa-clock',
+                date: '{{ @icon_style }} fa-calendar',
+                up: '{{ @icon_style }} fa-arrow-up',
+                down: '{{ @icon_style }} fa-arrow-down',
+                previous: '{{ @icon_style }} fa-arrow-left',
+                next: '{{ @icon_style }} fa-arrow-right',
+                today: '{{ @icon_style }} fa-crosshairs',
+                clear: '{{ @icon_style }} fa-trash',
+                close: '{{ @icon_style }} fa-times'
+            }
+        });
+    });
+</script>
+<include href="fetch/submit_script.htm" />

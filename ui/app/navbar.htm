@@ -1,0 +1,157 @@
+<nav class="main-header navbar navbar-expand navbar-dark" style="background-color:#212121;">
+
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i
+                    class="{{ @icon_style }} fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block {{ @ui_view === 'overview' ? 'active' : '' }}">
+            <a href="" class="nav-link">{{ @DICT.overview }}</a>
+        </li>
+        <check if="{{ count(@plan_list) > 0 }}">
+            <check if="{{ count(@plan_list) === 1 }}">
+                <true>
+                    <li class="nav-item {{ @ui_view === 'plan_detail' ? 'active' : '' }}">
+                        <a href="plan" class="nav-link">{{ @DICT.my_plan }}</a>
+                    </li>
+                </true>
+                <false>
+                    <li class="nav-item dropdown">
+                        <a id="my_plan_menu" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            class="nav-link dropdown-toggle">{{ @DICT.my_plans }}</a>
+                        <ul aria-labelledby="my_plan_menu" class="dropdown-menu border-0 shadow">
+                            <repeat group="{{ @plan_list }}" value="{{ @plan }}" counter="{{ @ctr }}">
+                                <check if="{{ @ctr !== 1 }}">
+                                    <li class="dropdown-divider"></li>
+                                </check>
+                                <check if="{{ isset(@PARAMS.handle) && (@PARAMS.handle === @plan.handle) }}">
+                                    <true>
+                                        <li class="dropdown-item">
+                                            <a href="dp/{{ @plan.handle }}">
+                                                <i
+                                                    class="{{ @icon_style }} {{ @icon_spacing }} fa-{{ @plan.icon ? @plan.icon : 'calendar-alt' }} text-red mr-1"></i>
+                                                <strong class="text-red">{{ @plan.name }}</strong>
+                                            </a>
+                                        </li>
+                                    </true>
+                                    <false>
+                                        <li class="dropdown-item">
+                                            <a href="dp/{{ @plan.handle }}">
+                                                <i
+                                                    class="{{ @icon_style }} {{ @icon_spacing }} fa-{{ @plan.icon ? @plan.icon : 'calendar-alt' }} text-red mr-2"></i>{{
+                                                @plan.name }}
+                                            </a>
+                                        </li>
+                                    </false>
+                                </check>
+                            </repeat>
+                        </ul>
+                    </li>
+                </false>
+            </check>
+
+        </check>
+    </ul>
+
+    <ul class="navbar-nav ml-auto">
+
+        <check if="{{ isset(@current) }}">
+            <strong class="my-1 py-1 bg-danger px-2 mx-2 img-rounded">
+                <a href="#" role="button" data-toggle="modal" data-target="#fetch" data-url="{{ $BASE_URL }}fetch/live"
+                    data-style="modal-lg">
+                    {{ @DICT.LIVE }}
+                </a>
+            </strong>
+        </check>
+
+        <check if="{{ @SESSION.user_role !== @role_student }}">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+                    <i class="{{ @icon_style }} fa-search"></i>
+                </a>
+                <div class="navbar-search-block">
+                    <form class="form-inline" action="search" method="get">
+                        <div class="input-group input-group-sm">
+                            <input id="user" name="user" class="form-control form-control-navbar" type="search"
+                                placeholder="{{ @DICT.search }}" aria-label="{{ @DICT.search }}" required>
+                            <div class="input-group-append">
+                                <button class="btn btn-navbar" type="submit">
+                                    <i class="{{ @icon_style }} fa-search"></i>
+                                </button>
+                                <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                                    <i class="{{ @icon_style }} fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </li>
+            <check if="{{ @SESSION.user_role !== @role_coach }}">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+                        <check if="{{ @SESSION.user_role === @role_owner }}">
+                            <i class="{{ @icon_style }} fa-crown text-red"></i>
+                        </check>
+                        <check if="{{ @SESSION.user_role === @role_admin }}">
+                            <i class="{{ @icon_style }} fa-crown text-blue"></i>
+                        </check>
+                        <check if="{{ @SESSION.user_role === @role_moderator }}">
+                            <i class="{{ @icon_style }} fa-crown text-green"></i>
+                        </check>
+                    </a>
+                </li>
+            </check>
+        </check>
+
+        <check if="{{ @SESSION.user_role !== @role_student }}">
+            <li class="nav-item">
+                <a class="nav-link" href="#" role="button" data-toggle="modal" data-target="#fetch"
+                    data-url="{{ $BASE_URL }}fetch/feedback">
+                    <i class="nav-icon {{ @icon_style }} fa-bug text-yellow"></i>
+                </a>
+            </li>
+        </check>
+
+        {*<li class="nav-item">
+            <a href="help" class="nav-link">
+                <i class="nav-icon {{ @icon_style }} fa-question-circle"></i>
+            </a>
+        </li>*}
+
+        <li class="nav-item dropdown">
+            <a class="nav-link" data-toggle="dropdown" href="#">
+                <i
+                    class="{{ @icon_style_s }} fa-caret-square-down {{ isset(@COOKIE.dp_sort) ? 'text-green' : '' }}"></i>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right">
+                <a href="{{ $url }}" class="dropdown-item" data-toggle="modal" data-target="#qr_show"
+                    data-qrcode="{{ $BASE_URL }}u/{{ @SESSION.user_handle }}" data-title="{{ @DICT.my_qr_code }}">
+                    <i class="{{ @icon_style }} {{ @icon_spacing }} fa-qrcode mr-2 text-red"></i> {{ @DICT.qr_code }}
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="javascript:window.location.reload(true)" class="dropdown-item">
+                    <i class="{{ @icon_style }} {{ @icon_spacing }} fa-redo mr-2"></i> {{ @DICT.refresh }}
+                </a>
+                <a href="sort" class="dropdown-item">
+                    <i
+                        class="{{ @icon_style }} {{ @icon_spacing }} fa-sort-alpha-down mr-2 {{ isset(@COOKIE.dp_sort) ? 'text-green' : '' }}"></i>
+                    {{ @DICT.sort }}
+                </a>
+                <a href="javascript:window.print()" class="dropdown-item">
+                    <i class="{{ @icon_style }} {{ @icon_spacing }} fa-print mr-2"></i> {{ @DICT.print }}
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="settings" class="dropdown-item" data-toggle="modal" data-target="#fetch"
+                    data-url="{{ $BASE_URL }}settings">
+                    <i class="{{ @icon_style_s }} {{ @icon_spacing }} fa-cog mr-2 text-blue"></i> {{ @DICT.settings }}
+                </a>
+                <div class="dropdown-divider"></div>
+                <a href="logout" class="dropdown-item" data-toggle="modal" data-target="#fetch"
+                    data-url="{{ $BASE_URL }}logout">
+                    <i class="{{ @icon_style }} {{ @icon_spacing }} fa-power-off mr-2"></i> {{ @DICT.sign_out }}
+                </a>
+            </div>
+        </li>
+
+    </ul>
+</nav>

@@ -1,0 +1,119 @@
+<div class="mx-2 mb-2">
+    <div class="modal-header">
+        <h4 class="modal-title text-blue" id="modal_label">
+            {{ @DICT.edit_lab }}
+        </h4>
+        <include href="fetch/close.htm" />
+    </div>
+    <form id="lab_edit" action="l/{{ @PARAMS.handle }}/update" method="post">
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="name">{{ @DICT.name }}</label>
+                <input id="name" type="text" class="form-control" maxlength="{{ @max_name_length }}" name="name"
+                    value="{{ @lab.name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="description">{{ @DICT.description }}</label>
+                <textarea id="description" class="form-control" rows="2" maxlength="{{ @max_description_length }}"
+                    name="description">{{ @lab.description }}</textarea>
+            </div>
+            <hr class="style" />
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="room">{{ @DICT.room }}</label>
+                        <input id="room" type="text" class="form-control" maxlength="{{ @max_name_length }}" name="room"
+                            value="{{ @lab.room }}">
+                    </div>
+                </div>
+                <div clas="col">
+                    <div class="form-group">
+                        <label for="capacity">{{ @DICT.capacity }}</label>
+                        <input id="capacity" type="number" class="form-control" min="0" max="{{ @max_users }}"
+                            name="capacity" value="{{ @lab.capacity }}">
+                    </div>
+                </div>
+            </div>
+            <hr class="style" />
+            <div class="form-group">
+                <select class="form-control selectpicker" name="teams[]" id="teams"
+                    data-none-selected-text="{{ @DICT.all_teams }}" data-icon-base="{{ @icon_style }} mr-1"
+                    data-live-search="true" multiple data-none-results-text="{{ @DICT.no_results_matched }} {0}">
+                    <repeat group="{{ @team_list }}" value="{{ @team }}">
+                        <option value="{{ @team.handle }}"
+                            data-icon="fa-{{ @team.icon ? @team.icon : 'tag' }} text-cyan" {{ @team.selected
+                            ? ' selected' : '' }}>
+                            {{ @team.name }}{{ @team.active === 0 ? ' ('.@DICT.archive.')' : '' }}
+                        </option>
+                    </repeat>
+                </select>
+            </div>
+            <div class="form-group">
+                <select class="form-control selectpicker" name="subjects[]" id="subjects"
+                    data-none-selected-text="{{ @DICT.all_subjects }}" data-icon-base="{{ @icon_style }} mr-1"
+                    data-live-search="true" multiple data-none-results-text="{{ @DICT.no_results_matched }} {0}">
+                    <repeat group="{{ @subject_list }}" value="{{ @subject }}">
+                        <optgroup>
+                            <option value="{{ @subject.handle }}"
+                                data-icon="fa-{{ @subject.icon ? @subject.icon : 'folder-open' }} text-green"
+                                style="background: #E8E8E8;" {{ @subject.selected ? ' selected' : '' }}>
+                                {{ @subject.name }}{{ @subject.active === 0 ? ' ('.@DICT.archive.')' : '' }}</option>
+                            <repeat group="{{ @subject.children }}" value="{{ @child }}">
+                                <option value="{{ @child.handle }}"
+                                    data-icon="fa-{{ @child.icon ? @child.icon : 'file' }} text-green" {{
+                                    @child.selected ? ' selected' : '' }}>
+                                    {{ @child.name }}{{ @child.active === 0 ? ' ('.@DICT.archive.')' : '' }}
+                                </option>
+                            </repeat>
+                        </optgroup>
+                    </repeat>
+                </select>
+            </div>
+            <hr class="style" />
+            <div class="form-group">
+                <label for="icon"><i
+                        class="{{ @lab.icon ? @icon_style.' fa-'.@lab.icon : 'fab fa-font-awesome mr-1' }} {{ @icon_spacing }}"></i>
+                    <a href="{{ @icon_link }}" target="icons">{{ @DICT.icon }}</a></label>
+                <input id="icon" type="text" class="form-control" maxlength="{{ @max_icon_length }}" name="icon"
+                    value="{{ @lab.icon }}">
+            </div>
+            <div class="form-group">
+                <label for="link">{{ @lab.link ? '<a href="' . @lab.link . '" target="_blank">' : '' }}<i
+                            class="{{ @icon_style }} {{ @icon_spacing }} fa-link"></i>{{
+                        @lab.link ?
+                        '</a>' : '' }}
+                    {{ @DICT.link }}</label>
+                <input id="link" type="text" class="form-control" maxlength="{{ @max_link_length }}" name="link"
+                    value="{{ @lab.link }}" placeholder="{{ @DICT.link_hint }}">
+            </div>
+            <hr class="style" />
+            <div class="form-group text-center">
+                <div class="row">
+                    <div class="col text-center">
+                        <div class="custom-control custom-checkbox custom-control-inline text-red">
+                            <input id="managed" class="custom-control-input custom-control-input-red" type="checkbox"
+                                name="managed" value="1" {{ @lab.managed ? ' checked' : '' }}>
+                            <label for="managed" class="custom-control-label"><i
+                                    class="{{ @icon_style }} {{ @icon_spacing }} fa-chalkboard"></i>
+                                {{ @DICT.managed }}</label>
+                        </div>
+                        <div class="custom-control custom-checkbox custom-control-inline text-cyan">
+                            <input id="locked" class="custom-control-input custom-control-input-cyan" type="checkbox"
+                                name="locked" value="1" {{ @lab.locked ? ' checked' : '' }}>
+                            <label for="locked" class="custom-control-label"><i
+                                    class="{{ @icon_style_s }} {{ @icon_spacing }} fa-lock"></i>
+                                {{ @DICT.locked }}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="hidden" name="token" value="{{ @SESSION.csrf }}" />
+            <button type="submit" class="btn btn-primary"><i class="{{ @icon_style }} fa-check mr-2"></i>
+                {{ @DICT.ok }}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{ @DICT.close }}</button>
+        </div>
+    </form>
+</div>
+<include href="fetch/submit_script.htm" />

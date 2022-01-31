@@ -1,0 +1,66 @@
+<check if="{{ isset(@login_handle) }}">
+    <div class="text-center">
+        <p class="login-box-msg"><strong>{{ @DICT.login_info }}</strong></p>
+
+        <p>
+            {{ @DICT.id_info }}<br />{{ @DICT.pin_info }}:
+            <strong class="mx-1 text-red">{{ @login_pin }}</strong>
+        </p>
+
+        <p class="small text-blue">
+            <strong><i class="{{ @icon_style }} {{ @icon_spacing }} fa-exclamation-triangle"></i> {{
+                @DICT.remember }}</strong>
+        </p>
+    </div>
+</check>
+<form id="login" action="login" method="post">
+    <div class="input-group mb-3">
+        <input type="text" name="handle" class="form-control" placeholder="{{ @DICT.ID }}"
+            maxlength="{{ @user_handle_length }}" required pattern="[a-zA-Z0-9]+" {{ isset(@login_handle) ? ' value="'
+            .@login_handle.'"' : ' autofocus' }}>
+
+        <div class="input-group-append">
+            <div class="input-group-text">
+                <i class="{{ @icon_style_s }} fa-user"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="input-group mb-3">
+        <input type="password" name="pin" class="form-control" placeholder="{{ @DICT.PIN }}"
+            maxlength="{{ @user_pin_length }}" pattern="[0-9]+" required{{ isset(@login_pin) ? ' value="'
+            .@login_pin.'"' : '' }}>
+
+        <div class="input-group-append">
+            <div class="input-group-text">
+                <i class="{{ @icon_style_s }} fa-key"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 text-center">
+            <div class="icheck-primary">
+                <input type="checkbox" id="remember" name="remember" value="1" checked>
+                <label for="remember" style="font-weight: normal;">
+                    {{ @DICT.remember_me }}
+                </label>
+            </div>
+        </div>
+
+        <div class="col-12 mt-2">
+            <input type="hidden" name="token" value="{{ @SESSION.csrf }}" />
+            <button type="submit" class="btn btn-primary btn-block" {{ isset(@login_handle) ? ' autofocus' : '' }}>{{
+                @DICT.sign_in }}</button>
+        </div>
+    </div>
+</form>
+
+<check if="{{ !@dp_invite_only }}">
+    <check if="{{ !isset(@login_handle) }}">
+        <div class="card-footer text-center mt-4 small">
+            <p><a href="join">{{ @DICT.new_here }} {{ @DICT.join_now }}</a></p>
+            <a href="reset">{{ @DICT.pin_reset_link }}</a>
+        </div>
+    </check>
+</check>

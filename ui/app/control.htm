@@ -1,0 +1,58 @@
+<aside class="control-sidebar control-sidebar-dark d-print-none" style="display: none; background-color:#212121;">
+    <div class="p-3 mx-2">
+        <em>
+            <check if="{{ @SESSION.user_role === @role_owner }}">
+                <i class="{{ @icon_style }} {{ @icon_spacing }} fa-crown text-red mr-2"></i> {{ @DICT.owner }}
+            </check>
+            <check if="{{ @SESSION.user_role === @role_admin }}">
+                <i class="{{ @icon_style }} {{ @icon_spacing }} fa-crown text-blue mr-2"></i> {{ @DICT.administrator }}
+            </check>
+            <check if="{{ @SESSION.user_role === @role_moderator }}">
+                <i class="{{ @icon_style }} {{ @icon_spacing }} fa-crown text-green mr-2"></i> {{ @DICT.moderator }}
+            </check>
+        </em>
+        <hr class="style" />
+
+        <check
+            if="{{ @SESSION.user_role === @role_moderator || @SESSION.user_role === @role_admin || @@SESSION.user_role === @role_owner }}">
+            <p class="hint-mod">
+                <a href="subject_add" aria-label="{{ @DICT.add_subject }}" data-toggle="modal" data-target="#fetch"
+                    data-url="{{ $BASE_URL }}subject_add">
+                    <i class="{{ @icon_style }} {{ @icon_spacing }} fa-folder-plus mr-2 text-green"></i> {{
+                    @DICT.add_subject }}
+                </a>
+            </p>
+            <p class="hint-mod">
+                <a href="team_add" aria-label="{{ @DICT.add_team }}" data-toggle="modal" data-target="#fetch"
+                    data-url="{{ $BASE_URL }}team_add">
+                    <i class="{{ @icon_style }} {{ @icon_spacing }} fa-plus-square mr-2 text-cyan"></i> {{
+                    @DICT.add_team }}
+                </a>
+            </p>
+        </check>
+        <check if="{{ @SESSION.user_role === @role_admin || @SESSION.user_role === @role_owner }}">
+            <p class="mt-4 hint-admin">
+                <a href="lab_add" aria-label="{{ @DICT.add_lab }}" data-toggle="modal" data-target="#fetch"
+                    data-url="{{ $BASE_URL }}lab_add">
+                    <i class="{{ @icon_style }} {{ @icon_spacing }} fa-plus-circle mr-2 text-blue"></i> {{ @DICT.add_lab
+                    }}
+                </a>
+            </p>
+            <p class="hint-admin">
+                <a href="user_add" aria-label="{{ @DICT.add_user }}" data-toggle="modal" data-target="#fetch"
+                    data-url="{{ $BASE_URL }}user_add">
+                    <i class="{{ @icon_style_s }} {{ @icon_spacing }} fa-user-plus mr-2"></i> {{ @DICT.add_user }}
+                </a>
+            </p>
+        </check>
+        <check if="{{ @SESSION.user_role === @role_owner }}">
+            <p class="mt-4 hint-owner">
+                <a href="plan_add" aria-label="{{ @DICT.add_plan }}" data-toggle="modal" data-target="#fetch"
+                    data-url="{{ $BASE_URL }}plan_add">
+                    <i class="{{ @icon_style }} {{ @icon_spacing }} fa-calendar-plus mr-2 text-red"></i> {{
+                    @DICT.add_plan }}
+                </a>
+            </p>
+        </check>
+    </div>
+</aside>

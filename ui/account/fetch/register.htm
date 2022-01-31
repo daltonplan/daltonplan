@@ -1,0 +1,39 @@
+<div class="mx-2 mb-2">
+    <div class="modal-header">
+        <h4 class="modal-title text-blue" id="modal_label">
+            {{ @DICT.registration }}
+        </h4>
+        <include href="fetch/close.htm" />
+    </div>
+    <form id="register" action="u/{{ @PARAMS.handle }}/register" method="post">
+        <div class="modal-body">
+            <include href="account/unit/name_role_p.htm" />
+
+            <hr class="style" />
+
+            <div class="form-group mt-3">
+                <select class="form-control selectpicker" name="plan" id="plan"
+                    data-none-selected-text="{{ @DICT.no_plan }}" data-icon-base="{{ @icon_style }}" required>
+                    <check if="{{ count(@plan_list) > 0 }}">
+                        <repeat group="{{ @plan_list }}" value="{{ @plan }}" counter="{{ @ctr }}">
+                            <option value="{{ @plan.handle }}"
+                                data-icon="fa-{{ @plan.icon ? @plan.icon : 'calendar-alt' }} text-red">
+                                {{ @plan.name }} ({{ @DICT.for }} {{ @plan.register }} {{ @plan.register === 1 ?
+                                @DICT.minute :
+                                @DICT.minutes }})
+                            </option>
+                        </repeat>
+                    </check>
+                </select>
+            </div>
+
+        </div>
+        <div class="modal-footer">
+            <input type="hidden" name="token" value="{{ @SESSION.csrf }}" />
+            <button type="submit" class="btn btn-primary"><i class="{{ @icon_style_s }} fa-thumbtack mr-2"></i>
+                {{ @DICT.unlock }}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{ @DICT.close }}</button>
+        </div>
+    </form>
+</div>
+<include href="fetch/submit_script.htm" />

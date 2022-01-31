@@ -1,0 +1,158 @@
+<div class="container pt-3">
+
+    <div class="card card-outline card-red">
+        <div class="card-header">
+            <div class="card-title">
+                <h3 class="px-1 py-2 text-secondary"><i
+                        class="{{ @icon_style }} fa-{{ @plan.icon ? @plan.icon : 'calendar-alt' }} text-red fa-lg mr-2"></i>
+                    {{ @plan.name }}
+                </h3>
+            </div>
+            <div class="card-tools text-right pr-2">
+                <include href="plan/unit/plan_menu.htm" />
+            </div>
+        </div>
+
+        <check if="{{ @plan.description }}">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 text-wrap">
+                        {{ @plan.description }}</div>
+                </div>
+            </div>
+        </check>
+    </div>
+
+    <check if="{{ @SESSION.user_role !== @role_student }}">
+        <div class="card card-outline card-cyan">
+            <div class="card-body">
+                <div class="row">
+                    <check if="{{ empty($team_list) }}">
+                        <true>
+                            <div class="col-12 text-wrap text-secondary">
+                                <em class="text-secondary">{{ @DICT.no_teams }}</em>
+                            </div>
+                        </true>
+                        <false>
+                            <repeat group="{{ @team_list }}" value="{{ @team }}">
+                                <check if="{{ @team.selected }}">
+                                    <div class="col-sm-12 col-md-4 col-lg-4">
+                                        <a href="teams/#{{ @team.handle }}">
+                                            <table>
+                                                <tr>
+                                                    <td class="align-top">
+                                                        <i
+                                                            class="{{ @icon_style }} {{ @icon_spacing }} fa-{{ @team.icon ? @team.icon : 'tag' }} text-cyan"></i>
+                                                    </td>
+                                                    <td>
+                                                        {{ @team.name }}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </a>
+                                    </div>
+                                </check>
+                            </repeat>
+                        </false>
+                    </check>
+                </div>
+            </div>
+        </div>
+    </check>
+
+    <hr class="style my-4" />
+
+    <div class="row px-1 pb-4">
+        <div class="col-sm-12 col-md-6 col-lg-6 col-6">
+            <h4 class="my-1 pl-1">
+                <check if="{{ isset(@PARAMS.week) }}">
+                    <true>
+                        {{ @DICT.archived_week }}
+                    </true>
+                    <false>
+                        <check if="{{ (@week_day === @week_day_sa) || (@week_day === @week_day_so) }}">
+                            <true>
+                                {{ @DICT.next_week }}
+                            </true>
+                            <false>
+                                {{ @DICT.current_week }}
+                            </false>
+                        </check>
+                    </false>
+                </check>
+            </h4>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6 col-6 text-right">
+            <check if="{{ isset(@PARAMS.week) }}">
+                <a href="dp/{{ @PARAMS.handle }}#week">
+                    <button type="button" class="btn btn-sm btn-dark mx-1 my-1"><i
+                            class="{{ @icon_style_s }} fa-calendar-week mr-2"></i>
+                        <check if="{{ (@week_day === @week_day_sa) || (@week_day === @week_day_so) }}">
+                            <true>
+                                {{ @DICT.next_week }}
+                            </true>
+                            <false>
+                                {{ @DICT.current_week }}
+                            </false>
+                        </check>
+                    </button>
+                </a>
+            </check>
+            <a href="#" data-toggle="modal" data-target="#fetch"
+                data-url="{{ $BASE_URL }}dp/{{ @plan.handle }}/fetch/archive" class="mr-2"><button type="button"
+                    class="btn btn-sm btn-dark mx-1 my-1"><i class="{{ @icon_style }} fa-archive mr-2"></i>{{
+                    @DICT.archive }}</button></a>
+        </div>
+        <check if="{{ isset(@week) }}">
+            <true>
+                <div class="col-12 mt-3">
+                    <div id="week" class="card card-outline card-{{ isset(@PARAMS.week) ? 'purple' : 'red' }}"
+                        style="scroll-margin-top: 8em;">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <h4 class="px-1 py-2 text-secondary"><i
+                                        class="{{ @icon_style }} fa-{{ @week.icon ? @week.icon : 'calendar-week' }} text-{{ isset(@PARAMS.week) ? 'purple' : 'red' }} fa-lg mr-2"></i>
+                                    {{ @week.name }}
+                                </h4>
+                            </div>
+                            <div class="card-tools text-right pr-2">
+                                <include href="plan/unit/week_menu.htm" />
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <check if="{{ @week.description }}">
+                                    <div class="col-12 text-wrap">
+                                        {{ @week.description }}</div>
+                                    <div class="col-12">
+                                        <hr class="style mb-4" />
+                                    </div>
+                                </check>
+                                <include href="plan/section/timetable.htm" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </true>
+            <false>
+                <div id="week" class="col mt-2 pl-3">
+                    <include href="plan/unit/no_week.htm" />
+                    <check if="{{ (@SESSION.user_role === @role_admin) || (@SESSION.user_role === @role_owner) }}">
+                        <div class="text-center my-3">
+                            <a href="#" data-toggle="modal" data-target="#fetch"
+                                data-url="{{ $BASE_URL }}dp/{{ @plan.handle }}/fetch/add_frame"><button type="button"
+                                    class="btn btn-default my-1 text-blue mx-1"><i
+                                        class="{{ @icon_style }} fa-calendar-plus mr-2"></i>{{ @DICT.add_periods
+                                    }}</button></a>
+                            <a href="#" data-toggle="modal" data-target="#fetch"
+                                data-url="{{ $BASE_URL }}dp/{{ @plan.handle }}/fetch/import_periods"><button
+                                    type="button" class="btn btn-default my-1 text-blue mx-1"><i
+                                        class="{{ @icon_style }} fa-magic mr-2"></i>{{
+                                    @DICT.import_periods }}</button></a>
+                        </div>
+                    </check>
+                </div>
+            </false>
+        </check>
+    </div>
+</div>

@@ -1,0 +1,14 @@
+<check if="{{ isset(@user.register_list) }}">
+    <repeat group="{{ @user.register_list }}" value="{{ @register }}">
+        <div class="mt-2 pl-1">
+            <i class="{{ @icon_style_s }} {{ @icon_spacing }} fa-thumbtack text-teal"></i><span class="mx-1">
+                {{ @DICT.in }}</span>
+            <a href="dp/{{ @register.plan.handle }}#week" class="mr-2">
+                <i class="{{ @icon_style }} {{ @icon_spacing }} fa-calendar-alt text-red"></i> {{
+                @register.plan.name }}
+            </a>{{ @DICT.until }}<strong class="mx-1 text-red"><i
+                    class="{{ @icon_style }} {{ @icon_spacing }} fa-clock"></i>
+                {{ @register.time }}</strong>
+        </div>
+    </repeat>
+</check>

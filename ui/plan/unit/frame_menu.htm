@@ -1,0 +1,23 @@
+<div class="row">
+    <div class="col-12">
+        <check if="{{ (@SESSION.user_role === @role_admin) || (@SESSION.user_role === @role_owner) }}">
+            <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <i class="{{ @icon_style_s }} fa-wrench"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item hint-admin" href="#" data-toggle="modal" data-target="#fetch"
+                        data-url="{{ $BASE_URL }}dp/{{ @PARAMS.handle }}/f/{{ @frame.handle }}/fetch/edit"><i
+                            class="{{ @icon_style }} fa-edit mr-2 text-primary"></i>
+                        {{ @DICT.edit }}</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item hint-admin" href="#" data-toggle="modal" data-target="#remove"
+                        data-link="dp/{{ @PARAMS.handle }}/f/{{ @frame.handle }}/remove"
+                        data-name="{{ @frame.name }}"><i class="{{ @icon_style }} fa-trash mr-2 text-danger"></i>
+                        {{ @DICT.remove }}</a>
+                </div>
+            </div>
+        </check>
+    </div>
+</div>

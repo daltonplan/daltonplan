@@ -1,0 +1,27 @@
+<p class="login-box-msg">{{ @DICT.request_info }} <i
+        class="{{ @icon_style }} {{ @icon_spacing }} fa-envelope-open-text text-blue"></i></p>
+<form id="verify" action="verify" method="post">
+    <div class="input-group mb-3">
+        <input type="text" name="handle" class="form-control" placeholder="{{ @DICT.verification_code }}"
+            maxlength="{{ @user_handle_length }}" required autofocus>
+
+        <div class="input-group-append">
+            <div class="input-group-text">
+                <i class="{{ @icon_style_s }} fa-shield-alt"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 mt-2">
+            <input type="hidden" name="token" value="{{ @SESSION.csrf }}" />
+            <button type="submit" class="btn btn-primary btn-block">{{ @DICT.enter }}</button>
+        </div>
+    </div>
+</form>
+
+<check if="{{ !isset(@SESSION.user_id ) }}">
+    <div class="card-footer text-center mt-4 small">
+        <a href="join">{{ @DICT.new_here }} {{ @DICT.join_now }}</a>
+    </div>
+</check>

@@ -1,0 +1,61 @@
+<div class="row">
+    <div class="col-12">
+        <span class="pr-2">
+            <check if="{{ count(@lab.book_list) > 0 }}">
+                <check if="{{ @lab.amount_free > 0 }}">
+                    <span>
+                        <strong class="text-lightblue">{{ @lab.amount_free }}</strong>
+                        <span class="mx-1">/</span>
+                    </span>
+                </check>
+                <check if="{{ @lab.amount_excused > 0 }}">
+                    <span>
+                        <strong class="text-danger">{{ @lab.amount_excused }}</strong>
+                        <span class="mx-1">/</span>
+                    </span>
+                </check>
+                <check if="{{ @lab.amount_present > 0 }}">
+                    <span>
+                        <strong class="text-success">{{ @lab.amount_present }}</strong>
+                        <span class="mx-1">/</span>
+                    </span>
+                </check>
+                <span>
+                    <strong class="{{ (@lab.capacity !== 0) && (@lab.amount > @lab.capacity) ? 'text-danger' : '' }}">
+                        {{ count(@lab.book_list) }}
+                    </strong>
+                    <i class="{{ @icon_style_s }} fa-users text-secondary ml-2"></i>
+                </span>
+            </check>
+        </span>
+        <span class="px-3">
+            <a href="{{ $url }}" data-toggle="modal" data-target="#qr_show"
+                data-qrcode="{{ $BASE_URL }}pc/{{ @lab.participation }}"
+                data-title="{{ @DICT.participation_code }}: {{ @lab.name }}">
+                <i class="{{ @icon_style }} fa-qrcode mr-2 text-red"></i>
+            </a>
+        </span>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default text-blue" data-toggle="dropdown">
+                <i class="{{ @icon_style_s }} fa-ellipsis-v"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" role="menu">
+                <a class="dropdown-item"
+                    href="dp/{{ @PARAMS.handle }}/p/{{ @period.handle }}/l/{{ @lab.handle }}/present">
+                    <i class="{{ @icon_style }} fa-check mr-2 text-green"></i>
+                    {{ @DICT.present_all }}
+                </a>
+                <a class="dropdown-item"
+                    href="dp/{{ @PARAMS.handle }}/p/{{ @period.handle }}/l/{{ @lab.handle }}/blocked">
+                    <i class="{{ @icon_style_s }} fa-times-circle mr-2 text-red"></i>
+                    {{ @DICT.block_all }}
+                </a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{{ @PARAMS.handle }}" data-toggle="modal" data-target="#remove"
+                    data-link="{{ $BASE_URL }}dp/{{ @PARAMS.handle }}/p/{{ @period.handle }}/l/{{ @lab.handle }}/clear"
+                    data-name="{{ @DICT.the_booking }}"><i class="{{ @icon_style }} fa-trash mr-2 text-red"></i>
+                    {{ @DICT.clear_all }}</a>
+            </div>
+        </div>
+    </div>
+</div>

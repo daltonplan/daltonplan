@@ -1,0 +1,8 @@
+<script type="text/javascript">
+    $('#change').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var modal = $(this);
+        modal.find('.change-name').html(button.data('name'));
+        modal.find('.change-handle').attr("href", button.data('link'));
+    })
+</script>

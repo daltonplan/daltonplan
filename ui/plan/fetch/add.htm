@@ -1,0 +1,69 @@
+<div class="mx-2 mb-2">
+    <div class="modal-header">
+        <h4 class="modal-title text-blue" id="modal_label">
+            {{ @DICT.add_plan }}
+        </h4>
+        <include href="fetch/close.htm" />
+    </div>
+    <form id="plan_add" action="plan_add" method="post">
+        <div class="modal-body">
+            <div class="form-group">
+                <input class="form-control" type="text" maxlength="{{ @max_name_length }}" name="name"
+                    placeholder="{{ @DICT.name }}" required>
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" rows="2" maxlength="{{ @max_description_length }}" name="description"
+                    placeholder="{{ @DICT.description }}"></textarea>
+            </div>
+            <hr class="style" />
+            <div class="form-group">
+                <input id="handle" class="form-control" type="text" minlength="{{ @min_plan_handle_length }}"
+                    maxlength="{{ @max_plan_handle_length }}" name="handle" pattern="[a-zA-Z0-9\-]+"
+                    placeholder="{{ @DICT.alias }}" required>
+            </div>
+            <div id="alias_info" class="text-secondary text-center"><i
+                    class="{{ @icon_style }} {{ @icon_spacing }} fa-arrow-right"></i>
+                {{
+                @DICT.alias_info }}
+            </div>
+            <hr class="style" />
+            <div class="form-group">
+                <input class="form-control" type="text" maxlength="{{ @max_icon_length }}" name="icon"
+                    placeholder="{{ @DICT.icon }}">
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" maxlength="{{ @max_link_length }}" name="link"
+                    placeholder="{{ @DICT.link }} ({{ @DICT.link_hint }})">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="hidden" name="token" value="{{ @SESSION.csrf }}" />
+            <button type="submit" class="btn btn-primary"><i class="{{ @icon_style }} fa-plus mr-2"></i>
+                {{ @DICT.add }}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{ @DICT.close }}</button>
+        </div>
+    </form>
+    <script>
+        $('#plan_add').submit(function (e) {
+            if ($(this).data("valid"))
+                return true;
+            handle = $(this).find('#handle').val();
+            if (handle !== '') {
+                var url = `{{ $BASE_URL }}api/plan/check/` + handle;
+                fetch(url).then(res => res.json()).then(json => {
+                    if (!json.result) {
+                        $("#plan_add").data("valid", true).submit();
+                        return;
+                    }
+                    alias_info = $(this).find('#alias_info');
+                    alias_info.html('<strong>' + handle + `</strong> {{ @DICT.alias_taken }}`);
+                    alias_info.removeClass('text-cyan');
+                    alias_info.addClass('text-red');
+                });
+            }
+            e.preventDefault();
+            return false;
+        });
+    </script>
+</div>
+<include href="fetch/submit_script.htm" />

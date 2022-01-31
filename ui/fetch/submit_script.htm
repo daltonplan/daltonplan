@@ -1,0 +1,12 @@
+<script>
+    $('form').submit(function () {
+        button = $(this).find('button[type=submit]');
+        buton_icon = $(button).find('i');
+        buton_icon.removeClass(function (index, className) {
+            return (className.match(/(^|\s)fa-\S+/g) || []).join(' ');
+        });
+        buton_icon.addClass('fa-fw fa-spinner fa-spin');
+        button.prop('disabled', true);
+        return true;
+    });
+</script>

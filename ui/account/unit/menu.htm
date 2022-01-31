@@ -1,0 +1,71 @@
+<div class="row">
+    <div class="col-12">
+
+        <check if="{{ @user.verified }}">
+            <span class="px-2 text-green">
+                <i class="{{ @icon_style }} {{ @icon_spacing }} fa-check"></i>
+            </span>
+        </check>
+
+        <span class="px-2">
+            <a href="{{ $url }}" data-toggle="modal" data-target="#qr_show"
+                data-qrcode="{{ $BASE_URL }}u/{{ @user.handle }}"
+                data-title="{{ @user.first_name || @user.last_name ? @user.first_name . ' ' . @user.last_name : @DICT.ID . ': ' . @user.handle }}">
+                <i class="{{ @icon_style }} fa-qrcode mr-2 text-red"></i>
+            </a>
+        </span>
+
+        <div class="btn-group pl-2">
+            <button type="button" class="btn btn-default btn-tool dropdown-toggle text-secondary"
+                data-toggle="dropdown">
+                <i class="{{ @icon_style_s }} fa-wrench"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-right" role="menu">
+                <a class="dropdown-item" href="u/{{ @user.handle }}/{{ @user.absent ? 'present' : 'absent' }}"><i
+                        class="{{ @icon_style }} {{ @icon_spacing }} fa-paper-plane mr-2 {{ @user.absent ? 'text-green' : 'text-red' }}"></i>
+                    {{
+                    @user.absent
+                    ? @DICT.report_present : @DICT.report_absent }}</a>
+                <check
+                    if="{{ (@SESSION.user_role === @role_moderator) || (@SESSION.user_role === @role_admin) || (@SESSION.user_role === @role_owner) }}">
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item hint-mod" href="#" data-toggle="modal" data-target="#fetch"
+                        data-url="{{ $BASE_URL }}u/{{ @user.handle }}/fetch/assign_team"><i
+                            class="{{ @icon_style }} {{ @icon_spacing }} fa-tag text-cyan mr-2"></i>
+                        {{ @DICT.assign_team }}</a>
+                    <check if="{{ !@user.absent }}">
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item hint-mod" href="#" data-toggle="modal" data-target="#fetch"
+                            data-url="{{ $BASE_URL }}u/{{ @user.handle }}/fetch/register"><i
+                                class="{{ @icon_style_s }} {{ @icon_spacing }} fa-thumbtack mr-2 text-teal"></i>
+                            {{
+                            @DICT.registration }}</a>
+                    </check>
+                    <check if="{{ (@SESSION.user_role === @role_admin) || (@SESSION.user_role === @role_owner) }}">
+                        <check
+                            if="{{ (@SESSION.user_role === @role_owner) || ((@SESSION.user_role === @role_admin) && (((@user.role !== @role_admin) && (@user.role !== @role_owner)) || (@SESSION.user_id === @user.id))) }}">
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item {{ @user.pin_reset ? 'disabled' : '' }} hint-admin" href="#"
+                                data-toggle="modal" data-target="#fetch"
+                                data-url="{{ $BASE_URL }}u/{{ @user.handle }}/fetch/pin_reset"><i
+                                    class="{{ @icon_style_s }} {{ @icon_spacing }} fa-key mr-2 text-{{ @user.pin_reset ? 'secondary' : 'navy' }}"></i>
+                                {{
+                                @DICT.reset_pin }}</a>
+                        </check>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item hint-admin" href="#" data-toggle="modal" data-target="#fetch"
+                            data-url="{{ $BASE_URL }}u/{{ @user.handle }}/fetch/edit"><i
+                                class="{{ @icon_style_s }} {{ @icon_spacing }} fa-user-edit mr-2 text-blue"></i>
+                            {{ @DICT.edit }}</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item hint-admin" href="#" data-toggle="modal" data-target="#remove"
+                            data-link="{{ $BASE_URL }}u/{{ @user.handle }}/remove"
+                            data-name="{{ @user.first_name || @user.last_name ? @user.first_name . ' ' . @user.last_name : @DICT.ID . ': ' . @user.handle }}"><i
+                                class="{{ @icon_style }} {{ @icon_spacing }} fa-trash mr-2 text-red"></i>
+                            {{ @DICT.remove }}</a>
+                    </check>
+                </check>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+<check if="{{ @user.role === @role_owner }}">
+    <i class="{{ @icon_style_s }} {{ @icon_spacing }} fa-chalkboard-teacher text-red mr-1"></i>
+</check>
+<check if="{{ @user.role === @role_admin }}">
+    <i class="{{ @icon_style_s }} {{ @icon_spacing }} fa-chalkboard-teacher text-blue mr-1"></i>
+</check>
+<check if="{{ @user.role === @role_moderator }}">
+    <i class="{{ @icon_style_s }} {{ @icon_spacing }} fa-chalkboard-teacher text-green mr-1"></i>
+</check>
+<check if="{{ @user.role === @role_coach }}">
+    <i class="{{ @icon_style_s }} {{ @icon_spacing }} fa-chalkboard-teacher text-yellow mr-1"></i>
+</check>
+<check if="{{ @user.role === @role_student }}">
+    <i class="{{ @icon_style_s }} {{ @icon_spacing }} fa-user text-secondary mr-1"></i>
+</check>
+<check if="{{ @user.first_name || @user.last_name }}">
+    <true>
+        {{ isset(@user.first_name) ? @user.first_name : '' }}
+        <check if="{{ isset(@user.last_name) }}">
+            <strong>{{ @user.last_name }}</strong>
+        </check>
+    </true>
+    <false>
+        <em class="mr-1">{{ @DICT.ID }}</em> <strong>{{ @user.handle}}</strong>
+    </false>
+</check>

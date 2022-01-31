@@ -1,0 +1,100 @@
+<div class="mx-2 mb-2">
+    <div class="modal-header">
+        <h4 class="modal-title text-blue" id="modal_label">
+            {{ @DICT.add_lab }}
+        </h4>
+        <include href="fetch/close.htm" />
+    </div>
+    <form id="lab_add" action="lab_add" method="post">
+        <div class="modal-body">
+            <div class="form-group">
+                <input class="form-control" type="text" maxlength="{{ @max_name_length }}" name="name"
+                    placeholder="{{ @DICT.name }}" required>
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" rows="2" maxlength="{{ @max_description_length }}" name="description"
+                    placeholder="{{ @DICT.description }}"></textarea>
+            </div>
+            <hr class="style" />
+            <div class="form-group">
+                <input class="form-control" type="text" maxlength="{{ @max_name_length }}" name="room"
+                    placeholder="{{ @DICT.room }}">
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="number" min="0" max="{{ @max_users }}" name="capacity"
+                    placeholder="{{ @DICT.capacity }}">
+            </div>
+            <hr class="style" />
+            <div class="form-group">
+                <select class="form-control selectpicker" name="teams[]" id="teams"
+                    data-none-selected-text="{{ @DICT.all_teams }}" data-icon-base="{{ @icon_style }} mr-1"
+                    data-live-search="true" multiple data-none-results-text="{{ @DICT.no_results_matched }} {0}">
+                    <repeat group="{{ @team_list }}" value="{{ @team }}">
+                        <option value="{{ @team.handle }}"
+                            data-icon="fa-{{ @team.icon ? @team.icon : 'tag' }} text-cyan">
+                            {{ @team.name }}{{ @team.active === 0 ? ' (' . @DICT.archive . ')' : '' }}
+                        </option>
+                    </repeat>
+                </select>
+            </div>
+            <div class="form-group">
+                <select class="form-control selectpicker" name="subjects[]" id="subjects"
+                    data-none-selected-text="{{ @DICT.all_subjects }}" data-icon-base="{{ @icon_style }} mr-1"
+                    data-live-search="true" multiple data-none-results-text="{{ @DICT.no_results_matched }} {0}">
+                    <repeat group="{{ @subject_list }}" value="{{ @subject }}">
+                        <optgroup>
+                            <option value="{{ @subject.handle }}"
+                                data-icon="fa-{{ @subject.icon ? @subject.icon : 'folder-open' }} text-green"
+                                style="background: #E8E8E8;">
+                                {{ @subject.name }}{{ @subject.active === 0 ? ' (' . @DICT.archive . ')' : '' }}
+                            </option>
+                            <repeat group="{{ @subject.children }}" value="{{ @child }}">
+                                <option value="{{ @child.handle }}"
+                                    data-icon="fa-{{ @child.icon ? @child.icon : 'file' }} text-green">
+                                    {{ @child.name }}{{ @child.active === 0 ? ' (' . @DICT.archive . ')' : '' }}
+                                </option>
+                            </repeat>
+                        </optgroup>
+                    </repeat>
+                </select>
+            </div>
+            <hr class="style" />
+            <div class="form-group">
+                <input class="form-control" type="text" maxlength="{{ @max_icon_length }}" name="icon"
+                    placeholder="{{ @DICT.icon }}">
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" maxlength="{{ @max_link_length }}" name="link"
+                    placeholder="{{ @DICT.link }} ({{ @DICT.link_hint }})">
+            </div>
+            <hr class="style" />
+            <div class="form-group text-center">
+                <div class="row">
+                    <div class="col text-center">
+                        <div class="custom-control custom-checkbox custom-control-inline text-red">
+                            <input id="managed" class="custom-control-input custom-control-input-red" type="checkbox"
+                                name="managed" value="0">
+                            <label for="managed" class="custom-control-label"><i
+                                    class="{{ @icon_style }} {{ @icon_spacing }} fa-chalkboard"></i>
+                                {{ @DICT.managed }}</label>
+                        </div>
+                        <div class="custom-control custom-checkbox custom-control-inline text-cyan">
+                            <input id="locked" class="custom-control-input custom-control-input-cyan" type="checkbox"
+                                name="locked" value="0">
+                            <label for="locked" class="custom-control-label"><i
+                                    class="{{ @icon_style_s }} {{ @icon_spacing }} fa-lock"></i>
+                                {{ @DICT.locked }}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="hidden" name="token" value="{{ @SESSION.csrf }}" />
+            <button type="submit" class="btn btn-primary"><i class="{{ @icon_style }} fa-plus-circle mr-2"></i>
+                {{ @DICT.add }}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{ @DICT.close }}</button>
+        </div>
+    </form>
+</div>
+<include href="fetch/submit_script.htm" />

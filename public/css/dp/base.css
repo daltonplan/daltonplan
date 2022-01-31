@@ -1,0 +1,37 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Open Sans", sans-serif;
+}
+
+.text-wrap {
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+}
+
+hr.style {
+    border: 0;
+    height: 2px;
+    background: #fff;
+    background-image: -webkit-linear-gradient(left, #fff, #ccc, #fff);
+    background-image: -moz-linear-gradient(left, #fff, #ccc, #fff);
+    background-image: -ms-linear-gradient(left, #fff, #ccc, #fff);
+    background-image: -o-linear-gradient(left, #fff, #ccc, #fff);
+}
+
+.hint-mod {
+    border-right: 2px dashed #28a745aa !important;
+}
+
+.hint-admin {
+    border-right: 2px dashed #007bffaa !important;
+}
+
+.hint-owner {
+    border-right: 2px dashed #dc3545aa !important;
+}

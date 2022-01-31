@@ -1,0 +1,185 @@
+<section class="report_list pb-2" id="reports">
+    <div class="container">
+        <div class="row px-2">
+            <div class="col-sm-12 col-md-6 col-lg-6 col-6">
+                <h3 class="px-1 py-2 text-secondary">
+                    {{ @DICT.my_reports }}
+                </h3>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6 col-6 text-right">
+
+            </div>
+        </div>
+
+        <check if="{{ !empty(@report_list) }}">
+            <true>
+
+                <repeat group="{{ @report_list }}" value="{{ @plan }}">
+                    <div class="card card-outline card-yellow">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h4 class="px-1 py-2 text-secondary"><i
+                                                class="{{ @icon_style }} fa-{{ @plan.icon ? @plan.icon : 'calendar-alt' }} text-red fa-lg mr-2"></i>
+                                            {{ @plan.name }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row">
+                                <check if="{{ @plan.description }}">
+                                    <div class="col-12 text-wrap">
+                                        {{ @plan.description }}
+                                        <hr class="style" />
+                                    </div>
+                                </check>
+
+                                <check if="{{ !empty(@plan.day_list) }}">
+
+                                    <div class="col-12 mb-3">
+                                        <div class="timeline">
+
+                                            <repeat group="{{ @plan.day_list }}" value="{{ @day }}">
+                                                <div class="time-label">
+
+                                                    <div class="row bg-light mx-2 pr-2 py-1"
+                                                        style="border: 3px solid #ffc107;">
+                                                        <div class="col-10 text-dark">
+                                                            <i
+                                                                class="{{ @icon_style }} {{ @icon_spacing }} fa-calendar-day text-{{ @day.week_archive ? 'purple' : 'red' }}"></i>
+                                                            <set week_day="{{ @day.day }}" />
+                                                            <include href="plan/unit/week_day.htm" />
+                                                        </div>
+                                                        <div class="col-2 text-right">
+                                                            <span class="small mr-1">
+                                                                {{ @day.start_date }}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <repeat group="{{ @day.report_list }}" value="{{ @report }}">
+                                                    <div id="{{ @report.period.handle }}">
+                                                        <i class="{{ @icon_style_s }} 
+                            {{ @report.book.rating === @book_rating_none ? 'fa-check bg-dark' : '' }}
+                            {{ @report.book.rating === @book_rating_made_good_progress ? 'fa-star bg-primary' : '' }}
+                            {{ @report.book.rating === @book_rating_better_than_expected ? 'fa-thumbs-up bg-success' : '' }}
+                            {{ @report.book.rating === @book_rating_could_go_better ? 'fa-thumbs-down bg-danger' : '' }}
+                            " data-toggle="modal" href="#" data-target="#fetch"
+                                                            data-url="{{ $BASE_URL }}dp/{{ @plan.handle }}/fetch/book/{{ @report.period.handle }}"
+                                                            data-style="modal-lg"></i>
+
+                                                        <div class="timeline-item">
+                                                            <span class="time mr-3 text-md">
+                                                                {{ @report.period.name }}</span>
+                                                            <h3 class="timeline-header">
+                                                                <div class="row">
+                                                                    <div class="col-6">
+                                                                        <check if="{{ !empty(@report.book.subject) }}">
+                                                                            <true>
+                                                                                <table>
+                                                                                    <tr>
+                                                                                        <td class="align-top">
+                                                                                            <i
+                                                                                                class="{{ @icon_style }} {{ @icon_spacing }} fa-{{ @report.book.subject.icon ? @report.book.subject.icon : 'file' }} text-{{ @report.book.subject.active ? 'green' : 'purple' }} fa-lg"></i>
+                                                                                        </td>
+                                                                                        <td class="pl-2">
+                                                                                            <span class="mr-2">
+                                                                                                {{
+                                                                                                @report.book.subject.name
+                                                                                                }}
+                                                                                            </span>
+                                                                                            <check
+                                                                                                if="{{ !empty(@report.book.subject.parent) }}">
+                                                                                                <span
+                                                                                                    class="small text-secondary">
+                                                                                                    {{
+                                                                                                    @report.book.subject.parent.name
+                                                                                                    }}
+                                                                                                </span>
+                                                                                            </check>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                            </true>
+                                                                            <false>
+                                                                                <div class="pt-1 text-secondary">
+                                                                                    <em>{{ @DICT.subject_deleted }}</em>
+                                                                                </div>
+                                                                            </false>
+                                                                        </check>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <check if="{{ !empty(@report.book.lab) }}">
+                                                                            <true>
+                                                                                <table>
+                                                                                    <tr>
+                                                                                        <td class="align-top">
+                                                                                            <i
+                                                                                                class="{{ @icon_style }} {{ @icon_spacing }} fa-{{ @report.book.lab.icon ? @report.book.lab.icon : 'flask' }} text-{{ @report.book.lab.active ? 'blue' : 'purple' }}"></i>
+                                                                                        </td>
+                                                                                        <td
+                                                                                            class="pl-2 {{ @@report.book.lab.active ? '' : 'text-purple' }}">
+                                                                                            {{ @report.book.lab.name }}
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                </table>
+                                                                            </true>
+                                                                            <false>
+                                                                                <div class="pt-1 text-secondary">
+                                                                                    <em>{{ @DICT.lab_deleted }}</em>
+                                                                                </div>
+                                                                            </false>
+                                                                        </check>
+                                                                    </div>
+                                                                </div>
+                                                            </h3>
+                                                            <check if="{{ @report.book.description }}">
+                                                                <div class="timeline-body mx-3">
+                                                                    <span class="wrap">{{ @report.book.description
+                                                                        }}</span>
+                                                                </div>
+                                                            </check>
+                                                            <check if="{{ @report.book.review }}">
+                                                                <div class="timeline-footer mx-3 
+                                    {{ @report.book.rating === @book_rating_none ? 'text-secondary' : '' }}
+                                    {{ @report.book.rating === @book_rating_made_good_progress ? 'text-primary' : '' }}
+                                    {{ @report.book.rating === @book_rating_better_than_expected ? 'text-success' : '' }}
+                                    {{ @report.book.rating === @book_rating_could_go_better ? 'text-danger' : '' }}
+                                    ">
+                                                                    <span class="wrap">{{ @report.book.review }}</span>
+                                                                </div>
+                                                            </check>
+                                                        </div>
+                                                    </div>
+                                                </repeat>
+                                            </repeat>
+                                            <div>
+                                                <i class="{{ @icon_style }} fa-clock bg-gray"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </check>
+
+                            </div>
+                        </div>
+                    </div>
+                </repeat>
+            </true>
+            <false>
+                <div class="text-center text-secondary my-1">
+                    <p>
+                        <a href="reports"><img src="img/logo/logo-180x180.png" alt="{{ @DICT.dp_name }}"></a>
+                    </p>
+                    <strong>{{ @DICT.no_reports }}</strong>
+                </div>
+            </false>
+            </false>
+        </check>
+
+    </div>
+</section>

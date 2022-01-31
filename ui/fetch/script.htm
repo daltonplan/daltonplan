@@ -1,0 +1,21 @@
+<script type="text/javascript">
+    $('#fetch').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var modal = $(this);
+        var modal_dialog = modal.find('.modal-dialog');
+        modal_dialog.removeClass(function (index, className) {
+            return (className.match(/(^|\s)modal-\S+/g) || []).join(' ');
+        });
+        modal_dialog.addClass('modal-dialog modal-dialog-centered');
+        var style = button.data('style');
+        if (style)
+            modal_dialog.addClass(style);
+        modal.find('.modal-content').html(`<include href="fetch/loading.htm" />`);
+        async function get_data(url) { return await fetch(url).then(res => res.text()); };
+        get_data(button.data('url')).then(data => {
+            modal.find('.modal-content').html(data);
+            if ($('select').length)
+                $('select').selectpicker();
+        });
+    });
+</script>

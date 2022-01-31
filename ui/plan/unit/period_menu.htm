@@ -1,0 +1,26 @@
+<div class="row">
+    <div class="col-12">
+        <check if="{{ @period.link !== '' }}">
+            <span class="px-2">
+                <a href="{{ @period.link }}" target="_blank">
+                    <i class="{{ @icon_style }} fa-link"></i>
+                </a>
+            </span>
+        </check>
+        <check
+            if="{{ (@SESSION.user_role === @role_moderator) || (@SESSION.user_role === @role_admin) || (@SESSION.user_role === @role_owner) }}">
+            <div class="btn-group pl-2">
+                <button type="button" class="btn btn-default btn-tool dropdown-toggle text-secondary"
+                    data-toggle="dropdown">
+                    <i class="{{ @icon_style_s }} fa-wrench"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" role="menu">
+                    <a class="dropdown-item hint-mod" href="#" data-toggle="modal" data-target="#fetch"
+                        data-url="{{ $BASE_URL }}dp/{{ @PARAMS.handle }}/p/{{ @period.handle }}/fetch/edit"><i
+                            class="{{ @icon_style }} {{ @icon_spacing }} fa-edit mr-2 text-blue"></i> {{ @DICT.edit
+                        }}</a>
+                </div>
+            </div>
+        </check>
+    </div>
+</div>

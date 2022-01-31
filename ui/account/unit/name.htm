@@ -1,0 +1,13 @@
+<check if="{{ empty(@user.first_name) && empty(@user.last_name) }}">
+    <true>
+        <em>{{ @DICT.no_name_set }}</em>
+    </true>
+    <false>
+        <span>
+            {{ isset(@user.first_name) ? @user.first_name : '' }}
+            <check if="{{ isset(@user.last_name) }}">
+                <strong>{{ @user.last_name }}</strong>
+            </check>
+        </span>
+    </false>
+</check>

@@ -1,0 +1,98 @@
+<div class="row">
+    <div class="col-12">
+
+        <check if="{{ @lab.room !== '' }}">
+            <span class="px-2">
+                {{ @lab.room }}
+            </span>
+        </check>
+        <check if="{{ @lab.capacity > 0 }}">
+            <span class="px-2">
+                <strong>{{ @lab.capacity }}</strong> <i
+                    class="{{ @icon_style_s }} {{ @icon_spacing }} fa-users text-secondary ml-2"></i>
+            </span>
+        </check>
+        <check if="{{ @lab.managed }}">
+            <span class="px-2 text-red">
+                <i class="{{ @icon_style }} {{ @icon_spacing }} fa-chalkboard"></i>
+            </span>
+        </check>
+        <check if="{{ @lab.locked }}">
+            <span class="px-2 text-cyan">
+                <i class="{{ @icon_style_s }} {{ @icon_spacing }} fa-lock"></i>
+            </span>
+        </check>
+
+        <check if="{{ @lab.link !== '' }}">
+            <span class="px-2">
+                <a href="{{ @lab.link }}" target="_blank">
+                    <i class="{{ @icon_style }} fa-link"></i>
+                </a>
+            </span>
+        </check>
+
+        <check if="{{ (@SESSION.user_role !== @role_student) }}">
+
+            <span class="px-2">
+                <a href="{{ $url }}" data-toggle="modal" data-target="#qr_show"
+                    data-qrcode="{{ $BASE_URL }}pc/{{ @lab.participation }}"
+                    data-title="{{ @DICT.participation_code }}: {{ @lab.name }}">
+                    <i class="{{ @icon_style }} fa-qrcode mr-2 text-red"></i>
+                </a>
+            </span>
+
+        </check>
+
+        <check
+            if="{{ (@SESSION.user_role === @role_moderator) || (@SESSION.user_role === @role_admin) || (@SESSION.user_role === @role_owner) }}">
+            <div class="btn-group pl-2">
+                <button type="button" class="btn btn-default btn-tool dropdown-toggle text-secondary"
+                    data-toggle="dropdown">
+                    <i class="{{ @icon_style_s }} fa-wrench"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" role="menu">
+                    <check if="{{ (@SESSION.user_role === @role_admin) || (@SESSION.user_role === @role_owner) }}">
+                        <check if="{{ !@lab.active }}">
+                            <a class="dropdown-item hint-admin" href="l/{{ @lab.handle }}/activate"><i
+                                    class="{{ @icon_style }} {{ @icon_spacing }} fa-undo mr-2 text-purple"></i> {{
+                                @DICT.activate }}</a>
+                            <div class="dropdown-divider"></div>
+                        </check>
+                    </check>
+                    <a class="dropdown-item hint-mod" href="#" data-toggle="modal" data-target="#fetch"
+                        data-url="{{ $BASE_URL }}l/{{ @lab.handle }}/fetch/restrict"><i
+                            class="{{ @icon_style_s }} {{ @icon_spacing }} fa-sign mr-2 text-green"></i> {{
+                        @DICT.restrict }}</a>
+                    <check if="{{ (@SESSION.user_role === @role_admin) || (@SESSION.user_role === @role_owner) }}">
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item hint-admin" href="#" data-toggle="modal" data-target="#fetch"
+                            data-url="{{ $BASE_URL }}l/{{ @lab.handle }}/fetch/edit"><i
+                                class="{{ @icon_style }} {{ @icon_spacing }} fa-edit mr-2 text-primary"></i>
+                            {{ @DICT.edit }}</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item hint-admin" href="#" data-toggle="modal" data-target="#change"
+                            data-link="{{ $BASE_URL }}l/{{ @lab.handle }}/change"
+                            data-name="{{ @DICT.participation_code }}"><i
+                                class="{{ @icon_style }} {{ @icon_spacing }} fa-qrcode mr-2 text-danger"></i>
+                            {{ @DICT.change_code }}</a>
+                        <check if="{{ !@lab.active }}">
+                            <true>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item hint-admin" href="#" data-toggle="modal" data-target="#remove"
+                                    data-link="{{ $BASE_URL }}l/{{ @lab.handle }}/remove" data-name="{{ @lab.name }}"><i
+                                        class="{{ @icon_style }} {{ @icon_spacing }} fa-trash mr-2 text-danger"></i>
+                                    {{ @DICT.remove }}</a>
+                            </true>
+                            <false>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item hint-admin" href="l/{{ @lab.handle }}/archive"><i
+                                        class="{{ @icon_style }} {{ @icon_spacing }} fa-archive mr-2 text-purple"></i>
+                                    {{ @DICT.to_archive }}</a>
+                            </false>
+                        </check>
+                    </check>
+                </div>
+            </div>
+        </check>
+    </div>
+</div>

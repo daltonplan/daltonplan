@@ -1,0 +1,22 @@
+{
+    "name": "Dalton Plan",
+    "short_name": "Dalton Plan",
+    "icons": [
+        {
+            "src": "img/logo/logo-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "img/logo/logo-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "id": "/",
+    "start_url": "/",
+    "orientation": "landscape",
+    "theme_color": "#fff",
+    "background_color": "#fff",
+    "display": "standalone"
+}

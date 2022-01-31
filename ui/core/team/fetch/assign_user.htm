@@ -1,0 +1,72 @@
+<div class="mx-2 mb-2">
+    <div class="modal-header">
+        <h4 class="modal-title text-blue" id="modal_label">
+            {{ @DICT.assign_user }}
+        </h4>
+        <include href="fetch/close.htm" />
+    </div>
+    <form id="assign_user" action="t/{{ @PARAMS.handle }}/assign_user" method="post">
+        <div class="modal-body">
+            <div class="form-group">
+                <select class="form-control selectpicker" name="users[]" id="users"
+                    data-none-selected-text="{{ @DICT.no_users }}" data-icon-base="{{ @icon_style_s }} mr-1"
+                    data-live-search="true" multiple data-none-results-text="{{ @DICT.no_results_matched }} {0}">
+                    <repeat group="{{ @user_list }}" value="{{ @user }}">
+                        <check if="{{ @user.role === @role_owner }}">
+                            <option value="{{ @user.handle }}" data-icon="fa-chalkboard-teacher text-red" {{
+                                @user.selected ? ' selected' : '' }}>
+                                {{ @user.first_name
+                                }} {{
+                                @user.last_name }}
+                                ({{ @user.handle }})
+                            </option>
+                        </check>
+                        <check if="{{ @user.role === @role_admin }}">
+                            <option value="{{ @user.handle }}" data-icon="fa-chalkboard-teacher text-blue" {{
+                                @user.selected ? ' selected' : '' }}>
+                                {{ @user.first_name
+                                }} {{
+                                @user.last_name }}
+                                ({{ @user.handle }})
+                            </option>
+                        </check>
+                        <check if="{{ @user.role === @role_moderator }}">
+                            <option value="{{ @user.handle }}" data-icon="fa-chalkboard-teacher text-green" {{
+                                @user.selected ? ' selected' : '' }}>
+                                {{ @user.first_name
+                                }} {{
+                                @user.last_name }}
+                                ({{ @user.handle }})
+                            </option>
+                        </check>
+                        <check if="{{ @user.role === @role_coach }}">
+                            <option value="{{ @user.handle }}" data-icon="fa-chalkboard-teacher text-yellow" {{
+                                @user.selected ? ' selected' : '' }}>
+                                {{ @user.first_name
+                                }} {{
+                                @user.last_name }}
+                                ({{ @user.handle }})
+                            </option>
+                        </check>
+                        <check if="{{ @user.role === @role_student }}">
+                            <option value="{{ @user.handle }}" data-icon="fa-user text-secondary" {{ @user.selected
+                                ? ' selected' : '' }}>
+                                {{ @user.first_name
+                                }} {{
+                                @user.last_name }}
+                                ({{ @user.handle }})
+                            </option>
+                        </check>
+                    </repeat>
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="hidden" name="token" value="{{ @SESSION.csrf }}" />
+            <button type="submit" class="btn btn-primary"><i class="{{ @icon_style_s }} fa-user-plus mr-2"></i>
+                {{ @DICT.assign }}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{ @DICT.close }}</button>
+        </div>
+    </form>
+</div>
+<include href="fetch/submit_script.htm" />

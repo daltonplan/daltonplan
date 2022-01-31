@@ -1,0 +1,51 @@
+<section class="user_list pb-2" id="users">
+    <div class="container">
+        <div class="row px-2">
+            <div class="col-sm-12 col-md-6 col-lg-6 col-6">
+                <h3 class="px-1 py-2 text-secondary">
+                    <check if="{{ isset(@PARAMS.team) }}">
+                        <true>
+                            <check if="{{ count(@user_list) === 0 }}">
+                                <true>
+                                    <em>{{ @DICT.no }}</em>
+                                </true>
+                                <false>
+                                    <strong class="mx-1 text-blue">
+                                        {{ count(@user_list) }}
+                                    </strong>
+                                </false>
+                            </check>
+                            {{ @DICT.users_in }}
+                        </true>
+                        <false>
+                            {{ @DICT.all_users }}
+                        </false>
+                    </check>
+                    <check if="{{ isset(@PARAMS.team) }}">
+                        <span class="mx-1 small">
+                            <a href="teams/#{{ @PARAMS.team }}">
+                                <i
+                                    class="{{ @icon_style }} {{ @icon_spacing }} fa-{{ @team.icon ? @team.icon : 'tag' }} text-cyan"></i>
+                                {{ @team.name }}
+                            </a>
+                        </span>
+                    </check>
+                </h3>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6 col-6 text-right pt-2">
+                <check if="{{ isset(@PARAMS.team) }}">
+                    <a href="users"><button type="button" class="btn btn-sm btn-dark mx-1 my-1"><i
+                                class="{{ @icon_style_s }} fa-users mr-2"></i>{{
+                            @DICT.all_users }}</button></a>
+                </check>
+                <check if="{{ @SESSION.user_role !== @role_student }}">
+                    <a href="#" data-toggle="modal" data-target="#fetch"
+                        data-url="{{ $BASE_URL }}users/fetch/team"><button type="button"
+                            class="btn btn-sm btn-dark mx-1 my-1"><i class="{{ @icon_style_s }} fa-tags mr-2"></i>{{
+                            @DICT.teams }}</button></a>
+                </check>
+            </div>
+        </div>
+        <include href="account/unit/list.htm" />
+    </div>
+</section>

@@ -1,0 +1,15 @@
+<section class="user_list pb-2" id="search">
+    <div class="container">
+        <h3 class="px-1 pb-1 pt-3 text-secondary">
+            <i class="{{ @icon_style }} {{ @icon_spacing}} fa-search mr-2"></i><span
+                class="text-{{ @search_count === 0 ? 'red' : 'blue' }} mx-1">{{
+                @search_count
+                }}</span>
+            {{ @search_count === 1 ? @DICT.result_for : @DICT.results_for }}
+            <span class="text-blue mx-1">{{ @search_query }}</span>
+            {{ @DICT.search_found }}
+        </h3>
+        <hr class="style" />
+        <include href="account/unit/list.htm" />
+    </div>
+</section>

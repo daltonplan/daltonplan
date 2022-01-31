@@ -1,0 +1,21 @@
+<footer class="main-footer small">
+    <div class="container-fluid">
+        <div class="float-right d-none d-sm-inline d-print-none">
+            <check if="{{ @dp_terms }}">
+                <true>
+                    <a class="mx-1 text-dark" href="terms" data-toggle="modal" data-target="#fetch"
+                        data-url="{{ $BASE_URL }}terms" data-style="modal-xl"> {{
+                        @DICT.terms_of_service }}</a>
+                </true>
+                <false>
+                    {{ @DICT.designed_with }} <i class="{{ @icon_style }} fa-heart text-red"></i> {{ @DICT.and_a_lot_of
+                    }} <i class="{{ @icon_style }} fa-coffee mx-1"></i>
+                </false>
+            </check>
+        </div>
+        <a class="text-md" href="{{ @DICT.dp_link }}" target="_blank">{{ @DICT.dp_name }}</a>
+        <span class="mx-1">
+            {{ @version_info }}
+        </span>
+    </div>
+</footer>

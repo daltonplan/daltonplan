@@ -1,0 +1,34 @@
+<p class="login-box-msg">{{ @DICT.register_membership }}</p>
+<form id="join" action="join" method="post">
+    <div class="input-group mb-3">
+        <input type="email" name="email" class="form-control" placeholder="{{ @DICT.email }}" required autofocus>
+        <div class="input-group-append">
+            <div class="input-group-text">
+                <i class="{{ @icon_style }} fa-envelope"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="icheck-primary">
+                <input type="checkbox" id="accept" name="accept" value="1" required>
+                <label for="accept" style="font-weight: normal;">
+                    {{ @DICT.accept_tos1 }} <a class="mx-1" href="terms" data-toggle="modal" data-target="#fetch"
+                        data-url="{{ $BASE_URL }}terms" data-style="modal-xl"> {{
+                        @DICT.terms_of_service }}</a> {{ @DICT.accept_tos2 }}
+                </label>
+            </div>
+        </div>
+
+        <div class="col-12 mt-2">
+            <input type="hidden" name="token" value="{{ @SESSION.csrf }}" />
+            <button type="submit" class="btn btn-primary btn-block">{{ @DICT.join }}</button>
+        </div>
+    </div>
+</form>
+
+<div class="card-footer text-center mt-4 small">
+    <p><a href="login">{{ @DICT.have_membership }}</a></p>
+    <a href="verify">{{ @DICT.want_to_verify }}</a>
+</div>

@@ -1,0 +1,58 @@
+<div class="row">
+    <div class="col-12">
+        <check if="{{ @team.students > 0 }}">
+            <span class="px-2 text-secondary">
+                {{ @team.students }} <i class="{{ @icon_style_s }} {{ @icon_spacing }} fa-user"></i>
+            </span>
+        </check>
+        <check if="{{ @team.coaches > 0 }}">
+            <span class="px-2 text-secondary">
+                {{ @team.coaches }} <i class="{{ @icon_style_s }} {{ @icon_spacing }} fa-chalkboard-teacher"></i>
+            </span>
+        </check>
+        <check if="{{ (@team.students > 0) || (@team.coaches > 0) }}">
+            <span class="px-2">
+                <a href="users/t/{{ @team.handle }}" class="btn btn-sm btn-dark mx-1">
+                    <i class="{{ @icon_style }} fa-users"></i>
+                </a>
+            </span>
+        </check>
+        <check if="{{ @team.link !== '' }}">
+            <span class="px-2">
+                <a href="{{ @team.link }}" target="_blank">
+                    <i class="{{ @icon_style }} fa-link"></i>
+                </a>
+            </span>
+        </check>
+        <check
+            if="{{ (@SESSION.user_role === @role_moderator) || (@SESSION.user_role === @role_admin) || (@SESSION.user_role === @role_owner) }}">
+            <div class="btn-group pl-2">
+                <button type="button" class="btn btn-default btn-tool dropdown-toggle text-secondary"
+                    data-toggle="dropdown">
+                    <i class="{{ @icon_style_s }} fa-wrench"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" role="menu">
+                    <a class="dropdown-item hint-mod" href="#" data-toggle="modal" data-target="#fetch"
+                        data-url="{{ $BASE_URL }}t/{{ @team.handle }}/fetch/assign_user"><i
+                            class="{{ @icon_style_s }} {{ @icon_spacing }} fa-user-plus mr-2 text-gray"></i>
+                        {{ @DICT.assign_user }}</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item hint-mod" href="#" data-toggle="modal" data-target="#fetch"
+                        data-url="{{ $BASE_URL }}t/{{ @team.handle }}/fetch/assign_subject"><i
+                            class="{{ @icon_style }} {{ @icon_spacing }} fa-folder-plus mr-2 text-green"></i>
+                        {{ @DICT.assign_subject }}</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item hint-mod" href="#" data-toggle="modal" data-target="#fetch"
+                        data-url="{{ $BASE_URL }}t/{{ @team.handle }}/fetch/edit"><i
+                            class="{{ @icon_style }} {{ @icon_spacing }} fa-edit mr-2 text-primary"></i>
+                        {{ @DICT.edit }}</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item hint-mod" href="#" data-toggle="modal" data-target="#remove"
+                        data-link="{{ $BASE_URL }}t/{{ @team.handle }}/remove" data-name="{{ @team.name }}"><i
+                            class="{{ @icon_style }} {{ @icon_spacing }} fa-trash mr-2 text-danger"></i>
+                        {{ @DICT.remove }}</a>
+                </div>
+            </div>
+        </check>
+    </div>
+</div>

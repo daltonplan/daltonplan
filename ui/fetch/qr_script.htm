@@ -1,0 +1,21 @@
+<script type="text/javascript">
+    $('#qr_show').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var qrcode = button.data('qrcode');
+        $('#qrcode').html('');
+        new QRCode(document.getElementById("qrcode"), {
+            text: qrcode,
+            colorDark: "#CF1020"
+        });
+        var modal = $(this);
+        var title = button.data('title');
+        modal.find('.modal-title').text(title);
+        modal.find('.modal-description').text(qrcode);
+    })
+    $('#qr_show').on('shown.bs.modal', function (e) {
+        $("#dp_content").css({ opacity: 0.0 });
+    })
+    $('#qr_show').on('hidden.bs.modal', function (e) {
+        $("#dp_content").css({ opacity: 1 });
+    })
+</script>

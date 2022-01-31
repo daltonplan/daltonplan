@@ -1,0 +1,141 @@
+<section class="lab_list pb-2" id="labs">
+    <div class="container">
+        <div class="row px-2">
+            <div class="col-sm-12 col-md-6 col-lg-6 col-6">
+                <h3 class="px-1 py-2 text-secondary">
+                    <check if="{{ isset(@ui_archive) }}">
+                        <true>
+                            {{ @DICT.archived_labs }}
+                        </true>
+                        <false>
+                            {{ @SESSION.user_role === @role_student || isset(@PARAMS.my) ? @DICT.my_labs :
+                            @DICT.all_labs }}
+                        </false>
+                    </check>
+                </h3>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-6 col-6 text-right pt-2">
+                <check if="{{ @SESSION.user_role !== @role_student }}">
+                    <check if="{{ isset(@PARAMS.my) }}">
+                        <true>
+                            <a href="labs"><button type="button" class="btn btn-sm btn-dark mx-1 my-1"><i
+                                        class="{{ @icon_style_s }} fa-flask mr-2"></i>{{
+                                    @DICT.all_labs }}</button></a>
+                        </true>
+                        <false>
+                            <check if="{{ @SESSION.user_role !== @role_student }}">
+                                <a href="labs/my"><button type="button" class="btn btn-sm btn-dark mx-1 my-1"><i
+                                            class="{{ @icon_style_s }} fa-user mr-2"></i>{{
+                                        @DICT.my_labs }}</button></a>
+                            </check>
+                        </false>
+                    </check>
+                    <check if="{{ isset(@ui_archive) }}">
+                        <true>
+                            <a href="labs"><button type="button" class="btn btn-sm btn-dark mx-1 my-1"><i
+                                        class="{{ @icon_style_s }} fa-flask mr-2"></i>{{
+                                    @DICT.all_labs }}</button></a>
+                        </true>
+                        <false>
+                            <a href="labs/archive"><button type="button" class="btn btn-sm btn-dark mx-1 my-1"><i
+                                        class="{{ @icon_style }} fa-archive mr-2"></i>{{
+                                    @DICT.archive }}</button></a>
+                        </false>
+                    </check>
+                </check>
+            </div>
+        </div>
+        <check if="{{ !empty(@lab_list) }}">
+            <true>
+                <repeat group="{{ @lab_list }}" value="{{ @lab }}" counter="{{ @ctr }}">
+                    <check if="{{ @ctr !== 1 }}">
+                        <hr class="style" />
+                    </check>
+                    <div class="card card-outline card-{{ @lab.active ? 'blue' : 'purple' }}">
+                        <div class="card-header">
+                            <div id="{{ @lab.handle }}" class="card-title text-lg" style="scroll-margin-top: 4em;"><i
+                                    class="{{ @icon_style }} fa-{{ @lab.icon ? @lab.icon : 'flask' }} text-{{ @lab.active ? 'blue' : 'purple' }} fa-lg mr-2"></i>
+                                {{ @lab.name
+                                }}
+                            </div>
+                            <div class="card-tools text-right pr-2">
+                                <include href="core/lab/unit/menu.htm" />
+                            </div>
+                        </div>
+                        <check
+                            if="{{ @lab.description || ((@SESSION.user_role !== @role_student) && (count(@lab.team_list) > 0)) || (count(@lab.subject_list) > 0) }}">
+                            <div class="card-body">
+                                <check if="{{ @lab.description }}">
+                                    <div class="row">
+                                        <div class="col-12 text-wrap">
+                                            {{ @lab.description }}
+                                        </div>
+                                        <check
+                                            if="{{ ((count(@lab.team_list) > 0) || (count(@lab.subject_list) > 0)) }}">
+                                            <div class="col-12">
+                                                <hr class="style" />
+                                            </div>
+                                        </check>
+                                    </div>
+                                </check>
+
+                                <check if="{{ (@SESSION.user_role !== @role_student) && !empty(@lab.team_list) }}">
+                                    <div class="row">
+                                        <repeat group="{{ @lab.team_list }}" value="{{ @team }}">
+                                            <div class="col-sm-12 col-md-4 col-lg-4">
+                                                <a href="teams/#{{ @team.handle }}">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="align-top">
+                                                                <i
+                                                                    class="{{ @icon_style }} {{ @icon_spacing }} fa-{{ @team.icon ? @team.icon : 'tag' }} text-cyan"></i>
+                                                            </td>
+                                                            <td>
+                                                                {{ @team.name }}
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </a>
+                                            </div>
+                                        </repeat>
+                                    </div>
+                                </check>
+
+                                <check if="{{ !empty(@lab.subject_list) }}">
+                                    <div
+                                        class="row {{ (@SESSION.user_role !== @role_student) && (count(@lab.team_list) > 0) ? 'mt-2' : '' }}">
+                                        <repeat group="{{ @lab.subject_list }}" value="{{ @subject }}">
+                                            <div class="col-sm-12 col-md-4 col-lg-4">
+                                                <a href="subjects/#{{ @subject.handle }}">
+                                                    <table>
+                                                        <tr>
+                                                            <td class="align-top">
+                                                                <i
+                                                                    class="{{ @icon_style }} {{ @icon_spacing }} fa-{{ @subject.icon ? @subject.icon : ( empty(@subject.parent) ? 'folder' : 'file') }} text-green fa-lg"></i>
+                                                            </td>
+                                                            <td>
+                                                                {{ @subject.name }}
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </a>
+                                            </div>
+                                        </repeat>
+                                    </div>
+                                </check>
+                            </div>
+                        </check>
+                    </div>
+                </repeat>
+            </true>
+            <false>
+                <div class="text-center text-secondary my-1">
+                    <p>
+                        <a href="labs"><img src="img/logo/logo-180x180.png" alt="{{ @DICT.dp_name }}"></a>
+                    </p>
+                    <strong>{{ @DICT.no_labs }}</strong>
+                </div>
+            </false>
+        </check>
+    </div>
+</section>

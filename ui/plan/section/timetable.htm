@@ -1,0 +1,114 @@
+<check if="{{ isset(@frame_list) && count(@frame_list) }}">
+    <table class="table table-bordered table-hover mb-4">
+        <thead>
+            <tr>
+                <th class="text-center" style="width: 120px">{{ @DICT.time }}</th>
+                <th class="text-center bg-light" style="border: 3px solid #6c757d">{{ @DICT.monday }}</th>
+                <th class="text-center bg-light" style="border: 3px solid #6c757d">{{ @DICT.tuesday }}</th>
+                <th class="text-center bg-light" style="border: 3px solid #6c757d">{{ @DICT.wednesday }}</th>
+                <th class="text-center bg-light" style="border: 3px solid #6c757d">{{ @DICT.thursday }}</th>
+                <th class="text-center bg-light" style="border: 3px solid #6c757d">{{ @DICT.friday }}</th>
+                <check if="{{ (@SESSION.user_role === @role_admin) || (@SESSION.user_role === @role_owner) }}">
+                    <th class="text-center d-print-none" style="width: 40px"> <i
+                            class="{{ @icon_style }} {{ @icon_spacing }} fa-crown text-blue"></i>
+                    </th>
+                </check>
+            </tr>
+        </thead>
+        <tbody>
+            <repeat group="{{ @frame_list }}" value="{{ @frame }}">
+                <tr {{ !@frame.mo && !@frame.tu && !@frame.we && !@frame.th && !@frame.fr ? ' class="bg-light"' : '' }}>
+                    <td class="text-center align-middle bg-light" style="border: 3px solid #6c757d">
+                        <strong{{ !@frame.mo && !@frame.tu && !@frame.we && !@frame.th && !@frame.fr
+                            ? ' class="text-sm"' : '' }}>
+                            {{ @frame.name }}</strong>
+                            <div class="small">{{ @frame.start }} - {{ @frame.end }}</div>
+                    </td>
+                    <repeat group="{{ @frame['period'] }}" value="{{ @period }}">
+                        <set
+                            current_id="{{ isset(@plan_list[@plan.id]['current']) ? @plan_list[@plan.id]['current']['id'] : 0 }}" />
+                        <td
+                            class="text-center align-middle{{ (@period && (@period.id === @current_id)) ? ' bg-danger' : ''}}">
+                            <check if="{{ @period }}">
+                                <a id="{{ @period.handle }}" href="#" role="button" data-toggle="modal"
+                                    data-target="#fetch"
+                                    data-url="{{ $BASE_URL }}dp/{{ @PARAMS.handle }}/fetch/book/{{ @period.handle }}" {{
+                                    (@period.id===@current_id) ? ' class="text-white"' : '' }} data-style="modal-lg"
+                                    style="scroll-margin-top: 10em;">
+                                    <check if="{{ @period.blocked }}">
+                                        <true>
+                                            <div class="text-{{ (@period.id === @current_id) ? 'white' : 'red' }} mb-1">
+                                                <i class="{{ @icon_style_s }} fa-times-circle"></i>
+                                            </div>
+                                        </true>
+                                        <false>
+                                            <check if="{{ @period.register }}">
+                                                <div
+                                                    class="text-{{ (@period.id === @current_id) ? 'white' : 'teal' }} mb-1">
+                                                    <i class="{{ @icon_style_s }} fa-thumbtack"></i>
+                                                </div>
+                                            </check>
+                                        </false>
+                                    </check>
+                                    <check
+                                        if="{{ isset(@period.book) && !empty(@period.book.subject) && !empty(@period.book.lab) }}">
+                                        <true>
+                                            <div class="mb-1">
+                                                <i
+                                                    class="{{ @icon_style }} {{ @icon_spacing }} fa-{{ @period.book.subject.icon ? @period.book.subject.icon : 'file' }} text-{{ @period.id === @current_id ? 'white' : (@period.book.subject.active ? 'green' : 'purple') }}"></i>
+                                                {{ @period.book.subject.name }}
+                                                <check if="{{ @period.book.present > 0 }}">
+                                                    <div>
+                                                        <check if="{{ @period.book.present === 1 }}">
+                                                            <true>
+                                                                <i
+                                                                    class="{{ @icon_style }} {{ @icon_spacing }} fa-check text-{{ @period.id === @current_id ? 'white' : 'green' }}"></i>
+                                                            </true>
+                                                            <false>
+                                                                <check if="{{ @period.book.present === 2 }}">
+                                                                    <true>
+                                                                        <i
+                                                                            class="{{ @icon_style }} {{ @icon_spacing }} fa-paperclip text-{{ @period.id === @current_id ? 'white' : 'red' }}"></i>
+                                                                    </true>
+                                                                    <false>
+                                                                        <i
+                                                                            class="{{ @icon_style }} {{ @icon_spacing }} fa-feather text-{{ @period.id === @current_id ? 'white' : 'lightblue' }}"></i>
+                                                                    </false>
+                                                                </check>
+                                                            </false>
+                                                        </check>
+                                                    </div>
+                                                </check>
+                                            </div>
+                                            <div class="small"><i
+                                                    class="{{ @icon_style }} {{ @icon_spacing }} fa-{{ @period.book.lab.icon ? @period.book.lab.icon : 'flask' }} text-{{ @period.id === @current_id ? 'white' : (@period.book.lab.active ? 'blue' : 'purple') }}"></i>
+                                                <span
+                                                    class="text-{{ @period.id === @current_id ? 'white' : 'dark' }}">{{
+                                                    @period.book.lab.name }}</span>
+                                            </div>
+                                        </true>
+                                        <false>
+                                            <check if="{{ @period.name !== @frame.name }}">
+                                                <true>
+                                                    <div>{{ @period.name }}</div>
+                                                </true>
+                                                <false>
+                                                    <div>{{ @DICT.project }}</div>
+                                                </false>
+                                            </check>
+                                        </false>
+                                    </check>
+                                </a>
+                            </check>
+                        </td>
+                    </repeat>
+                    <check if="{{ (@SESSION.user_role === @role_admin) || (@SESSION.user_role === @role_owner) }}">
+                        <td class="text-center align-middle d-print-none">
+                            <include href="plan/unit/frame_menu.htm" />
+                        </td>
+                    </check>
+                </tr>
+            </repeat>
+        </tbody>
+    </table>
+</check>

@@ -1,0 +1,46 @@
+<div class="mx-2 mb-2">
+    <div class="modal-header">
+        <h4 class="modal-title text-danger" id="modal_label">
+            {{ @DICT.time_machine }}</h4>
+        <include href="fetch/close.htm" />
+    </div>
+    <form role="form" action="dp/{{ @PARAMS.handle }}/time_machine" method="post">
+        <div class="modal-body px-4">
+            <div class="form-group">
+                <input type="text" id="time_machine_timepicker" class="form-control text-center" name="time"
+                    placeholder="{{ @DICT.change_time }}" required />
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="hidden" name="token" value="{{ @SESSION.csrf }}" />
+            <button type="submit" class="btn btn-danger"><i class="{{ @icon_style }} fa-check mr-2"></i>
+                {{ @DICT.change_time }}</button>
+            <a class="btn btn-secondary {{ !isset(@plan.time)
+                ? 'disabled' : '' }}" href="dp/{{ @PARAMS.handle }}/reset_time_machine"><i
+                    class="{{ @icon_style }} fa-history mr-2"></i>
+                {{ @DICT.reset }}</a>
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{ @DICT.close }}</button>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('#time_machine_timepicker').datetimepicker({
+            locale: '{{ @lang }}',
+            defaultDate: "{{ @plan.date_time }}",
+            collapse: false,
+            icons: {
+                time: '{{ @icon_style }} fa-clock',
+                date: '{{ @icon_style }} fa-calendar',
+                up: '{{ @icon_style }} fa-arrow-up',
+                down: '{{ @icon_style }} fa-arrow-down',
+                previous: '{{ @icon_style }} fa-arrow-left',
+                next: '{{ @icon_style }} fa-arrow-right',
+                today: '{{ @icon_style }} fa-crosshairs',
+                clear: '{{ @icon_style }} fa-trash',
+                close: '{{ @icon_style }} fa-times'
+            },
+        });
+    });
+</script>
+<include href="fetch/submit_script.htm" />

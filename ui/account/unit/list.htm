@@ -1,0 +1,80 @@
+<repeat group="{{ @user_list }}" value="{{ @user }}" counter="{{ @ctr }}">
+    <check if="{{ @ctr !== 1 }}">
+        <hr class="style" />
+    </check>
+    <div class="card card-outline">
+        <div class="card-header">
+            <div class="card-title text-lg">
+                <a href="u/{{ @user.handle }}">
+                    <check if="{{ @user.role === @role_owner }}">
+                        <i class="{{ @icon_style_s }} fa-chalkboard-teacher text-red fa-lg mr-2"></i>
+                    </check>
+                    <check if="{{ @user.role === @role_admin }}">
+                        <i class="{{ @icon_style_s }} fa-chalkboard-teacher text-blue fa-lg mr-2"></i>
+                    </check>
+                    <check if="{{ @user.role === @role_moderator }}">
+                        <i class="{{ @icon_style_s }} fa-chalkboard-teacher text-green fa-lg mr-2"></i>
+                    </check>
+                    <check if="{{ @user.role === @role_coach }}">
+                        <i class="{{ @icon_style_s }} fa-chalkboard-teacher text-yellow fa-lg mr-2"></i>
+                    </check>
+                    <check if="{{ @user.role === @role_student }}">
+                        <i class="{{ @icon_style_s }} fa-user text-secondary fa-lg mr-2"></i>
+                    </check>
+                    <include href="account/unit/name.htm" />
+                    <strong class="text-sm text-secondary mx-1">{{ @user.handle }}</strong>
+                </a>
+                <check if="{{ isset(@SESSION.proxy) && (@SESSION.proxy === @user.id) }}">
+                    <i class="{{ @icon_style_s }} fa-mask mx-2 text-red"></i>
+                </check>
+                <check if="{{ @SESSION.user_id === @user.id }}">
+                    <i class="{{ @icon_style_s }} fa-mask mx-2 text-secondary"></i>
+                </check>
+                <check if="{{ @user.absent }}">
+                    <true>
+                        <span class="ml-2 float-right text-danger"><i
+                                class="{{ @icon_style }} fa-paper-plane"></i></span>
+                    </true>
+                    <false>
+                        <span class="small">
+                            <include href="account/unit/register.htm" />
+                        </span>
+                    </false>
+                </check>
+            </div>
+            <div class="card-tools text-right pr-2">
+                <include href="account/unit/menu.htm" />
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <check if="{{ !empty(@user.team_list) }}">
+                    <true>
+                        <repeat group="{{ @user.team_list }}" value="{{ @team }}">
+                            <div class="col-sm-12 col-md-4 col-lg-4">
+                                <a href="teams/#{{ @team.handle }}">
+                                    <table>
+                                        <tr>
+                                            <td class="align-top">
+                                                <i
+                                                    class="{{ @icon_style }} {{ @icon_spacing }} fa-{{ @team.icon ? @team.icon : 'tag' }} text-cyan"></i>
+                                            </td>
+                                            <td>
+                                                {{ @team.name }}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </a>
+                            </div>
+                        </repeat>
+                    </true>
+                    <false>
+                        <div class="col-12 text-wrap text-secondary">
+                            <em>{{ @DICT.no_teams }}</em>
+                        </div>
+                    </false>
+                </check>
+            </div>
+        </div>
+    </div>
+</repeat>

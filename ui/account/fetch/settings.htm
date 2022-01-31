@@ -1,0 +1,117 @@
+<div class="mx-2 mb-2">
+    <div class="modal-header">
+        <h4 class="modal-title text-blue" id="modal_label">
+            <i class="{{ @icon_style_s }} {{ @icon_spacing }} fa-user-cog"></i> {{ @DICT.settings }}
+        </h4>
+        <include href="fetch/close.htm" />
+    </div>
+
+    <form id="update" action="settings" method="post">
+        <div class="modal-body">
+
+            <check if="{{ ((@SESSION.user_role !== @role_student) || !@dp_no_rename) }}">
+                <div class="form-group">
+                    <label for="last_name">{{ @DICT.last_name }}</label>
+                    <input id="last_name" type="text" class="form-control" maxlength="{{ @max_name_length }}"
+                        name="last_name" value="{{ @user.last_name }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="first_name">{{ @DICT.first_name }}</label>
+                    <input id="first_name" type="text" class="form-control" maxlength="{{ @max_name_length }}"
+                        name="first_name" value="{{ @user.first_name }}">
+                </div>
+                <hr class="style" />
+            </check>
+
+            <check if="{{ @dp_email }}">
+
+                <div class="form-group">
+                    <label for="email">{{ @DICT.email }}</label>
+                    <input id="email" type="email" class="form-control" maxlength="{{ @max_email_length }}" name="email"
+                        value="{{ @user.email }}" {{ @user.email ? 'required' : '' }}>
+                </div>
+
+                <check if="{{ @user.verified }}">
+                    <true>
+                        <p class="mb-4 text-center text-secondary"><i
+                                class="{{ @icon_style }} {{ @icon_spacing }} fa-check text-green"></i> {{
+                            @DICT.email_verified }}
+                        </p>
+                    </true>
+                    <false>
+                        <check if="{{ @user.email }}">
+                            <check if="{{ isset(@verify_email_request) }}">
+                                <true>
+                                    <p class="mb-4 text-center">
+                                        <a href="verify" class="btn btn-outline-primary btn-sm pr-3"><i
+                                                class="{{ @icon_style }} fa-arrow-right"></i>
+                                            {{
+                                            @DICT.want_to_verify }}</a>
+                                    </p>
+                                </true>
+                                <false>
+                                    <p class="mb-4 text-center">
+                                        <a href="verify_request/{{ @SESSION.csrf }}"
+                                            class="btn btn-outline-success btn-sm"><i
+                                                class="{{ @icon_style }} fa-arrow-right"></i>
+                                            {{
+                                            @DICT.verify_email }}</a>
+                                    </p>
+                                </false>
+                            </check>
+                        </check>
+                    </false>
+                </check>
+                <hr class="style" />
+            </check>
+
+            <div class="input-group justify-content-center">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="lang">{{ @DICT.language }}</span>
+                </div>
+
+                <select class="form-select" aria-label="{{ @DICT.language }}" name="lang" id="lang"
+                    aria-describedby="lang">
+                    <option value="de" {{ @lang==='de' ? 'selected' : '' }}>{{ @DICT.lang_de }}
+                    </option>
+                    <option value="en" {{ @lang==='en' ? 'selected' : '' }}>{{ @DICT.lang_en }}
+                    </option>
+                </select>
+            </div>
+
+            <check if="{{ isset(@COOKIE.dp_lang) || isset(@COOKIE.dp_sort) || isset(@COOKIE.dp_remember) }}">
+                <hr class="style" />
+
+                <div class="text-center mt-4">
+                    <div class="pb-3"><i class="{{ @icon_style }} {{ @icon_spacing }} fa-cookie text-gray"></i> {{
+                        @DICT.delete_cookie }}</div>
+                    <check if="{{ isset(@COOKIE.dp_lang) }}">
+                        <a href="cookie/lang" class="btn btn-outline-danger btn-xs mx-1 pr-2 mb-2"><i
+                                class="{{ @icon_style }} {{ @icon_spacing }} fa-cookie-bite text-red"></i> {{
+                            @DICT.language }}</a>
+                    </check>
+                    <check if="{{ isset(@COOKIE.dp_sort) }}">
+                        <a href="cookie/sort" class="btn btn-outline-danger btn-xs mx-1 pr-2 mb-2"><i
+                                class="{{ @icon_style }} {{ @icon_spacing }} fa-cookie-bite text-red"></i> {{
+                            @DICT.sort }}</a>
+                    </check>
+                    <check if="{{ isset(@COOKIE.dp_remember) }}">
+                        <a href="cookie/remember" class="btn btn-outline-danger btn-xs mx-1 pr-2 mb-2"><i
+                                class="{{ @icon_style }} {{ @icon_spacing }} fa-cookie-bite text-red"></i> {{
+                            @DICT.remember_me }}</a>
+                    </check>
+                </div>
+            </check>
+        </div>
+
+        <div class="modal-footer">
+            <input type="hidden" name="token" value="{{ @SESSION.csrf }}" />
+            <button type="submit" class="btn btn-primary"><i
+                    class="{{ @icon_style }} {{ @icon_spacing }} fa-check mr-2"></i>
+                {{ @DICT.save }}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{ @DICT.close }}</button>
+        </div>
+    </form>
+</div>
+<include href="fetch/submit_script.htm" />

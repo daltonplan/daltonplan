@@ -1,0 +1,394 @@
+<div class="container pt-3">
+
+    <div class="card card-outline card-{{ (isset(@week_archive) && @week_archive) ? 'purple' : 'red' }}">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-9">
+                    <h3 class="px-2 py-2 text-secondary"><i
+                            class="{{ @icon_style }} fa-calendar-day text-{{ (isset(@week_archive) && @week_archive) ? 'purple' : 'red' }} fa-lg pr-2"></i>
+                        <include href="plan/unit/week_day.htm" />
+                        <span class="mx-1">/</span> {{ @period.name }}
+                    </h3>
+                    <div class="small">
+                        <div class="row pb-2 pl-3">
+                            {{ @period.start_date }} {{ @period.start_date !== @period.end_date ? '- ' .
+                            @period.end_date : '' }}
+                            <span class="px-3"><i
+                                    class="{{ @icon_style }} {{ @icon_spacing }} fa-clock text-secondary"></i> {{
+                                @period.start_time }} - {{
+                                @period.end_time }}</span>
+                            <check if="{{ @period.blocked }}">
+                                <true>
+                                    <span class="pl-2"><i
+                                            class="{{ @icon_style_s }} {{ @icon_spacing }} fa-times-circle text-red"></i>
+                                        {{ @DICT.blocked }}</span>
+                                </true>
+                                <false>
+                                    <check if="{{ @period.register }}">
+                                        <span class="px-2">
+                                            <i
+                                                class="{{ @icon_style_s }} {{ @icon_spacing }} fa-thumbtack text-teal"></i>
+                                            {{ @DICT.registration }}
+                                        </span>
+                                    </check>
+                                    <check if="{{ @period.exchange > 0 }}">
+                                        <i class="{{ @icon_style }} {{ @icon_spacing }} fa-exchange-alt text-teal"></i>
+                                        {{ @period.exchange }} {{ @period.exchange === 1 ? @DICT.minute :
+                                        @DICT.minutes }}
+                                    </check>
+                                </false>
+                            </check>
+                        </div>
+                    </div>
+                    <div class="my-2 ml-2">
+                        <a href="#" class="btn btn-outline-primary pl-2 pr-3" aria-label="{{ @DICT.book }}"
+                            data-toggle="modal" data-target="#fetch"
+                            data-url="{{ @BASE_URL }}dp/{{ @PARAMS.handle }}/fetch/book/p/{{ @PARAMS.period }}">
+                            <i class="{{ @icon_style_s }} {{ @icon_spacing }} fa-thumbtack"></i> {{ @DICT.book }}
+                        </a>
+                        <check if="{{ @unset_user_count > 0 }}">
+                            <a href="#" class="btn btn-outline-danger ml-3 pl-2 pr-3" aria-label="{{ @DICT.unset }}"
+                                data-toggle="modal" data-target="#fetch"
+                                data-url="{{ @BASE_URL }}dp/{{ @PARAMS.handle }}/fetch/unset/p/{{ @PARAMS.period }}">
+                                <i class="{{ @icon_style_s }} {{ @icon_spacing }} fa-user"></i> {{ @DICT.unset }}
+                                <strong>({{ @unset_user_count }})</strong>
+                            </a>
+                        </check>
+                    </div>
+                </div>
+                <div class="col-3 text-right">
+                    <include href="plan/unit/period_menu.htm" />
+                    <div class="mt-4 pr-2">
+                        <a href="dp/{{ @PARAMS.handle }}/w/{{ @week.handle }}#week"><i
+                                class="{{ @icon_style }} fa-{{ @week.icon ? @week.icon : 'calendar-week' }} text-{{ (isset(@week_archive) && @week_archive) ? 'purple' : 'red' }} fa-lg mr-2"></i>
+                            {{ @week.name }}</a>
+                    </div>
+                    <div class="mt-4 pr-1">
+                        <a href="#" class="btn btn-outline-info pl-2 pr-3" aria-label="{{ @DICT.commit }}"
+                            data-toggle="modal" data-target="#fetch"
+                            data-url="{{ @BASE_URL }}dp/{{ @PARAMS.handle }}/fetch/commit/p/{{ @PARAMS.period }}">
+                            <i class="{{ @icon_style_s }} {{ @icon_spacing }} fa-gavel"></i> {{ @DICT.commit }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <check if="{{ @period.description }}">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12 text-wrap">
+                        {{ @period.description }}</div>
+                </div>
+            </div>
+        </check>
+    </div>
+
+    <check if="{{ !empty(@commit_list) }}">
+        <div class="card card-outline card-info">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table table-hover">
+                            <tbody>
+                                <repeat group="{{ @commit_list }}" value="{{ @commit }}">
+                                    <tr>
+                                        <td width="30%">
+                                            <check if="{{ !empty(@commit.team) }}">
+                                                <true>
+                                                    <i
+                                                        class="{{ @icon_style }} {{ @icon_spacing }} fa-{{ @commit.team.icon ? @commit.team.icon : 'tag' }} text-cyan"></i>
+                                                    <a class="text-primary" href="teams#{{ @commit.team.handle }}"
+                                                        role="button">
+                                                        {{ @commit.team.name }}
+                                                    </a>
+                                                </true>
+                                                <false>
+                                                    <div class="pt-1 text-secondary">
+                                                        <em>{{ @DICT.team_deleted }}</em>
+                                                    </div>
+                                                </false>
+                                            </check>
+                                        </td>
+                                        <td width="35%">
+                                            <check if="{{ !empty(@commit.subject) }}">
+                                                <true>
+                                                    <div class="row">
+                                                        <div class="col-1">
+                                                            <i
+                                                                class="{{ @icon_style }} {{ @icon_spacing }} fa-{{ @commit.subject.icon ? @commit.subject.icon : 'file' }} text-{{ @commit.subject.active ? 'green' : 'purple' }}"></i>
+                                                        </div>
+                                                        <div class="col-10 px-3">
+                                                            <a class="text-primary mr-2"
+                                                                href="subjects{{ !@commit.subject.active ? '/archive' : '' }}#{{ @commit.subject.handle }}"
+                                                                role="button">
+                                                                {{ @commit.subject.name }}
+                                                            </a>
+                                                            <span class="small text-secondary">
+                                                                {{ @commit.subject.parent.name }}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </true>
+                                                <false>
+                                                    <div class="pt-1 text-secondary">
+                                                        <em>{{ @DICT.subject_deleted }}</em>
+                                                    </div>
+                                                </false>
+                                            </check>
+                                        </td>
+                                        <td width="30%">
+                                            <check if="{{ !empty(@commit.lab) }}">
+                                                <true>
+                                                    <check if="{{ @commit.lab !== 0 }}">
+                                                        <i
+                                                            class="{{ @icon_style }} {{ @icon_spacing }} fa-{{ @commit.lab.icon ? @commit.lab.icon : 'flask' }} text-{{ @commit.lab.active ? 'blue' : 'purple' }}"></i>
+                                                        <a class="text-primary"
+                                                            href="labs{{ !@commit.lab.active ? '/archive' : '' }}#{{ @commit.lab.handle }}"
+                                                            role="button">{{
+                                                            @commit.lab.name }}</a>
+                                                    </check>
+                                                </true>
+                                                <false>
+                                                    <div class="pt-1 text-secondary">
+                                                        <em>{{ @DICT.lab_deleted }}</em>
+                                                    </div>
+                                                </false>
+                                            </check>
+                                        </td>
+                                        <td class="text-right">
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-default btn-tool"
+                                                    data-toggle="dropdown">
+                                                    <i class="{{ @icon_style_s }} fa-gavel text-cyan"></i>
+                                                </button>
+                                                <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                                    <a class="dropdown-item" role="button" href="{{ @PARAMS.handle }}"
+                                                        data-toggle="modal" data-target="#remove"
+                                                        data-link="dp/{{ @PARAMS.handle }}/p/{{ @PARAMS.period }}/remove/{{ @commit.team.handle }}/{{ @commit.subject.handle }}/{{ @commit.lab !== 0 ? @commit.lab.handle : '0' }}"
+                                                        data-name="{{ @DICT.the_commitment }}"><i
+                                                            class="{{ @icon_style }} {{ @icon_spacing }} fa-trash mr-2 text-danger"></i>
+                                                        {{ @DICT.remove }}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </repeat>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </check>
+
+    <hr class="style" />
+
+    <check if="{{ !empty(@lab_list) }}">
+        <true>
+            <repeat group="{{ @lab_list }}" value="{{ @lab }}" counter="{{ @ctr }}">
+                <check if="{{ @ctr !== 1 }}">
+                    <hr class="style" />
+                </check>
+                <div class="card card-outline card-{{ @lab.active ? 'blue' : 'purple' }}">
+                    <div class="card-header">
+                        <div class="card-title text-lg">
+                            <a href="labs{{ !@lab.active ? '/archive' : '' }}#{{ @lab.handle }}"><i
+                                    class="{{ @icon_style }} fa-{{ @lab.icon ? @lab.icon : 'flask' }} text-{{ @lab.active ? 'blue' : 'purple' }} fa-lg mr-2 ml-1"></i>
+                                {{ @lab.name }}
+                            </a>
+                        </div>
+                        <div class="card-tools text-right pr-2">
+                            <include href="plan/unit/lab_menu.htm" />
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <table class="table table-hover">
+                                    <tbody>
+                                        <repeat group="{{ @lab.book_list }}" value="{{ @book }}">
+                                            <tr>
+                                                <td width="35%">
+                                                    <a href="u/{{ @book.user.handle }}">
+                                                        <check if="{{ @book.user.role === @role_owner }}">
+                                                            <i
+                                                                class="{{ @icon_style_s }} {{ @icon_spacing }} fa-chalkboard-teacher text-red mr-2 fa-lg"></i>
+                                                        </check>
+                                                        <check if="{{ @book.user.role === @role_admin }}">
+                                                            <i
+                                                                class="{{ @icon_style_s }} {{ @icon_spacing }} fa-chalkboard-teacher text-blue mr-2 fa-lg"></i>
+                                                        </check>
+                                                        <check if="{{ @book.user.role === @role_moderator }}">
+                                                            <i
+                                                                class="{{ @icon_style_s }} {{ @icon_spacing }} fa-chalkboard-teacher text-green mr-2 fa-lg"></i>
+                                                        </check>
+                                                        <check if="{{ @book.user.role === @role_coach }}">
+                                                            <i
+                                                                class="{{ @icon_style_s }} {{ @icon_spacing }} fa-chalkboard-teacher text-yellow mr-2 fa-lg"></i>
+                                                        </check>
+                                                        <check if="{{ @book.user.role === @role_student }}">
+                                                            <i
+                                                                class="{{ @icon_style_s }} {{ @icon_spacing }} fa-user text-secondary mr-2 fa-lg"></i>
+                                                        </check>
+                                                        <check if="{{ @book.user.first_name || @book.user.last_name }}">
+                                                            <true>
+                                                                {{ isset(@book.user.first_name) ? @book.user.first_name
+                                                                : '' }}
+                                                                <check if="{{ isset(@book.user.last_name) }}">
+                                                                    <strong>{{ @book.user.last_name }}</strong>
+                                                                </check>
+                                                            </true>
+                                                            <false>
+                                                                <em class="mr-1">{{ @DICT.ID }}</em> <strong>{{
+                                                                    @book.user.handle}}</strong>
+                                                            </false>
+                                                        </check>
+                                                    </a>
+                                                    <check if="{{ @book.blocked }}">
+                                                        <i
+                                                            class="{{ @icon_style_s }} fa-times-circle text-red ml-2"></i>
+                                                    </check>
+                                                    <check
+                                                        if="{{ isset(@SESSION.proxy) && (@SESSION.proxy === @book.user.id) }}">
+                                                        <i class="{{ @icon_style_s }} fa-mask mx-2 text-red"></i>
+                                                    </check>
+                                                    <check if="{{ @SESSION.user_id === @book.user.id }}">
+                                                        <i class="{{ @icon_style_s }} fa-mask mx-2 text-secondary"></i>
+                                                    </check>
+                                                    <check if="{{ @book.user.absent }}">
+                                                        <i class="{{ @icon_style }} fa-paper-plane mx-2 text-red"></i>
+                                                    </check>
+                                                </td>
+                                                <td width="45%">
+                                                    <check if="{{ !empty(@book.subject) }}">
+                                                        <true>
+                                                            <div class="row">
+                                                                <div class="col-1">
+                                                                    <i
+                                                                        class="{{ @icon_style }} fa-{{ @book.subject.icon ? @book.subject.icon : ( @book.subject.parent === 0 ? 'folder' : 'file') }} text-{{ @book.subject.active ? 'green' : 'purple' }} mr-2 fa-lg"></i>
+                                                                </div>
+                                                                <div class="col-10 px-3">
+                                                                    <a class="mr-2"
+                                                                        href="subjects{{ !@book.subject.active ? '/archive' : '' }}#{{ @book.subject.handle }}">
+                                                                        {{ @book.subject.name }}
+                                                                    </a>
+                                                                    <span class="small text-secondary">
+                                                                        {{ @book.subject.parent.name }}
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </true>
+                                                        <false>
+                                                            <div class="pt-1 text-secondary">
+                                                                <em>{{ @DICT.subject_deleted }}</em>
+                                                            </div>
+                                                        </false>
+                                                    </check>
+                                                </td>
+                                                <td class="text-right">
+                                                    <check if="{{ @book.present === @book_present_on }}">
+                                                        <a class="btn mr-3 {{ (!@book.description && !@book.review) ? 'btn-default' : 'btn-outline-secondary' }}"
+                                                            data-toggle="modal" href="#" data-target="#fetch"
+                                                            data-url="{{ $BASE_URL }}dp/{{ @PARAMS.handle }}/fetch/book/{{ @period.handle }}/{{ @book.user.handle }}"
+                                                            data-style="modal-lg">
+                                                            <check if="{{ @book.rating === @book_rating_none }}">
+                                                                <i class="{{ @icon_style_s }} fa-pen text-dark"></i>
+                                                            </check>
+                                                            <check
+                                                                if="{{ @book.rating === @book_rating_better_than_expected }}">
+                                                                <i
+                                                                    class="{{ @icon_style_s }} fa-thumbs-up text-success"></i>
+                                                            </check>
+                                                            <check
+                                                                if="{{ @book.rating === @book_rating_made_good_progress }}">
+                                                                <i class="{{ @icon_style_s }} fa-star text-primary"></i>
+                                                            </check>
+                                                            <check
+                                                                if="{{ @book.rating === @book_rating_could_go_better }}">
+                                                                <i
+                                                                    class="{{ @icon_style_s }} fa-thumbs-down text-danger"></i>
+                                                            </check>
+                                                        </a>
+                                                    </check>
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-default btn-tool"
+                                                            data-toggle="dropdown">
+                                                            <check if="{{ @book.present === @book_present_off }}">
+                                                                <i
+                                                                    class="{{ @icon_style_s }} {{ @icon_spacing }} fa-chevron-left text-blue"></i>
+                                                            </check>
+                                                            <check if="{{ @book.present === @book_present_on }}">
+                                                                <i
+                                                                    class="{{ @icon_style }} {{ @icon_spacing }} fa-check text-green"></i>
+                                                            </check>
+                                                            <check if="{{ @book.present === @book_present_excused }}">
+                                                                <i
+                                                                    class="{{ @icon_style }} {{ @icon_spacing }} fa-paperclip text-red"></i>
+                                                            </check>
+                                                            <check if="{{ @book.present === @book_present_free }}">
+                                                                <i
+                                                                    class="{{ @icon_style_s }} {{ @icon_spacing }} fa-feather text-lightblue"></i>
+                                                            </check>
+                                                        </button>
+                                                        <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                                            <a class="dropdown-item {{ @book.present === @book_present_on ? 'text-green' : '' }}"
+                                                                href="dp/{{ @PARAMS.handle }}/p/{{ @period.handle }}/u/{{ @book.user.handle }}/present"><i
+                                                                    class="{{ @icon_style }} {{ @icon_spacing }} fa-check mr-2 {{ @book.present === @book_present_off ? 'text-green' : '' }}"></i>
+                                                                {{ @DICT.present
+                                                                }}</a>
+                                                            <a class="dropdown-item {{ @book.present === @book_present_excused ? 'text-red' : '' }}"
+                                                                href="dp/{{ @PARAMS.handle }}/p/{{ @period.handle }}/u/{{ @book.user.handle }}/excused"><i
+                                                                    class="{{ @icon_style }} {{ @icon_spacing }} fa-paperclip mr-2 {{ @book.present === @book_present_off ? 'text-red' : '' }}"></i>
+                                                                {{ @DICT.excused
+                                                                }}</a>
+                                                            <a class="dropdown-item {{ @book.present === @book_present_free ? 'text-lightblue' : '' }}"
+                                                                href="dp/{{ @PARAMS.handle }}/p/{{ @period.handle }}/u/{{ @book.user.handle }}/free"><i
+                                                                    class="{{ @icon_style_s }} {{ @icon_spacing }} fa-feather mr-2 {{ @book.present === @book_present_off ? 'text-lightblue' : '' }}"></i>
+                                                                {{ @DICT.free
+                                                                }}</a>
+                                                            <div class="dropdown-divider"></div>
+                                                            <a class="dropdown-item"
+                                                                href="dp/{{ @PARAMS.handle }}/p/{{ @period.handle }}/u/{{ @book.user.handle }}/blocked"><i
+                                                                    class="{{ @icon_style_s }} {{ @icon_spacing }} fa-times-circle mr-2 text-{{ @book.blocked ? '' : 'red' }}"></i>
+                                                                {{ @book.blocked ? @DICT.unblock : @DICT.block }}</a>
+                                                            <div class="dropdown-divider"></div>
+                                                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                                                data-target="#fetch"
+                                                                data-url="{{ $BASE_URL }}dp/{{ @PARAMS.handle }}/fetch/book/p/{{ @period.handle }}/u/{{ @book.user.handle }}"><i
+                                                                    class="{{ @icon_style_s }} {{ @icon_spacing }} fa-thumbtack mr-2 text-blue"></i>
+                                                                {{ @DICT.rebook
+                                                                }}</a>
+                                                            <div class="dropdown-divider"></div>
+                                                            <a class="dropdown-item" href="#" data-toggle="modal"
+                                                                data-target="#remove"
+                                                                data-link="{{ $BASE_URL }}dp/{{ @PARAMS.handle }}/p/{{ @period.handle }}/u/{{ @book.user.handle }}/remove"
+                                                                data-name="{{ @DICT.the_booking }}"><i
+                                                                    class="{{ @icon_style }} {{ @icon_spacing }} fa-trash mr-2 text-danger"></i>
+                                                                {{ @DICT.remove }}</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </repeat>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </repeat>
+        </true>
+        <false>
+            <div class="text-center text-secondary my-1">
+                <p>
+                    <a href="dp/{{ @PARAMS.handle }}/p/{{ @PARAMS.period }}"><img src="img/logo/logo-180x180.png"
+                            alt="{{ @DICT.dp_name }}"></a>
+                </p>
+                <strong>{{ @DICT.no_bookings }}</strong>
+            </div>
+        </false>
+    </check>
+
+</div>

@@ -1,0 +1,14 @@
+<div class="mx-2">
+    <div class="modal-header">
+        <h4 class="modal-title text-blue" id="modal_label"><i
+                class="{{ @icon_style }} {{ @icon_spacing }} fa-info-circle"></i>
+            {{ @DICT.no_content }}</h4>
+        <include href="fetch/close.htm" />
+    </div>
+    <div class="modal-body text-center text-blue">
+        {{ @DICT.try_again_later }}...
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{ @DICT.close }}</button>
+    </div>
+</div>

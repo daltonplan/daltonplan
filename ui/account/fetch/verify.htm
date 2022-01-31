@@ -1,0 +1,19 @@
+<div class="mx-2 mb-2">
+    <div class="modal-header">
+        <h4 class="modal-title text-secondary" id="modal_label">
+            {{ @DICT.verify_request }}</h4>
+        <include href="fetch/close.htm" />
+    </div>
+
+    <div class="modal-body">
+        <p>{{ @DICT.verify_request_info1 }} <i class="{{ @icon_style }} {{ @icon_spacing } fa-check text-green"></i>
+        </p>
+        {{ @DICT.verify_request_info2 }} <i class="{{ @icon_style }} fa-arrow-right"></i> <a href="user" class="mr-2">{{
+            @DICT.my_account }}</a> {{ @DICT.verify_request_info3 }} <strong class="mx-1"><i
+                class="{{ @icon_style }} {{ @icon_spacing }} fa-cog"></i>{{ @DICT.settings }}</strong>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{ @DICT.close }}</button>
+    </div>
+</div>

@@ -1,0 +1,70 @@
+<div class="mx-2 mb-2">
+    <div class="modal-header">
+        <h4 class="modal-title text-blue" id="modal_label">
+            {{ @DICT.add_user }}
+        </h4>
+        <include href="fetch/close.htm" />
+    </div>
+    <form id="user_add" action="user_add" method="post">
+        <div class="modal-body">
+            <div class="form-group">
+                <input class="form-control" type="text" maxlength="{{ @max_name_length }}" name="last_name"
+                    placeholder="{{ @DICT.last_name }}">
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="text" maxlength="{{ @max_name_length }}" name="first_name"
+                    placeholder="{{ @DICT.first_name }}">
+            </div>
+            <check if="{{ @dp_email }}">
+                <hr class="style" />
+                <div class="form-group">
+                    <input type="email" class="form-control" maxlength="{{ @max_email_length }}" name="email"
+                        placeholder="{{ @DICT.email }}">
+                </div>
+            </check>
+            <hr class="style" />
+            <div class="form-group">
+                <select class="form-control selectpicker" name="role" id="role" title="{{ @DICT.role }}"
+                    data-icon-base="{{ @icon_style_s }} mr-1" required>
+                    <option value="{{ @role_student }}" data-icon="fa-user text-secondary">
+                        {{ @DICT.student }}
+                    </option>
+                    <option value="{{ @role_coach }}" data-icon="fa-chalkboard-teacher text-yellow">
+                        {{ @DICT.coach }}
+                    </option>
+                    <option value="{{ @role_moderator }}" data-icon="fa-chalkboard-teacher text-green">
+                        {{ @DICT.moderator }}
+                    </option>
+                    <option value="{{ @role_admin }}" data-icon="fa-chalkboard-teacher text-blue">
+                        {{@DICT.administrator }}
+                    </option>
+                    <check if="{{ @SESSION.user_role === @role_owner }}">
+                        <option value="{{ @role_owner }}" data-icon="fa-chalkboard-teacher text-red">
+                            {{ @DICT.owner }}
+                        </option>
+                    </check>
+                </select>
+            </div>
+            <hr class="style" />
+            <div class="form-group">
+                <select class="form-control selectpicker" name="teams[]" id="teams"
+                    data-none-selected-text="{{ @DICT.pick_teams }}" data-icon-base="{{ @icon_style }} mr-1"
+                    data-live-search="true" multiple data-none-results-text="{{ @DICT.no_results_matched }} {0}">
+                    <repeat group="{{ @team_list }}" value="{{ @team }}">
+                        <option value="{{ @team.handle }}"
+                            data-icon="fa-{{ @team.icon ? @team.icon : 'tag' }} text-cyan">
+                            {{ @team.name }}{{ @team.active === 0 ? ' (' . @DICT.archive . ')' : '' }}
+                        </option>
+                    </repeat>
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <input type="hidden" name="token" value="{{ @SESSION.csrf }}" />
+            <button type="submit" class="btn btn-primary"><i class="{{ @icon_style_s }} fa-user-plus mr-2"></i>
+                {{ @DICT.add }}</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">{{ @DICT.close }}</button>
+        </div>
+    </form>
+</div>
+<include href="fetch/submit_script.htm" />

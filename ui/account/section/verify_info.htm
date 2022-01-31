@@ -1,0 +1,16 @@
+<check if="{{ isset(@verify_email) }}">
+    <section class="verify_info">
+        <div class="container mb-2">
+            <div class="callout">
+                <p>{{ @DICT.verify_email_info }}: <span class="text-green mx-1">{{
+                        @verify_email.email
+                        }}</span></p>
+                <p>
+                    {{ @DICT.valid_until }}: {{ @verify_email.timeout }} <i
+                        class="{{ @icon_style }} {{ @icon_spacing }} fa-arrow-right"></i> <a href="verify"
+                        class="text-blue">{{
+                        @DICT.want_to_verify }}</a></p>
+            </div>
+        </div>
+    </section>
+</check>

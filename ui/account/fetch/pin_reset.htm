@@ -1,0 +1,25 @@
+<div class="mx-2 mb-2">
+    <div class="modal-header">
+        <h4 class="modal-title text-red" id="modal_label">
+            {{ @DICT.are_you_sure }}</h4>
+        <include href="fetch/close.htm" />
+    </div>
+
+    <div class="modal-body">
+        {{ @DICT.action_pin_reset_1 }}
+
+        <include href="account/unit/name_role.htm" />
+
+        {{ @DICT.action_pin_reset_2 }}
+    </div>
+
+    <div class="modal-footer">
+        <form id="logout" action="u/{{ @user.handle }}/pin_reset" method="post">
+            <input type="hidden" name="token" value="{{ @SESSION.csrf }}" />
+            <button type="submit" class="btn btn-danger"><i class="{{ @icon_style_s }} fa-key mr-2"></i>
+                {{ @DICT.reset_pin }}</button>
+        </form>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{ @DICT.close }}</button>
+    </div>
+</div>
+<include href="fetch/submit_script.htm" />

@@ -1,0 +1,47 @@
+<div class="row">
+    <div class="col-12">
+        <span class="small pr-2">
+            {{ @week.start }}
+            <i class="{{ @icon_style }} {{ @icon_spacing }} fa-arrow-right"></i>
+            {{ @week.end }}
+        </span>
+        <check if="{{ @week.link !== '' }}">
+            <span class="px-2">
+                <a href="{{ @week.link }}" target="_blank">
+                    <i class="{{ @icon_style }} fa-link"></i>
+                </a>
+            </span>
+        </check>
+        <check
+            if="{{ (@SESSION.user_role === @role_moderator) || (@SESSION.user_role === @role_admin) || (@SESSION.user_role === @role_owner) }}">
+            <div class="btn-group pl-2">
+                <button type="button" class="btn btn-default btn-tool dropdown-toggle text-secondary"
+                    data-toggle="dropdown">
+                    <i class="{{ @icon_style_s }} fa-wrench"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" role="menu">
+                    <check if="{{ (@SESSION.user_role === @role_admin) || (@SESSION.user_role === @role_owner) }}">
+                        <a class="dropdown-item hint-admin" href="#" data-toggle="modal" data-target="#fetch"
+                            data-url="{{ $BASE_URL }}dp/{{ @plan.handle }}/w/{{ @week.handle }}/fetch/add_frame"><i
+                                class="{{ @icon_style }} {{ @icon_spacing }} fa-calendar-plus mr-2 text-blue"></i> {{
+                            @DICT.add }}</a>
+                        <div class="dropdown-divider"></div>
+                    </check>
+                    <a class="dropdown-item hint-mod" href="#" data-toggle="modal" data-target="#fetch"
+                        data-url="{{ $BASE_URL }}dp/{{ @plan.handle }}/w/{{ @week.handle }}/fetch/edit"><i
+                            class="{{ @icon_style }} {{ @icon_spacing }} fa-edit mr-2 text-blue"></i> {{ @DICT.edit
+                        }}</a>
+                    <check if="{{ (@SESSION.user_role === @role_admin) || (@SESSION.user_role === @role_owner) }}">
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item hint-admin" href="#" data-toggle="modal" data-target="#remove"
+                            data-link="{{ $BASE_URL }}dp/{{ @plan.handle }}/w/{{ @week.handle }}/delete"
+                            data-name="{{ @week.name }}"><i
+                                class="{{ @icon_style }} {{ @icon_spacing }} fa-trash mr-2 text-red"></i> {{
+                            @DICT.delete
+                            }}</a>
+                    </check>
+                </div>
+            </div>
+        </check>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+<p>{{ @DICT.email_begin }}</p>
+
+<p>{{ @email.msg }}</p>
+
+<check if="{{ isset(@email.device_info) }}">
+    {{ @DICT.device }}: {{ @email.device_info }}<br />
+</check>
+{{ @DICT.verification_code }}: <strong>{{ @email.handle }}</strong>
+
+<p>{{ @DICT.valid_until }}: {{ @email.valid_time }}</p>
+
+{{ @DICT.email_end }}<br />
+{{ @DICT.dp_name }}

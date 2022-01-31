@@ -1,0 +1,72 @@
+<div class="row">
+    <div class="col-12">
+        <span class="small pr-2">
+            <span class="pr-2"><i class="{{ @icon_style_s }} {{ @icon_spacing }} fa-thumbtack text-teal"></i>
+                {{
+                @plan.register
+                }} {{ @plan.register === 1 ? @DICT.minute : @DICT.minutes }}</span>
+            <span class=""><i class="{{ @icon_style }} {{ @icon_spacing }} fa-exchange-alt text-teal"></i>
+                {{
+                @plan.exchange
+                }} {{ @plan.exchange === 1 ? @DICT.minute : @DICT.minutes }}</span>
+        </span>
+        <check if="{{ @plan.time !== null }}">
+            <span class="px-2 text-danger">
+                <i class="{{ @icon_style }} {{ @icon_spacing }} fa-history"></i> <strong>{{ @plan.date_time
+                    }}</strong>
+            </span>
+        </check>
+        <check if="{{ @plan.link !== '' }}">
+            <span class="px-2">
+                <a href="{{ @plan.link }}" target="_blank">
+                    <i class="{{ @icon_style }} fa-link"></i>
+                </a>
+            </span>
+        </check>
+        <check
+            if="{{ (@SESSION.user_role === @role_moderator) || (@SESSION.user_role === @role_admin) || (@SESSION.user_role === @role_owner) }}">
+            <div class="btn-group pl-2">
+                <button type="button" class="btn btn-default btn-tool dropdown-toggle text-secondary"
+                    data-toggle="dropdown">
+                    <i class="{{ @icon_style_s }} fa-wrench"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" role="menu">
+                    <a class="dropdown-item hint-mod" href="#" data-toggle="modal" data-target="#fetch"
+                        data-url="{{ $BASE_URL }}dp/{{ @plan.handle }}/fetch/assign_team"><i
+                            class="{{ @icon_style }} {{ @icon_spacing }} fa-tag text-cyan mr-2"></i>
+                        {{ @DICT.assign_team }}</a>
+
+                    <check if="{{ (@SESSION.user_role === @role_admin) || (@SESSION.user_role === @role_owner) }}">
+                        <div class="dropdown-divider"></div>
+
+                        <a class="dropdown-item hint-admin" href="#" data-toggle="modal" data-target="#fetch"
+                            data-url="{{ $BASE_URL }}dp/{{ @plan.handle }}/fetch/edit"><i
+                                class="{{ @icon_style }} {{ @icon_spacing }} fa-edit mr-2 text-blue"></i> {{ @DICT.edit
+                            }}</a>
+
+                    </check>
+
+                    <check if="{{ (@dp_time_machine === 1) && (@SESSION.user_role === @role_owner) }}">
+                        <div class="dropdown-divider"></div>
+
+                        <a class="dropdown-item hint-owner" href="#" data-toggle="modal" data-target="#fetch"
+                            data-url="{{ $BASE_URL }}dp/{{ @plan.handle }}/fetch/time_machine"><i
+                                class="{{ @icon_style }} {{ @icon_spacing }} fa-history mr-2 text-danger"></i> {{
+                            @DICT.time_machine
+                            }}</a>
+                    </check>
+
+                    <check if="{{ (@SESSION.user_role === @role_owner) }}">
+                        <div class="dropdown-divider"></div>
+
+                        <a class="dropdown-item hint-owner" href="#" data-toggle="modal" data-target="#remove"
+                            data-link="{{ $BASE_URL }}dp/{{ @plan.handle }}/remove" data-name="{{ @plan.name }}"><i
+                                class="{{ @icon_style }} {{ @icon_spacing }} fa-trash mr-2 text-red"></i> {{
+                            @DICT.remove
+                            }}</a>
+                    </check>
+                </div>
+            </div>
+        </check>
+    </div>
+</div>

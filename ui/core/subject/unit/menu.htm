@@ -1,0 +1,94 @@
+<div class="row">
+    <div class="col-12">
+
+        <check if="{{ (@SESSION.user_role === @role_student) || (@subject.periods > 0) || isset(@PARAMS.user) }}">
+            <span class="px-2 text-secondary">
+                <check if="{{ @SESSION.user_role === @role_student || isset(@PARAMS.user) || isset(@subject.amount) }}">
+                    <strong
+                        class="text-{{ (@subject.amount > @subject.periods) && (@subject.periods > 0) ? 'red' : (@subject.amount < @subject.periods ? 'green' : 'secondary') }}">
+                        {{ @subject.amount }}
+                    </strong>
+                    <check if="{{ (@subject.periods > 0) && (isset(@subject.amount) || isset(@PARAMS.user)) }}">
+                        <span class="mx-1">/</span>
+                    </check>
+                </check>
+                <check if="{{ (@subject.periods > 0) }}">
+                    {{ @subject.periods }}
+                </check>
+                <i class="{{ @icon_style }} {{ @icon_spacing }} fa-calendar-day ml-2"></i>
+            </span>
+        </check>
+        <set parent_exclusive="{{ (!empty(@parent) && isset(@parent.exclusive) && @parent.exclusive) }}" />
+        <check if="{{ @subject.exclusive || @parent_exclusive }}">
+            <span class="px-2 text-{{ @parent_exclusive && !@subject.exclusive ? 'secondary' : 'green' }}">
+                <i class="{{ @icon_style }} {{ @icon_spacing }} fa-asterisk"></i>
+            </span>
+        </check>
+        <set parent_managed="{{ (!empty(@parent) && isset(@parent.managed) && @parent.managed) }}" />
+        <check if="{{ @subject.managed || @parent_managed }}">
+            <span class="px-2 text-{{ @parent_managed && !@subject.managed ? 'secondary' : 'red' }}">
+                <i class="{{ @icon_style }} {{ @icon_spacing }} fa-chalkboard"></i>
+            </span>
+        </check>
+        <set parent_locked="{{ (!empty(@parent) && isset(@parent.locked) && @parent.locked) }}" />
+        <check if="{{ @subject.locked || @parent_locked }}">
+            <span class="px-2 text-{{ @parent_locked && !@subject.locked ? 'secondary' : 'cyan' }}">
+                <i class="{{ @icon_style_s }} {{ @icon_spacing }} fa-lock"></i>
+            </span>
+        </check>
+
+        <check if="{{ @subject.link !== '' }}">
+            <span class="px-2">
+                <a href="{{ @subject.link }}" target="_blank">
+                    <i class="{{ @icon_style }} fa-link"></i>
+                </a>
+            </span>
+        </check>
+        <check
+            if="{{ (@SESSION.user_role === @role_moderator) || (@SESSION.user_role === @role_admin) || (@SESSION.user_role === @role_owner) }}">
+            <div class="btn-group pl-2">
+                <button type="button" class="btn btn-default btn-tool dropdown-toggle text-secondary"
+                    data-toggle="dropdown">
+                    <i class="{{ @icon_style_s }} fa-wrench"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" role="menu">
+                    <check if="{{ !@subject.active }}">
+                        <a class="dropdown-item hint-mod" href="s/{{ @subject.handle }}/activate"><i
+                                class="{{ @icon_style }} {{ @icon_spacing }} fa-undo mr-2 text-purple"></i> {{
+                            @DICT.activate }}</a>
+                        <div class="dropdown-divider"></div>
+                    </check>
+                    <check if="{{ empty(@subject.parent) }}">
+                        <a class="dropdown-item hint-mod" href="#" data-toggle="modal" data-target="#fetch"
+                            data-url="{{ $BASE_URL }}s/{{ @subject.handle }}/fetch/add"><i
+                                class="{{ @icon_style }} {{ @icon_spacing }} fa-file-plus mr-2 text-green"></i> {{
+                            @DICT.add }}</a>
+                        <div class="dropdown-divider"></div>
+                    </check>
+                    <a class="dropdown-item hint-mod" href="#" data-toggle="modal" data-target="#fetch"
+                        data-url="{{ $BASE_URL }}s/{{ @subject.handle }}/fetch/edit"><i
+                            class="{{ @icon_style }} {{ @icon_spacing }} fa-edit mr-2 text-primary"></i>
+                        {{ @DICT.edit }}</a>
+                    <check if="{{ !@subject.active }}">
+                        <true>
+                            <check if="{{ !isset(@subject.children) || (count(@subject.children) === 0) }}">
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item hint-mod" href="#" data-toggle="modal" data-target="#remove"
+                                    data-link="{{ $BASE_URL }}s/{{ @subject.handle }}/remove"
+                                    data-name="{{ @subject.name }}"><i
+                                        class="{{ @icon_style }} {{ @icon_spacing }} fa-trash mr-2 text-danger"></i>
+                                    {{ @DICT.remove }}</a>
+                            </check>
+                        </true>
+                        <false>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item hint-mod" href="s/{{ @subject.handle }}/archive"><i
+                                    class="{{ @icon_style }} {{ @icon_spacing }} fa-archive mr-2 text-purple"></i>
+                                {{ @DICT.to_archive }}</a>
+                        </false>
+                    </check>
+                </div>
+            </div>
+        </check>
+    </div>
+</div>

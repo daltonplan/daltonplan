@@ -1,0 +1,21 @@
+<div class="wrapper">
+
+    <include href="app/navbar.htm" />
+
+    <include href="app/sidebar.htm" />
+
+    <div id="dp_content" class="content-wrapper">
+
+        <include href="account/section/profile.htm" />
+
+        <include href="{{ @ui_content }}" />
+
+        <check if="{{ (@SESSION.user_role !== @role_student) || (@SESSION.user_role !== @role_coach) }}">
+            <include href="app/control.htm" />
+        </check>
+
+    </div>
+
+    <include href="app/footer.htm" />
+
+</div>
