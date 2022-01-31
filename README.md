@@ -70,7 +70,7 @@ If a problem occurs, you can view the log files in the `log` folder - When you s
 
 You can change the configuration file: `cfg/config.ini`
 
-It is licensed under [MIT License]([LICENSE.md](https://en.wikipedia.org/wiki/MIT_License)) - so changes in this file do not affect the [AGPL](LICENSE.md) conditions
+It is licensed under **MIT License** - so changes in this file do not affect the [AGPL](LICENSE.md) conditions
 
 <br />
 
