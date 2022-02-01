@@ -6,9 +6,9 @@ namespace frame;
 
 class version
 {
-    const last_update = '2022-01-31';
+    const last_update = '2022-02-01';
 
-    const nr = '0.30';
+    const nr = '0.31';
 
     const year = '2022';
     const release = 0;
