@@ -33,8 +33,7 @@ A modern adoption of a teaching method developed by [Helen Parkhurst](https://en
 
 ## Requirements
 
-* Web server / Web hosting
-* PHP 8.0 *(Version 8.1+ is currently not supported)*
+* Web server / PHP 8+
 * SQL database (MySQL / MariaDB)
 
 <br />
