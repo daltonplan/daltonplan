@@ -57,6 +57,12 @@
                                                 <i
                                                     class="{{ @icon_style }} {{ @icon_spacing }} fa-{{ @period.book.subject.icon ? @period.book.subject.icon : 'file' }} text-{{ @period.id === @current_id ? 'white' : (@period.book.subject.active ? 'green' : 'purple') }}"></i>
                                                 {{ @period.book.subject.name }}
+                                                <check if="{{ isset(@period.book.subject.parent) }}">
+                                                    <div
+                                                        class="small text-{{ @period.id === @current_id ? 'white' : 'secondary' }}">
+                                                        - {{ @period.book.subject.parent.name }} -
+                                                    </div>
+                                                </check>
                                                 <check if="{{ @period.book.present > 0 }}">
                                                     <div>
                                                         <check if="{{ @period.book.present === 1 }}">
@@ -84,7 +90,8 @@
                                                     class="{{ @icon_style }} {{ @icon_spacing }} fa-{{ @period.book.lab.icon ? @period.book.lab.icon : 'flask' }} text-{{ @period.id === @current_id ? 'white' : (@period.book.lab.active ? 'blue' : 'purple') }}"></i>
                                                 <span
                                                     class="text-{{ @period.id === @current_id ? 'white' : 'dark' }}">{{
-                                                    @period.book.lab.name }}</span>
+                                                    @period.book.lab.name }}
+                                                </span>
                                             </div>
                                         </true>
                                         <false>

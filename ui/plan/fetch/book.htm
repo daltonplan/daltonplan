@@ -11,7 +11,7 @@
                         </a>
                     </span>
                 </check>
-                <strong class="text-dark text-sm">
+                <strong class="text-secondary text-sm">
                     {{ @period.start_date }} {{ @period.start_date !== @period.end_date ? '- ' .
                     @period.end_date : '' }}
                     <span class="px-3"><i class="{{ @icon_style }} {{ @icon_spacing }} fa-clock text-secondary"></i> {{
@@ -41,26 +41,26 @@
 
         <check if="{{ @SESSION.user_role !== @role_student }}">
             <div class="row">
-                <div class="col-6 text-secondary px-4">
-                    <i class="{{ @icon_style }} {{ @icon_spacing }} fa-arrow-down text-secondary"></i>
-                    {{ @DICT.preview }}
+                <div class="col-6 text-dark px-4">
+                    {{ @DICT.preview }} {{ @DICT.for }}
                 </div>
                 <div class="col-6 text-right text-secondary px-4">
-                    <a href="dp/{{ @PARAMS.handle }}/p/{{ @period.handle }}"><i
-                            class="{{ @icon_style }} {{ @icon_spacing }} fa-arrow-right"></i> {{ @DICT.all_bookings
-                        }}</a>
+                    <a href="dp/{{ @PARAMS.handle }}/p/{{ @period.handle }}">{{ @DICT.all_bookings
+                        }}
+                        <i class="{{ @icon_style }} {{ @icon_spacing }} fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="col-12 px-4 mt-2">
+                    <include href="account/unit/name_role.htm" />
+                    <check
+                        if="{{ (!empty(@book) && (@book.blocked === @book_blocked_on)) || (@period.blocked === @period_blocked_on) }}">
+                        <span class="text-red small mt-2 pl-2">
+                            <i class="{{ @icon_style_s }} {{ @icon_spacing }} fa-times-circle"></i>
+                            {{ @DICT.blocked }}
+                        </span>
+                    </check>
                 </div>
             </div>
-            <hr class="style" />
-
-            <include href="account/unit/name_role_p.htm" />
-            <check
-                if="{{ (!empty(@book) && (@book.blocked === @book_blocked_on)) || (@period.blocked === @period_blocked_on) }}">
-                <div class="text-center text-red small">
-                    <i class="{{ @icon_style_s }} {{ @icon_spacing }} fa-times-circle"></i>
-                    {{ @DICT.user_blocked }}
-                </div>
-            </check>
             <hr class="style" />
         </check>
 
