@@ -584,7 +584,7 @@ abstract class book
                                 $subject_id = (int)$s_value[subject::id];
 
                                 if ($subject_id === $child_id) {
-                                    $book_subject_list[] = $s_value;
+                                    $book_subject_list[$subject_id] = $s_value;
                                     break;
                                 }
                             }
@@ -597,7 +597,7 @@ abstract class book
                             $subject_id = (int)$s_value[subject::id];
 
                             if ($subject_id === $ls_subject_id) {
-                                $book_subject_list[] = $s_value;
+                                $book_subject_list[$subject_id] = $s_value;
                                 break;
                             }
                         }
@@ -608,7 +608,9 @@ abstract class book
                     if (((int)$s_value[subject::managed] === subject::managed_on) && !$has_coach)
                         continue;
 
-                    $book_subject_list[] = $s_value;
+                    $subject_id = (int)$s_value[subject::id];
+
+                    $book_subject_list[$subject_id] = $s_value;
                 }
             }
 
