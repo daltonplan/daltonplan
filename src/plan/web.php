@@ -229,7 +229,7 @@ class web extends app
 
             $current_time = time::to_db_date_time($now);
 
-            $week_list = week::get_list($fw->db, $plan_id);
+            $week_list = week::get_list_latest($fw->db, $plan_id);
             foreach ($week_list as $week) {
                 $week_id = (int)$week[week::id];
 
@@ -289,7 +289,7 @@ class web extends app
                 if (!isset($plan[week::day_list]))
                     $plan[week::day_list] = $day_list;
                 else
-                    $plan[week::day_list] = array_merge($day_list, $plan[week::day_list]);
+                    $plan[week::day_list] = array_merge($plan[week::day_list], $day_list);
 
                 $report_list[$plan_id] = $plan;
             }
@@ -1709,5 +1709,25 @@ class web extends app
         frame::set_list($fw, $plan_id, $week_id, \account\service::get_id($fw));
 
         base::render('plan/detail.htm');
+    }
+
+    function fetch_filter(\Base $fw): void
+    {
+        if (!\account\web::fetch_logged_owner_admin_moderator_coach($fw))
+            return;
+
+        session::new_csrf($fw);
+        base::render('plan/fetch/filter.htm');
+    }
+
+    function filter(\Base $fw): void
+    {
+        if (!\account\web::logged_owner_admin_moderator_coach($fw))
+            return;
+
+        if (!\account\web::set_user($fw))
+            return;
+
+        base::render('plan/filter.htm');
     }
 }
