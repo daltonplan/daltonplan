@@ -21,7 +21,7 @@ A modern adoption of a teaching method developed by [Helen Parkhurst](https://en
 * **Students book** - Students sign themselves up for a subject in a lab
 * **Coaches lead** - Assist them at any time and take action when necessary
 * **Write Report** - Keep a learning diary and evaluate the progress
-* **View Archive** - Periods and content are well documented
+* **View Archive** - Periods and reports are well documented
 * **Manage Dashboard** - Administrate it all in the convenient dashboard
 * **Scan QR code** - Use QR codes to join sessions and distribute access
 
@@ -48,7 +48,7 @@ A modern adoption of a teaching method developed by [Helen Parkhurst](https://en
 
 It is **recommended** to point the web server to the `public` directory so that no one from external has access to the project data and configuration - you can do this in the preferences of the web server or in the dashboard of your web hoster
 
-If a problem occurs, you can view the log files in the `log` folder - When you set up the project, you will get a message in `log/error.log` that the database was not found, this is intentional and can be ignored
+If a problem occurs, you can check the log files in the `log` folder - The first time you set up the project, you will get a message in `log/error.log` that the *database was not found* - this is intentional and can be ignored
 
 <br />
 
