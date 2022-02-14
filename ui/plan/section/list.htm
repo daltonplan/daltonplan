@@ -2,7 +2,7 @@
     <div class="container">
         <check if="{{ isset(@plan_list) && (count(@plan_list) !== 0) }}">
             <true>
-                <h3 class="px-1 pb-2 text-secondary">{{ @SESSION.user_role === @role_student ? (count(@plan_list) ===
+                <h3 class="px-2 pb-2 text-secondary">{{ @SESSION.user_role === @role_student ? (count(@plan_list) ===
                     1 ? @DICT.my_plan : @DICT.my_plans) :
                     @DICT.all_plans }}</h3>
                 <repeat group="{{ @plan_list }}" value="{{ @iter_plan }}" counter="{{ @ctr }}">
