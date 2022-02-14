@@ -33,6 +33,26 @@
                     </check>
                 </select>
             </div>
+            <hr class="style" />
+            <div class="form-group">
+                <div class="row px-4">
+                    <div class="col-6">
+                        <div class="custom-control custom-checkbox custom-control-inline text-blue">
+                            <input id="coach_booking" class="custom-control-input custom-control-input-blue"
+                                type="checkbox" name="coach_booking" value="1" checked>
+                            <label for="coach_booking" class="custom-control-label">{{ @DICT.coach_booking }}</label>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="custom-control custom-checkbox custom-control-inline text-cyan">
+                            <input id="committed_periods" class="custom-control-input custom-control-input-cyan"
+                                type="checkbox" name="committed_periods" value="1" checked>
+                            <label for="committed_periods" class="custom-control-label">{{ @DICT.committed_periods
+                                }}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         </div>
         <div class="modal-footer">

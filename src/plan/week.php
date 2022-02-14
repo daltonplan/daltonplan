@@ -23,6 +23,9 @@ abstract class week
     const day = 'day';
     const day_list = 'day_list';
     const archive = 'week_archive';
+    const import = 'import';
+    const coach_booking = 'coach_booking';
+    const committed_periods = 'committed_periods';
 
     const id = db::id;
     const handle = db::handle;
@@ -315,7 +318,7 @@ abstract class week
 
     // --- command
 
-    static function command_add_internal(\Base $fw, int $command, int $plan_id, int $time): int  // TODO: internal?
+    static function command_add_internal(\Base $fw, int $command, int $plan_id, int $time): int
     {
         $handle = week::new_handle($fw->db, $plan_id);
 
@@ -443,9 +446,13 @@ abstract class week
         \cmd::end($fw, $command, $result);
     }
 
-    static function command_import_periods(\Base $fw, string $plan_handle, string $import_handle)
+    static function command_import_periods(\Base $fw, string $plan_handle, string $import_handle, bool $coach_booking, bool $committed_periods)
     {
-        $command = \cmd::begin_input($fw, \cmd::week_import_periods, array(period::import => $import_handle));
+        $command = \cmd::begin_input($fw, \cmd::week_import_periods, array(
+            week::import => $import_handle,
+            week::coach_booking => $coach_booking,
+            week::committed_periods => $committed_periods
+        ));
 
         $plan = plan::get_by_handle($fw->db, $plan_handle);
         if (empty($plan))
@@ -504,12 +511,14 @@ abstract class week
 
             $period_list = period::get_list_by_frame($fw->db, $plan_id, $frame_id);
             foreach ($period_list as $period) {
+                $period_id = (int)$period[period::id];
+
                 $week_day = time::get_week_day($period[period::start]);
 
                 $start_time = strtotime($weekdays_full[$week_day] . ' this week ' . $frame[frame::start], $week_start);
                 $end_time = strtotime($weekdays_full[$week_day] . ' this week ' . $frame[frame::end], $week_start);
 
-                period::command_add_internal_all(
+                $imported_period_id = period::command_add_internal_all(
                     $fw,
                     $command,
                     $plan_id,
@@ -526,6 +535,33 @@ abstract class week
                 );
 
                 $result++;
+
+                if ($coach_booking) {
+                    $coach_book_list = book::get_list_by_period_excluded($fw->db, $plan_id, $period_id);
+                    foreach ($coach_book_list as $b_value) {
+                        $user_id = (int)$b_value[book::user];
+                        $lab_id = (int)$b_value[book::lab];
+                        $subject_id = (int)$b_value[book::subject];
+                        $blocked = (int)$b_value[book::blocked];
+
+                        book::action_insert($fw, $command, $plan_id, $user_id, $imported_period_id, $lab_id, $subject_id, $week_id, book::excluded_on, $blocked);
+
+                        $result++;
+                    }
+                }
+
+                if ($committed_periods) {
+                    $period_team_list = period_team::get_list_by_period($fw->db, $plan_id, $period_id);
+                    foreach ($period_team_list as $pt_value) {
+                        $team_id = (int)$pt_value[period_team::team];
+                        $subject_id = (int)$pt_value[period_team::subject];
+                        $lab_id = (int)$pt_value[period_team::lab];
+
+                        period_team::action_insert($fw, $command, $plan_id, $imported_period_id, $team_id, $subject_id, $lab_id);
+
+                        $result++;
+                    }
+                }
             }
 
             $result++;

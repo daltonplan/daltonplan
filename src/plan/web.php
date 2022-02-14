@@ -352,7 +352,10 @@ class web extends app
             return;
         }
 
-        week::command_import_periods($fw, $plan_handle, $week_handle);
+        $coach_booking = $fw->exists('POST.coach_booking');
+        $committed_periods = $fw->exists('POST.committed_periods');
+
+        week::command_import_periods($fw, $plan_handle, $week_handle, $coach_booking, $committed_periods);
 
         base::return($fw);
     }

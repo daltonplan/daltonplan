@@ -28,7 +28,6 @@ abstract class period
     const previous = 'previous';
     const current = 'current';
     const next = 'next';
-    const import = 'import';
     const commit_list = 'commit_list';
 
     const start_date = 'start_date';
@@ -676,7 +675,7 @@ abstract class period
 
     // --- command
 
-    static function command_add_internal(   // TODO: internal
+    static function command_add_internal(
         \Base $fw,
         int $command,
         int $plan_id,
@@ -687,8 +686,8 @@ abstract class period
         int $end_time,
         bool $register,
         int $exchange_time
-    ): void {
-        period::command_add_internal_all(
+    ): int {
+        return period::command_add_internal_all(
             $fw,
             $command,
             $plan_id,
@@ -704,7 +703,7 @@ abstract class period
         );
     }
 
-    static function command_add_internal_all(   // TODO: internal
+    static function command_add_internal_all(
         \Base $fw,
         int $command,
         int $plan_id,
@@ -718,7 +717,7 @@ abstract class period
         bool $register,
         int $exchange_time,
         bool $blocked = false
-    ): void {
+    ): int {
         $handle = period::new_handle($fw->db, $plan_id);
 
         $start = date('Y-m-d H:i', $start_time);
@@ -726,7 +725,7 @@ abstract class period
 
         $exchange = date("H:i:s", $exchange_time);
 
-        period::action_insert(
+        return period::action_insert(
             $fw,
             $command,
             $plan_id,

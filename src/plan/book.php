@@ -762,6 +762,18 @@ abstract class book
         ));
     }
 
+    static function get_list_by_period_excluded(SQL $sql, int $plan, int $period, string $fields = ''): array
+    {
+        $get = book::select($plan, $fields) . 'WHERE ' . book::period . '=? AND ' . book::excluded . '=' . book::excluded_on;
+
+        if (session::get_sort_fw())
+            $get .= ' ORDER BY ' . book::created;
+        else
+            $get .= ' ORDER BY ' . book::updated . ' DESC';
+
+        return $sql->exec($get, $period);
+    }
+
     static function get_list_by_period_lab_excluded(SQL $sql, int $plan, int $period, int $lab, string $fields = ''): array
     {
         $get = book::select($plan, $fields) . 'WHERE ' . book::period . '=? AND ' . book::lab . '=? AND ' . book::excluded . '=' . book::excluded_on;
