@@ -6,7 +6,7 @@ namespace frame;
 
 class version
 {
-    const last_update = '2022-02-01';
+    const last_update = '2022-02-14';
 
     const nr = '0.31';
 
@@ -21,7 +21,6 @@ class version
     static function set_info(\Base $fw): void
     {
         $fw->set('version_nr', version::nr);
-        $fw->set('last_update', version::last_update);
 
         $release = '';
         if (version::release > 0)
@@ -37,5 +36,8 @@ class version
 
         $fw->set('version_info', $version_info);
         $fw->set('version', $version_info . ' - v' . version::nr);
+
+        if (!$fw->exists('last_update'))
+            $fw->set('last_update', version::last_update);
     }
 }
