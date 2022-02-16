@@ -45,7 +45,7 @@ final class Base extends Prefab implements ArrayAccess {
 	//@{ Framework details
 	const
 		PACKAGE='Fat-Free Framework',
-		VERSION='3.7.4-Dev';
+		VERSION='3.8.0-Release';
 	//@}
 
 	//@{ HTTP status codes (RFC 2616)
@@ -972,7 +972,7 @@ final class Base extends Prefab implements ArrayAccess {
 					switch ($type) {
 						case 'plural':
 							preg_match_all('/(?<tag>\w+)'.
-								'(?:\s*\{\s*(?<data>.+?)\s*\})/',
+								'(?:\s*\{\s*(?<data>.*?)\s*\})/',
 								$mod,$matches,PREG_SET_ORDER);
 							$ord=['zero','one','two'];
 							foreach ($matches as $match) {
@@ -1113,7 +1113,7 @@ final class Base extends Prefab implements ArrayAccess {
 	*	@param $code string
 	**/
 	function language($code) {
-		$code=preg_replace('/\h+|;q=[0-9.]+/','',$code);
+		$code=preg_replace('/\h+|;q=[0-9.]+/','',$code?:'');
 		$code.=($code?',':'').$this->fallback;
 		$this->languages=[];
 		foreach (array_reverse(explode(',',$code)) as $lang)
@@ -1366,7 +1366,7 @@ final class Base extends Prefab implements ArrayAccess {
 			$loggable=$this->split($loggable);
 		foreach ($loggable as $status)
 			if ($status=='*' ||
-				preg_match('/^'.preg_replace('/\D/','\d',$status).'$/',$code)) {
+				preg_match('/^'.preg_replace('/\D/','\d',$status).'$/',(string) $code)) {
 				error_log($text);
 				foreach (explode("\n",$trace) as $nexus)
 					if ($nexus)
