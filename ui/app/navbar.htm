@@ -11,12 +11,14 @@
         <check if="{{ count(@plan_list) > 0 }}">
             <check if="{{ count(@plan_list) === 1 }}">
                 <true>
-                    <li class="nav-item {{ @ui_view === 'plan_detail' ? 'active' : '' }}">
+                    <li
+                        class="nav-item {{ (@ui_view === 'plan_detail') || (@ui_view === 'plan_period') ? 'active' : '' }}">
                         <a href="plan" class="nav-link">{{ @DICT.my_plan }}</a>
                     </li>
                 </true>
                 <false>
-                    <li class="nav-item dropdown">
+                    <li
+                        class="nav-item dropdown {{ (@ui_view === 'plan_detail') || (@ui_view === 'plan_period') ? 'active' : '' }}">
                         <a id="my_plan_menu" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                             class="nav-link dropdown-toggle">{{ @DICT.my_plans }}</a>
                         <ul aria-labelledby="my_plan_menu" class="dropdown-menu border-0 shadow">
