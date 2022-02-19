@@ -8,7 +8,7 @@ A modern adoption of a teaching method developed by [Helen Parkhurst](https://en
 
 <br />
 
-[![Version](https://img.shields.io/badge/Version-0.31-blue)](https://git.io/daltonplan) &nbsp; [![License](https://img.shields.io/github/license/daltonplan/daltonplan)](LICENSE) &nbsp; [![CodeFactor](https://www.codefactor.io/repository/github/daltonplan/daltonplan/badge)](https://www.codefactor.io/repository/github/daltonplan/daltonplan) &nbsp; [![Discord](https://img.shields.io/discord/439508141722435595)](https://discord.lava-block.com) &nbsp; [![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Follow)](https://twitter.com/daltonplan)
+[![Version](https://img.shields.io/badge/Version-0.30.1-blue)](https://git.io/daltonplan) &nbsp; [![License](https://img.shields.io/github/license/daltonplan/daltonplan)](LICENSE) &nbsp; [![CodeFactor](https://www.codefactor.io/repository/github/daltonplan/daltonplan/badge)](https://www.codefactor.io/repository/github/daltonplan/daltonplan) &nbsp; [![Discord](https://img.shields.io/discord/439508141722435595)](https://discord.lava-block.com) &nbsp; [![Twitter URL](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&label=Follow)](https://twitter.com/daltonplan)
 
 <br />
 
