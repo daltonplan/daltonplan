@@ -11,11 +11,6 @@ on:
 env:
   REGISTRY: ghcr.io
 
-permissions:
-    id-token: write
-    contents: write
-    security-events: write
-
 concurrency:
   group: container-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
@@ -24,8 +19,10 @@ jobs:
   container:
     name: Build and Publish
     permissions:
+      id-token: write
       contents: read
       packages: write
+      security-events: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -74,7 +71,6 @@ jobs:
           image-ref: '${{ env.REGISTRY }}/${{ github.repository_owner }}/daltonplan:latest'
           format: 'sarif'
           output: 'trivy-results.sarif'
-          exit-code: '1'
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
