@@ -44,13 +44,12 @@ jobs:
         with:
           context: "./"
           push: true
-          tags:
-            daltonplan:latest
+          tags: ${{ env.REGISTRY }}/daltonplan:latest
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'daltonplan:latest'
+          image-ref: '${{ env.REGISTRY }}/daltonplan:latest'
           format: 'sarif'
           output: 'trivy-results.sarif'
           exit-code: '1'
