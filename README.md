@@ -4,7 +4,9 @@
 
 **Education with interactive timetable**
 
-A modern adoption of a teaching method developed by [Helen Parkhurst](https://en.wikipedia.org/wiki/Helen_Parkhurst) in the 20th century - If you are interested in trying it out, just get in touch: [beta@daltonplan.com](mailto:beta@daltonplan.com)
+A modern adoption of a teaching method developed by [Helen Parkhurst](https://en.wikipedia.org/wiki/Helen_Parkhurst) in the 20th century
+
+> The development of the project is currently on hold and we are collecting feedback for the next steps
 
 <br />
 
