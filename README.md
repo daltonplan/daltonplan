@@ -1,4 +1,4 @@
-<a href="https://daltonplan.com"><img align="right" src="https://github.com/daltonplan.png" width="200" style="margin:0px 40px 0px 0px"></a>
+<a href="https://daltonplan.com"><img src="https://github.com/daltonplan.png" width="200"></a>
 
 # Dalton Plan &nbsp; [![Version](https://img.shields.io/badge/2022-beta-blue)](#all-features-at-a-glance)
 
@@ -109,8 +109,6 @@ If you want to contribute, we suggest the following:
 <br />
 
 ## License
-
-<a href="https://opensource.org" target="_blank"><img align="right" width="90" src="http://opensource.org/trademarks/opensource/OSI-Approved-License-100x137.png" style="margin:0px 0px 0px 80px"></a>
 
 **Dalton Plan** was created by [Lava Block](https://lava-block.com) and the source code is licensed under [GNU Affero General Public License v3.0](LICENSE.md) - This project includes several [Third-Party](#third-party) libraries, which are licensed under their own respective **Open Source** licenses
 
